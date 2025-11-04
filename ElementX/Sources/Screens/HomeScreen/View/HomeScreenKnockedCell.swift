@@ -29,14 +29,14 @@ struct HomeScreenKnockedCell: View {
             
             mainContent
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 16)
+                .padding(.bottom, 8)
                 .padding(.trailing, 16)
                 .multilineTextAlignment(.leading)
                 .overlay(alignment: .bottom) {
                     separator
                 }
         }
-        .padding(.top, 12)
+        .padding(.top, 6)
         .padding(.leading, 16)
         .onTapGesture {
             if let roomID = room.roomID {
