@@ -23,7 +23,8 @@ struct AnalyticsSettingsScreen: View {
     
     var analyticsSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenAnalyticsSettingsShareData),
+            ListRow(label: .default(title: L10n.screenAnalyticsSettingsShareData,
+                                    icon: Text("📊")),
                     kind: .toggle($context.enableAnalytics))
                 .onChange(of: context.enableAnalytics) {
                     context.send(viewAction: .toggleAnalytics)

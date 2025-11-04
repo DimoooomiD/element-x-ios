@@ -185,6 +185,7 @@
 		1F3232BD368DF430AB433907 /* Compound in Frameworks */ = {isa = PBXBuildFile; productRef = 07FEEEDB11543A7DED420F04 /* Compound */; };
 		1FE593ECEC40A43789105D80 /* KeychainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36CB905A2B9EC2C92A2DA7C /* KeychainController.swift */; };
 		1FEC0A4EC6E6DF693C16B32A /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CEBCB9676FCD1D0F13188DD /* StringTests.swift */; };
+		1FF20254342E3B7D8823D962 /* BackgroundWallpaperColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B415539C06A3D5A4E2504 /* BackgroundWallpaperColor.swift */; };
 		208C19811613F9A10F8A7B75 /* MediaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCE895ECFFA53FEE64D62B /* MediaLoader.swift */; };
 		20C16A3F718802B0E4A19C83 /* URLComponentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76310030C831D4610A705603 /* URLComponentsTests.swift */; };
 		2118E35D312951B241067BD5 /* MessageComposerTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345172AD4377E83A44BD864F /* MessageComposerTextField.swift */; };
@@ -806,6 +807,7 @@
 		90733645AE76FB33DAD28C2B /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE40D4A5DD857AC16EED945A /* URLSession.swift */; };
 		90DF83A6A347F7EE7EDE89EE /* AttributedStringBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25E364AE85090A70AE4644 /* AttributedStringBuilderTests.swift */; };
 		90EB25D13AE6EEF034BDE9D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D52BAA5BADB06E5E8C295D /* Assets.swift */; };
+		911942F8AD256D28B5DD82EB /* BackgroundWallpaperColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B415539C06A3D5A4E2504 /* BackgroundWallpaperColor.swift */; };
 		914BDF61447C723F104BCE33 /* SessionDirectories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C2067FF58B4996323EB40C /* SessionDirectories.swift */; };
 		915B4CDAF220D9AEB4047D45 /* PollInteractionHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259E5B05BDE6E20C26CF11B4 /* PollInteractionHandlerProtocol.swift */; };
 		91ABC91758A6E4A5FAA2E9C4 /* ReadReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314F1C79850BE46E8ABEAFCB /* ReadReceipt.swift */; };
@@ -857,6 +859,7 @@
 		9905C1B1C6EFE38F3A6533F3 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33B3F17996DFDF5F0181512 /* Data.swift */; };
 		9912F9EB2D6589141A2957B4 /* AppLockScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44BBC892499BE45B074F89 /* AppLockScreenCoordinator.swift */; };
 		992F5E750F5030C4BA2D0D03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01C4C7DB37597D7D8379511A /* Assets.xcassets */; };
+		99420A0488F7A38FD6F9D988 /* BackgroundWallpaperColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B415539C06A3D5A4E2504 /* BackgroundWallpaperColor.swift */; };
 		99C463F12F89C99C77D02077 /* DeactivateAccountScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03D7ECAC68C2FFB8CF01BCB /* DeactivateAccountScreen.swift */; };
 		99ED42B8F8D6BFB1DBCF4C45 /* AnalyticsEvents in Frameworks */ = {isa = PBXBuildFile; productRef = D661CAB418C075A94306A792 /* AnalyticsEvents */; };
 		9A0326D2375075871D2AB537 /* ResolveVerifiedUserSendFailureScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574CB70E82D7EAEA538E4135 /* ResolveVerifiedUserSendFailureScreenViewModel.swift */; };
@@ -2751,6 +2754,7 @@
 		ED482057AE39D5C6D9C5F3D8 /* message.caf */ = {isa = PBXFileReference; path = message.caf; sourceTree = "<group>"; };
 		ED49073BB1C1FC649DAC2CCD /* LocationRoomTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRoomTimelineView.swift; sourceTree = "<group>"; };
 		ED60E4D2CD678E1EBF16F77A /* BlockedUsersScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersScreen.swift; sourceTree = "<group>"; };
+		ED6B415539C06A3D5A4E2504 /* BackgroundWallpaperColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundWallpaperColor.swift; sourceTree = "<group>"; };
 		EDDE826EAB1BAB80C1104980 /* SpaceFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceFlowCoordinator.swift; sourceTree = "<group>"; };
 		EE378083653EF0C9B5E9D580 /* EmoteRoomTimelineItemContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmoteRoomTimelineItemContent.swift; sourceTree = "<group>"; };
 		EE6BFF453838CF6C3982C5A3 /* RoomDirectorySearchScreenScreenViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDirectorySearchScreenScreenViewModelTests.swift; sourceTree = "<group>"; };
@@ -6057,6 +6061,7 @@
 				353024006CB726E9F9187B3A /* AnalyticsConsentState.swift */,
 				0FD22AEFFA20065494ED2333 /* AppAppearance.swift */,
 				7BD5523BDEDB247E29228476 /* AppSettings.swift */,
+				ED6B415539C06A3D5A4E2504 /* BackgroundWallpaperColor.swift */,
 				0A2074C0449B83D5858BD2D7 /* FrequentlyUsedEmoji.swift */,
 				8A1F2AAA3F0F2B72D2FFE4D0 /* MapTilerConfiguration.swift */,
 				E8D354D4232DED9649FD0FF4 /* OIDCConfiguration.swift */,
@@ -7237,6 +7242,7 @@
 				CDCA8A559E098503DDE29477 /* AttributedStringBuilder.swift in Sources */,
 				BA43D782BE85C7F5F20C624A /* AttributedStringBuilderProtocol.swift in Sources */,
 				F255083E18CDBFDF7E640FB1 /* Avatars.swift in Sources */,
+				911942F8AD256D28B5DD82EB /* BackgroundWallpaperColor.swift in Sources */,
 				9A3B0CDF097E3838FB1B9595 /* Bundle.swift in Sources */,
 				9295F1F5E04484E10780BCE8 /* CharacterSet.swift in Sources */,
 				238D561CA231339C6D4D06F3 /* ClientBuilder.swift in Sources */,
@@ -7473,6 +7479,7 @@
 				88887E40301FF0543ED5B59F /* AppAppearance.swift in Sources */,
 				944EAB7BC2408B2C6570E722 /* AppHooks.swift in Sources */,
 				2CC3F27CD76DB00A747BEA6C /* AppSettings.swift in Sources */,
+				1FF20254342E3B7D8823D962 /* BackgroundWallpaperColor.swift in Sources */,
 				2F2906AE9BC3D0E79A6F98F8 /* Bundle.swift in Sources */,
 				88A87AA16CD93F57143623F8 /* ClientBuilderHook.swift in Sources */,
 				D104B27C5DA0626B41CE78D3 /* CurrentValuePublisher.swift in Sources */,
@@ -7629,6 +7636,7 @@
 				0B05A35FF5D1ED9E8A0B41A7 /* AuthenticationStartScreenViewModelProtocol.swift in Sources */,
 				4AAA8606FBA290E23D15422E /* AvatarHeaderView.swift in Sources */,
 				1621BF6316FFFEF5AE067C77 /* Avatars.swift in Sources */,
+				99420A0488F7A38FD6F9D988 /* BackgroundWallpaperColor.swift in Sources */,
 				42239FD59394A086E046C9BF /* Backports.swift in Sources */,
 				7A25D6926A2C01DB8D0D67A5 /* BadgeLabel.swift in Sources */,
 				A4B0BAD62A12ED76BD611B79 /* BadgeView.swift in Sources */,

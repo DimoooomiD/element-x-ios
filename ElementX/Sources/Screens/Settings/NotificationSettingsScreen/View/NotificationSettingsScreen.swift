@@ -65,8 +65,8 @@ struct NotificationSettingsScreen: View {
         Section {
             ListRow(kind: .custom {
                 HStack(alignment: .firstTextBaseline, spacing: 13) {
-                    Image(systemSymbol: .exclamationmarkCircleFill)
-                        .foregroundColor(.compound.iconTertiaryAlpha)
+                    Text("⚠️")
+                        .font(.system(size: 20))
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(L10n.screenNotificationSettingsSystemNotificationsTurnedOff)
@@ -86,7 +86,8 @@ struct NotificationSettingsScreen: View {
     
     private var enableNotificationSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenNotificationSettingsEnableNotifications),
+            ListRow(label: .default(title: L10n.screenNotificationSettingsEnableNotifications,
+                                    icon: Text("🔔")),
                     kind: .toggle($context.enableNotifications))
                 .onChange(of: context.enableNotifications) {
                     context.send(viewAction: .changedEnableNotifications)
@@ -97,7 +98,8 @@ struct NotificationSettingsScreen: View {
     private var roomsNotificationSection: some View {
         Section {
             // Group chats
-            ListRow(label: .plain(title: L10n.screenNotificationSettingsGroupChats),
+            ListRow(label: .default(title: L10n.screenNotificationSettingsGroupChats,
+                                    icon: Text("👥")),
                     details: context.viewState.settings.map {
                         .title(context.viewState.strings.string(for: $0.groupChatsMode))
                     } ?? .isWaiting(true),
@@ -108,7 +110,8 @@ struct NotificationSettingsScreen: View {
                     .accessibilityIdentifier(A11yIdentifiers.roomDetailsScreen.notifications)
             
             // Direct chats
-            ListRow(label: .plain(title: L10n.screenNotificationSettingsDirectChats),
+            ListRow(label: .default(title: L10n.screenNotificationSettingsDirectChats,
+                                    icon: Text("💬")),
                     details: context.viewState.settings.map {
                         .title(context.viewState.strings.string(for: $0.directChatsMode))
                     } ?? .isWaiting(true),
@@ -126,7 +129,8 @@ struct NotificationSettingsScreen: View {
         
     private var mentionsSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenNotificationSettingsRoomMentionLabel),
+            ListRow(label: .default(title: L10n.screenNotificationSettingsRoomMentionLabel,
+                                    icon: Text("💭")),
                     kind: .toggle($context.roomMentionsEnabled))
                 .disabled(context.viewState.settings?.roomMentionsEnabled == nil)
                 .allowsHitTesting(!context.viewState.applyingChange)
@@ -141,7 +145,8 @@ struct NotificationSettingsScreen: View {
     
     private var callsSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenNotificationSettingsCallsLabel),
+            ListRow(label: .default(title: L10n.screenNotificationSettingsCallsLabel,
+                                    icon: Text("📞")),
                     kind: .toggle($context.callsEnabled))
                 .disabled(context.viewState.settings?.callsEnabled == nil)
                 .allowsHitTesting(!context.viewState.applyingChange)
@@ -156,7 +161,8 @@ struct NotificationSettingsScreen: View {
     
     private var additionalSettingsSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenNotificationSettingsInviteForMeLabel),
+            ListRow(label: .default(title: L10n.screenNotificationSettingsInviteForMeLabel,
+                                    icon: Text("✉️")),
                     kind: .toggle($context.invitationsEnabled))
                 .disabled(context.viewState.settings?.invitationsEnabled == nil)
                 .allowsHitTesting(!context.viewState.applyingChange)

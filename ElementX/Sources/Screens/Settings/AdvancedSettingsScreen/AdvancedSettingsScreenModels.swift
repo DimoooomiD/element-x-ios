@@ -42,6 +42,7 @@ protocol AdvancedSettingsProtocol: AnyObject {
     var appAppearance: AppAppearance { get set }
     var sharePresence: Bool { get set }
     var optimizeMediaUploads: Bool { get set }
+    var backgroundWallpaperColor: BackgroundWallpaperColor { get set }
 }
 
 extension AppSettings: AdvancedSettingsProtocol { }

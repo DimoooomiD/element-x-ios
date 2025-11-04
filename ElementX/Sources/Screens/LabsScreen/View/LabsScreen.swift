@@ -27,7 +27,9 @@ struct LabsScreen: View {
             EmptyView()
         } header: {
             VStack(spacing: 16) {
-                BigIcon(icon: \.labs, style: .default)
+                Text("🧪")
+                    .font(.system(size: 64))
+                    .accessibilityHidden(true)
                 
                 VStack(spacing: 8) {
                     Text(L10n.screenLabsHeaderTitle)
@@ -49,7 +51,7 @@ struct LabsScreen: View {
     private var threadsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenLabsEnableThreads,
-                                    icon: \.threads),
+                                    icon: Text("🧵")),
                     kind: .toggle($context.threadsEnabled))
         } footer: {
             Text(L10n.screenLabsEnableThreadsDescription)

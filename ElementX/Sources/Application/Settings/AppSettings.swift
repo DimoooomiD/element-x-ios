@@ -51,6 +51,7 @@ final class AppSettings {
         case optimizeMediaUploads
         case appAppearance
         case sharePresence
+        case backgroundWallpaperColor
         
         case elementCallBaseURLOverride
         
@@ -212,6 +213,9 @@ final class AppSettings {
     
     @UserPreference(key: UserDefaultsKeys.appAppearance, defaultValue: .system, storageType: .userDefaults(store))
     var appAppearance: AppAppearance
+    
+    @UserPreference(key: UserDefaultsKeys.backgroundWallpaperColor, defaultValue: .none, storageType: .userDefaults(store))
+    var backgroundWallpaperColor: BackgroundWallpaperColor
     
     // MARK: - Security
     

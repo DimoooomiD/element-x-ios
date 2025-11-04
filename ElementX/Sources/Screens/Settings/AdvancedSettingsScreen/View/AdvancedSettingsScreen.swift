@@ -15,20 +15,24 @@ struct AdvancedSettingsScreen: View {
     var body: some View {
         Form {
             Section {
-                ListRow(label: .plain(title: L10n.commonAppearance),
+                ListRow(label: .default(title: L10n.commonAppearance,
+                                        icon: Text("🎨")),
                         kind: .picker(selection: $context.appAppearance,
                                       items: AppAppearance.allCases.map { (title: $0.name, tag: $0) }))
                 
-                ListRow(label: .plain(title: L10n.actionViewSource,
-                                      description: L10n.screenAdvancedSettingsViewSourceDescription),
+                ListRow(label: .default(title: L10n.actionViewSource,
+                                        description: L10n.screenAdvancedSettingsViewSourceDescription,
+                                        icon: Text("👁️")),
                         kind: .toggle($context.viewSourceEnabled))
                 
-                ListRow(label: .plain(title: L10n.screenAdvancedSettingsSharePresence,
-                                      description: L10n.screenAdvancedSettingsSharePresenceDescription),
+                ListRow(label: .default(title: L10n.screenAdvancedSettingsSharePresence,
+                                        description: L10n.screenAdvancedSettingsSharePresenceDescription,
+                                        icon: Text("📍")),
                         kind: .toggle($context.sharePresence))
                 
-                ListRow(label: .plain(title: L10n.screenAdvancedSettingsMediaCompressionTitle,
-                                      description: L10n.screenAdvancedSettingsMediaCompressionDescription),
+                ListRow(label: .default(title: L10n.screenAdvancedSettingsMediaCompressionTitle,
+                                        description: L10n.screenAdvancedSettingsMediaCompressionDescription,
+                                        icon: Text("🗜️")),
                         kind: .toggle($context.optimizeMediaUploads))
                     .onChange(of: context.optimizeMediaUploads) {
                         context.send(viewAction: .optimizeMediaUploadsChanged)
@@ -52,7 +56,8 @@ struct AdvancedSettingsScreen: View {
         })
         
         Section {
-            ListRow(label: .plain(title: L10n.screenAdvancedSettingsHideInviteAvatarsToggleTitle),
+            ListRow(label: .default(title: L10n.screenAdvancedSettingsHideInviteAvatarsToggleTitle,
+                                    icon: Text("🎭")),
                     details: context.viewState.isWaitingHideInviteAvatars ? .isWaiting(true) : nil,
                     kind: .toggle(binding))
                 .disabled(context.viewState.isWaitingHideInviteAvatars)
@@ -71,7 +76,8 @@ struct AdvancedSettingsScreen: View {
         })
         
         Section {
-            ListRow(label: .plain(title: L10n.screenAdvancedSettingsShowMediaTimelineTitle),
+            ListRow(label: .default(title: L10n.screenAdvancedSettingsShowMediaTimelineTitle,
+                                    icon: Text("🖼️")),
                     details: .isWaiting(context.viewState.isWaitingTimelineMediaVisibility),
                     kind: .inlinePicker(selection: binding,
                                         items: TimelineMediaVisibility.items))

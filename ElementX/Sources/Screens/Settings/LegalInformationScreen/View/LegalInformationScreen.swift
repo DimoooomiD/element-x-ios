@@ -16,11 +16,14 @@ struct LegalInformationScreen: View {
     var body: some View {
         Form {
             Section {
-                ListRow(label: .plain(title: L10n.commonCopyright),
+                ListRow(label: .default(title: L10n.commonCopyright,
+                                        icon: Text("©️")),
                         kind: .button { openURL(context.viewState.copyrightURL) })
-                ListRow(label: .plain(title: L10n.commonAcceptableUsePolicy),
+                ListRow(label: .default(title: L10n.commonAcceptableUsePolicy,
+                                        icon: Text("📋")),
                         kind: .button { openURL(context.viewState.acceptableUseURL) })
-                ListRow(label: .plain(title: L10n.commonPrivacyPolicy),
+                ListRow(label: .default(title: L10n.commonPrivacyPolicy,
+                                        icon: Text("🔒")),
                         kind: .button { openURL(context.viewState.privacyURL) })
             }
         }
