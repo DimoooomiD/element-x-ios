@@ -29,7 +29,7 @@ private struct BloomModifier: ViewModifier {
     
     @State private var height = CGFloat.zero
     
-    private var endPointY: CGFloat { hasSearchBar ? 0.35 : 0.55 }
+    private var endPointY: CGFloat { hasSearchBar ? 0.35 : 0.85 }
     
     func body(content: Content) -> some View {
         content
@@ -102,7 +102,7 @@ private struct OldBloomModifier: ViewModifier {
         return bloom
     }
     
-    private var endPointY: CGFloat { hasSearchBar ? 0.5 : 0.7 }
+    private var endPointY: CGFloat { hasSearchBar ? 0.5 : 0.95 }
     
     private var bloomGradient: some View {
         LinearGradient(gradient: .compound.subtle,
