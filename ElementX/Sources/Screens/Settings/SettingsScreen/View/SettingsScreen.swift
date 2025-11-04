@@ -7,7 +7,6 @@
 //
 
 import Compound
-import SFSafeSymbols
 import SwiftUI
 
 struct SettingsScreen: View {
@@ -96,14 +95,14 @@ struct SettingsScreen: View {
     private var manageMyAppSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenNotificationSettingsTitle,
-                                    icon: \.notifications),
+                                    icon: Text("🔔")),
                     kind: .navigationLink {
                         context.send(viewAction: .notifications)
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.notifications)
             
             ListRow(label: .default(title: L10n.commonScreenLock,
-                                    icon: \.lock),
+                                    icon: Text("🔒")),
                     kind: .navigationLink {
                         context.send(viewAction: .appLock)
                     })
@@ -112,7 +111,7 @@ struct SettingsScreen: View {
             switch context.viewState.securitySectionMode {
             case .secureBackup:
                 ListRow(label: .default(title: L10n.commonEncryption,
-                                        icon: \.key),
+                                        icon: Text("🔑")),
                         details: context.viewState.showSecuritySectionBadge ? .icon(securitySectionBadge) : nil,
                         kind: .navigationLink { context.send(viewAction: .secureBackup) })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.secureBackup)
@@ -126,7 +125,7 @@ struct SettingsScreen: View {
         Section {
             if let url = context.viewState.accountProfileURL {
                 ListRow(label: .default(title: L10n.actionManageAccount,
-                                        icon: \.userProfile),
+                                        icon: Text("👤")),
                         kind: .button {
                             context.send(viewAction: .manageAccount(url: url))
                         })
@@ -135,7 +134,7 @@ struct SettingsScreen: View {
             
             if let url = context.viewState.accountSessionsListURL {
                 ListRow(label: .default(title: L10n.actionManageDevices,
-                                        icon: \.devices),
+                                        icon: Text("📱")),
                         kind: .button {
                             context.send(viewAction: .manageAccount(url: url))
                         })
@@ -143,7 +142,7 @@ struct SettingsScreen: View {
             
             if context.viewState.showBlockedUsers {
                 ListRow(label: .default(title: L10n.commonBlockedUsers,
-                                        icon: \.block),
+                                        icon: Text("🚫")),
                         kind: .navigationLink {
                             context.send(viewAction: .blockedUsers)
                         })
@@ -155,20 +154,20 @@ struct SettingsScreen: View {
     private var generalSection: some View {
         Section {
             ListRow(label: .default(title: L10n.commonAdvancedSettings,
-                                    icon: \.settings),
+                                    icon: Text("⚙️")),
                     kind: .navigationLink {
                         context.send(viewAction: .advancedSettings)
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.advancedSettings)
             
             ListRow(label: .default(title: L10n.screenAdvancedSettingsLabs,
-                                    icon: \.labs),
+                                    icon: Text("🧪")),
                     kind: .navigationLink {
                         context.send(viewAction: .labs)
                     })
             
             ListRow(label: .default(title: L10n.commonAbout,
-                                    icon: \.info),
+                                    icon: Text("ℹ️")),
                     kind: .navigationLink {
                         context.send(viewAction: .about)
                     })
@@ -176,7 +175,7 @@ struct SettingsScreen: View {
             
             if context.viewState.isBugReportServiceEnabled {
                 ListRow(label: .default(title: L10n.commonReportAProblem,
-                                        icon: \.chatProblem),
+                                        icon: Text("🐛")),
                         kind: .navigationLink {
                             context.send(viewAction: .reportBug)
                         })
@@ -185,7 +184,7 @@ struct SettingsScreen: View {
             
             if context.viewState.showAnalyticsSettings {
                 ListRow(label: .default(title: L10n.commonAnalytics,
-                                        icon: \.chart),
+                                        icon: Text("📊")),
                         kind: .navigationLink {
                             context.send(viewAction: .analytics)
                         })
@@ -197,7 +196,7 @@ struct SettingsScreen: View {
     private var signOutSection: some View {
         Section {
             ListRow(label: .action(title: L10n.screenSignoutPreferenceItem,
-                                   icon: \.signOut,
+                                   icon: Text("🚪"),
                                    role: .destructive),
                     kind: .button {
                         context.send(viewAction: .logout)
@@ -206,7 +205,7 @@ struct SettingsScreen: View {
             
             if context.viewState.showAccountDeactivation {
                 ListRow(label: .action(title: L10n.actionDeactivateAccount,
-                                       icon: \.warning,
+                                       icon: Text("⚠️"),
                                        role: .destructive),
                         kind: .navigationLink {
                             context.send(viewAction: .deactivateAccount)
@@ -222,7 +221,7 @@ struct SettingsScreen: View {
     private var developerOptionsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.commonDeveloperOptions,
-                                    icon: \.code),
+                                    icon: Text("💻")),
                     kind: .navigationLink {
                         context.send(viewAction: .developerOptions)
                     })
