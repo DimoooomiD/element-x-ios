@@ -22,41 +22,13 @@ struct HomeScreen: View {
             .alert(item: $context.leaveRoomAlertItem,
                    actions: leaveRoomAlertActions,
                    message: leaveRoomAlertMessage)
-            .navigationTitle(L10n.screenRoomlistMainSpaceTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar { toolbar }
             .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
             .track(screen: .Home)
-            .toolbarBloom(hasSearchBar: true)
+            .toolbarBloom(hasSearchBar: false)
             .sentryTrace("\(Self.self)")
     }
     
     // MARK: - Private
-        
-    @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .primaryAction) {
-            newRoomButton
-        }
-        .backportSharedBackgroundVisibility(.hidden)
-    }
-    
-    @ViewBuilder
-    private var newRoomButton: some View {
-        switch context.viewState.roomListMode {
-        case .empty, .rooms:
-            Button {
-                context.send(viewAction: .startChat)
-            } label: {
-                CompoundIcon(\.plus)
-            }
-            .buttonStyle(.compound(.super, size: .toolbarIcon))
-            .accessibilityLabel(L10n.actionStartChat)
-            .accessibilityIdentifier(A11yIdentifiers.homeScreen.startChat)
-        default:
-            EmptyView()
-        }
-    }
     
     @ViewBuilder
     private func leaveRoomAlertActions(_ item: LeaveRoomAlertItem) -> some View {

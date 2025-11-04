@@ -16,6 +16,8 @@ struct HomeScreenContent: View {
     @ObservedObject var context: HomeScreenViewModel.Context
     let scrollViewAdapter: ScrollViewAdapter
     
+    @FocusState private var isSearchFocused: Bool
+    
     var body: some View {
         roomList
             .sentryTrace("\(Self.self)")
@@ -46,6 +48,11 @@ struct HomeScreenContent: View {
                     }
                 case .rooms:
                     LazyVStack(spacing: 0) {
+                        searchBar
+                            .padding(.horizontal, 16)
+                            .padding(.top, 8)
+                            .padding(.bottom, 8)
+                        
                         Section {
                             if !context.viewState.shouldShowEmptyFilterState {
                                 HomeScreenRoomList(context: context)
@@ -54,11 +61,10 @@ struct HomeScreenContent: View {
                             topSection
                         }
                     }
-                    .isSearching($context.isSearchFieldFocused)
-                    .searchable(text: $context.searchQuery, placement: .navigationBarDrawer(displayMode: .always))
-                    .compoundSearchField()
-                    .disableAutocorrection(true)
                 }
+            }
+            .safeAreaInset(edge: .top) {
+                headerSection
             }
             .introspect(.scrollView, on: .supportedVersions) { scrollView in
                 guard scrollView != scrollViewAdapter.scrollView else { return }
@@ -118,6 +124,68 @@ struct HomeScreenContent: View {
             .animation(.elementDefault, value: context.viewState.roomListMode)
             .animation(.none, value: context.viewState.visibleRooms)
         }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(L10n.screenRoomlistMainSpaceTitle)
+                .font(.compound.headingMDBold)
+                .foregroundStyle(.compound.textPrimary)
+            
+            Spacer()
+            
+            if context.viewState.roomListMode == .empty || context.viewState.roomListMode == .rooms {
+                Button {
+                    context.send(viewAction: .startChat)
+                } label: {
+                    CompoundIcon(\.plus)
+                }
+                .buttonStyle(.compound(.super, size: .toolbarIcon))
+                .accessibilityLabel(L10n.actionStartChat)
+                .accessibilityIdentifier(A11yIdentifiers.homeScreen.startChat)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 8)
+        .background(Color.compound.bgCanvasDefault)
+    }
+    
+    @ViewBuilder
+    private var searchBar: some View {
+        HStack(spacing: 8) {
+            CompoundIcon(\.search)
+                .foregroundStyle(.compound.textSecondary)
+            
+            TextField(L10n.actionSearch, text: $context.searchQuery)
+                .focused($isSearchFocused)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .font(.compound.bodyLG)
+                .foregroundStyle(.compound.textPrimary)
+                .onChange(of: isSearchFocused) { newValue in
+                    context.isSearchFieldFocused = newValue
+                }
+                .onChange(of: context.isSearchFieldFocused) { newValue in
+                    if newValue != isSearchFocused {
+                        isSearchFocused = newValue
+                    }
+                }
+            
+            if !context.searchQuery.isEmpty {
+                Button {
+                    context.searchQuery = ""
+                } label: {
+                    CompoundIcon(\.close)
+                        .foregroundStyle(.compound.textSecondary)
+                }
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color.compound.bgSubtleSecondary)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
     @ViewBuilder

@@ -38,9 +38,25 @@ struct SettingsScreen: View {
             }
         }
         .compoundList()
-        .navigationTitle(L10n.commonSettings)
-        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .top) {
+            headerSection
+        }
         .toolbarBloom(hasSearchBar: false)
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(L10n.commonSettings)
+                .font(.compound.headingMDBold)
+                .foregroundStyle(.compound.textPrimary)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 8)
+        .background(Color.compound.bgCanvasDefault)
     }
     
     private var userSection: some View {

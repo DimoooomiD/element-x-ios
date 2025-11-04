@@ -19,15 +19,38 @@ struct SpaceListScreen: View {
                 spaces
             }
         }
-        .navigationTitle(L10n.screenSpaceListTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbar }
+        .safeAreaInset(edge: .top) {
+            headerSection
+        }
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
         .toolbarBloom(hasSearchBar: false)
         .onAppear { context.send(viewAction: .screenAppeared) }
         .sheet(isPresented: $context.isPresentingFeatureAnnouncement) {
             SpacesAnnouncementSheetView(context: context)
         }
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack {
+            Text(L10n.screenSpaceListTitle)
+                .font(.compound.headingMDBold)
+                .foregroundStyle(.compound.textPrimary)
+            
+            Spacer()
+            
+            Button {
+                context.send(viewAction: .startChat)
+            } label: {
+                CompoundIcon(\.plus)
+            }
+            .buttonStyle(.compound(.super, size: .toolbarIcon))
+            .accessibilityLabel(L10n.actionStartChat)
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 8)
+        .background(Color.compound.bgCanvasDefault)
     }
     
     var header: some View {
@@ -69,25 +92,6 @@ struct SpaceListScreen: View {
                           mediaProvider: context.mediaProvider) { action in
                 context.send(viewAction: .spaceAction(action))
             }
-        }
-    }
-    
-    @ToolbarContentBuilder
-    var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .principal) {
-            // Hides the navigationTitle (which is set for the navigation stack label).
-            Text("").accessibilityHidden(true)
-        }
-        .backportSharedBackgroundVisibility(.hidden)
-        
-        ToolbarItem(placement: .primaryAction) {
-            Button {
-                context.send(viewAction: .startChat)
-            } label: {
-                CompoundIcon(\.plus)
-            }
-            .buttonStyle(.compound(.super, size: .toolbarIcon))
-            .accessibilityLabel(L10n.actionStartChat)
         }
     }
 }
