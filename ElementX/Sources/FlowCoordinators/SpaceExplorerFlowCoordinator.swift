@@ -14,6 +14,7 @@ enum SpaceExplorerFlowCoordinatorAction {
     case showSettings
     case presentCallScreen(roomProxy: JoinedRoomProxyProtocol)
     case verifyUser(userID: String)
+    case startChat
 }
 
 class SpaceExplorerFlowCoordinator: FlowCoordinatorProtocol {
@@ -129,6 +130,8 @@ class SpaceExplorerFlowCoordinator: FlowCoordinatorProtocol {
                     stateMachine.tryEvent(.selectSpace, userInfo: spaceRoomListProxy)
                 case .showSettings:
                     actionsSubject.send(.showSettings)
+                case .startChat:
+                    actionsSubject.send(.startChat)
                 }
             }
             .store(in: &cancellables)

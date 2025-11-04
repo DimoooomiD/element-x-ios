@@ -11,6 +11,7 @@ import Foundation
 enum SpaceListScreenViewModelAction {
     case selectSpace(SpaceRoomListProxyProtocol)
     case showSettings
+    case startChat
 }
 
 struct SpaceListScreenViewState: BindableState {
@@ -33,4 +34,5 @@ enum SpaceListScreenViewAction {
     case showSettings
     case screenAppeared
     case featureAnnouncementAppeared
+    case startChat
 }

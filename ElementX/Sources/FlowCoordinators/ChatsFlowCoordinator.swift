@@ -19,6 +19,7 @@ enum ChatsFlowCoordinatorAction {
     case showCallScreen(roomProxy: JoinedRoomProxyProtocol)
     case hideCallScreenOverlay
     case logout
+    case startChat
 }
 
 class ChatsFlowCoordinator: FlowCoordinatorProtocol {
@@ -79,6 +80,10 @@ class ChatsFlowCoordinator: FlowCoordinatorProtocol {
 
     func isDisplayingRoomScreen(withRoomID roomID: String) -> Bool {
         stateMachine.isDisplayingRoomScreen(withRoomID: roomID)
+    }
+    
+    func startChat() {
+        stateMachine.processEvent(.startStartChatFlow)
     }
     
     // MARK: - FlowCoordinatorProtocol

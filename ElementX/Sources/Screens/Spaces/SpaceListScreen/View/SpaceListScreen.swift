@@ -79,6 +79,16 @@ struct SpaceListScreen: View {
             Text("").accessibilityHidden(true)
         }
         .backportSharedBackgroundVisibility(.hidden)
+        
+        ToolbarItem(placement: .primaryAction) {
+            Button {
+                context.send(viewAction: .startChat)
+            } label: {
+                CompoundIcon(\.plus)
+            }
+            .buttonStyle(.compound(.super, size: .toolbarIcon))
+            .accessibilityLabel(L10n.actionStartChat)
+        }
     }
 }
 

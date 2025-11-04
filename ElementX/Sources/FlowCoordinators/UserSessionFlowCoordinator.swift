@@ -237,6 +237,9 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
                     hideCallScreenOverlay()
                 case .logout:
                     Task { await self.runLogoutFlow() }
+                case .startChat:
+                    // This case is handled by the coordinator itself, no action needed here
+                    break
                 }
             }
             .store(in: &cancellables)
@@ -257,6 +260,17 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
                         navigationTabCoordinator.selectedTab = .settings
                     }
                     settingsFlowCoordinator.handleAppRoute(.settings, animated: true)
+                case .startChat:
+                    // Switch to chats tab and trigger start chat
+                    if navigationTabCoordinator.selectedTab != .chats {
+                        navigationTabCoordinator.selectedTab = .chats
+                    }
+                    // Give a small delay to ensure tab switch completes, then trigger start chat
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
+                        try? await Task.sleep(for: .milliseconds(100))
+                        self.chatsFlowCoordinator.startChat()
+                    }
                 }
             }
             .store(in: &cancellables)

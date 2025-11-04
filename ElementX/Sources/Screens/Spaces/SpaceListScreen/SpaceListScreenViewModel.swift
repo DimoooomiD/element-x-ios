@@ -66,6 +66,8 @@ class SpaceListScreenViewModel: SpaceListScreenViewModelType, SpaceListScreenVie
             fatalError("There shouldn't be any unjoined spaces in the joined spaces list.")
         case .showSettings:
             actionsSubject.send(.showSettings)
+        case .startChat:
+            actionsSubject.send(.startChat)
         case .screenAppeared:
             if !appSettings.hasSeenSpacesAnnouncement {
                 // Use a task otherwise the presentation isn't animated.
