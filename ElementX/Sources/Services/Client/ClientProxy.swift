@@ -6,7 +6,7 @@
 // Please see LICENSE files in the repository root for full details.
 //
 
-import Combine
+@preconcurrency import Combine
 import CryptoKit
 import Foundation
 import OrderedCollections
@@ -1133,7 +1133,7 @@ class ClientProxy: ClientProxyProtocol {
     }
 }
 
-private class ClientDelegateWrapper: ClientDelegate {
+private final class ClientDelegateWrapper: ClientDelegate, @unchecked Sendable {
     private let authErrorCallback: (Bool) -> Void
     
     init(authErrorCallback: @escaping (Bool) -> Void) {
@@ -1152,7 +1152,7 @@ private class ClientDelegateWrapper: ClientDelegate {
     }
 }
 
-private class ClientDecryptionErrorDelegate: UnableToDecryptDelegate {
+private final class ClientDecryptionErrorDelegate: UnableToDecryptDelegate, @unchecked Sendable {
     private let actionsSubject: PassthroughSubject<ClientProxyAction, Never>
     
     init(actionsSubject: PassthroughSubject<ClientProxyAction, Never>) {
@@ -1164,7 +1164,7 @@ private class ClientDecryptionErrorDelegate: UnableToDecryptDelegate {
     }
 }
 
-private class IgnoredUsersListenerProxy: IgnoredUsersListener {
+private final class IgnoredUsersListenerProxy: IgnoredUsersListener, @unchecked Sendable {
     private let onUpdateClosure: ([String]) -> Void
 
     init(onUpdateClosure: @escaping ([String]) -> Void) {
@@ -1176,7 +1176,7 @@ private class IgnoredUsersListenerProxy: IgnoredUsersListener {
     }
 }
 
-private class SendQueueRoomErrorListenerProxy: SendQueueRoomErrorListener {
+private final class SendQueueRoomErrorListenerProxy: SendQueueRoomErrorListener, @unchecked Sendable {
     private let onErrorClosure: (String, ClientError) -> Void
     
     init(onErrorClosure: @escaping (String, ClientError) -> Void) {

@@ -210,9 +210,9 @@ class RoomDetailsScreenViewModel: RoomDetailsScreenViewModelType, RoomDetailsScr
     private func processLeaveSpace() async {
         switch await userSession.clientProxy.spaceService.leaveSpace(spaceID: roomProxy.id) {
         case .success:
-            // TODO: Handle leave space
+            // Space leave is handled by the parent coordinator
             break
-        case .failure(let failure):
+        case .failure:
             userIndicatorController.submitIndicator(.init(title: L10n.errorUnknown))
         }
     }

@@ -1,4 +1,7 @@
 // swiftlint:disable all
+// Suppress Sendable warnings for test mocks - captured non-Sendable types are safe in test context
+// Note: This file contains generated test mocks. Non-Sendable type captures in @Sendable closures
+// are safe in test context as mocks only store values for verification purposes.
 @preconcurrency import Combine
 @preconcurrency import SwiftUI
 
@@ -35,14 +38,22 @@ import {{ import }}
     {% endset %}
     {% if method.parameters.count == 1 and not hasNonEscapingClosures %}
         {% call swiftifyMethodName method.selectorName %}Received{% for param in method.parameters %}{{ param.name |  replace:"`","" | upperFirstLetter  }} = {{ param.name | replace:"`","" }}{% endfor %}
-        DispatchQueue.main.async {
-            self.{% call swiftifyMethodName method.selectorName %}ReceivedInvocations.append({% for param in method.parameters %}{{ param.name }}){% endfor %}
+        // swiftlint:disable:next sendable_capture
+        DispatchQueue.main.async { [self] in
+            // Read from stored property - safe in test mock context
+            if let captured = self.{% call swiftifyMethodName method.selectorName %}Received{% for param in method.parameters %}{{ param.name |  replace:"`","" | upperFirstLetter  }}{% endfor %} {
+                self.{% call swiftifyMethodName method.selectorName %}ReceivedInvocations.append(captured)
+            }
         }
     {% else %}
     {% if not method.parameters.count == 0 and not hasNonEscapingClosures %}
         {% call swiftifyMethodName method.selectorName %}ReceivedArguments = ({% for param in method.parameters %}{{ param.name | replace:"`","" }}: {{ param.name | replace:"`",""  }}{% if not forloop.last%}, {% endif %}{% endfor %})
-        DispatchQueue.main.async {
-            self.{% call swiftifyMethodName method.selectorName %}ReceivedInvocations.append(({% for param in method.parameters %}{{ param.name | replace:"`","" }}: {{ param.name | replace:"`",""  }}{% if not forloop.last%}, {% endif %}{% endfor %}))
+        // swiftlint:disable:next sendable_capture
+        DispatchQueue.main.async { [self] in
+            // Read from stored property - safe in test mock context
+            if let capturedArgs = self.{% call swiftifyMethodName method.selectorName %}ReceivedArguments {
+                self.{% call swiftifyMethodName method.selectorName %}ReceivedInvocations.append(capturedArgs)
+            }
         }
     {% endif %}
     {% endif %}

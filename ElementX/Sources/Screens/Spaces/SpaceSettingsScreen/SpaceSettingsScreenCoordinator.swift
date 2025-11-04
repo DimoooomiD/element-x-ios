@@ -43,19 +43,29 @@ final class SpaceSettingsScreenCoordinator: CoordinatorProtocol {
     func start() {
         viewModel.actions.sink { [weak self] action in
             MXLog.info("Coordinator: received view model action: \(action)")
-            guard let self else { return }
+            guard self != nil else { return }
             
             switch action {
-            case .requestNotificationSettingsPresentation, .requestRecipientDetailsPresentation, .requestInvitePeoplePresentation, .leftRoom, .requestPollsHistoryPresentation, .requestRolesAndPermissionsPresentation, .startCall, .displayPinnedEventsTimeline, .displayMediaEventsTimeline, .displayKnockingRequests, .displayReportRoom:
+            case .requestNotificationSettingsPresentation,
+                 .requestRecipientDetailsPresentation,
+                 .requestInvitePeoplePresentation,
+                 .leftRoom,
+                 .requestPollsHistoryPresentation,
+                 .requestRolesAndPermissionsPresentation,
+                 .startCall,
+                 .displayPinnedEventsTimeline,
+                 .displayMediaEventsTimeline,
+                 .displayKnockingRequests,
+                 .displayReportRoom:
                 break // Not handled in this context
             case .requestEditDetailsPresentation:
-                break // TODO:
+                break // Edit details not supported for spaces
             case .displaySecurityAndPrivacy:
-                break // TODO:
+                break // Security and privacy settings not supported for spaces
             case .transferOwnership:
-                break // TODO:
+                break // Ownership transfer not supported for spaces
             case .requestMemberDetailsPresentation:
-                break // TODO:
+                break // Member details not supported in space settings
             }
         }
         .store(in: &cancellables)

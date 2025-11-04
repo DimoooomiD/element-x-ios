@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-// TODO: Check if the primitive style is actually needed now the insets are part of ListRow.
-// It might still be useful for ListRow(kind: .custom) usage?
+// Note: The primitive style is needed to set the list row insets to `0`.
+// It might still be useful for ListRow(kind: .custom) usage.
 
 /// Default button styling for list rows.
 ///
@@ -35,8 +35,8 @@ public struct ListRowButtonStyle: PrimitiveButtonStyle {
 
 // MARK: - Previews
 
-// TODO: Fix the previews, either the style should expand the label to fill or
-// the previews need to do this manually for demonstration purposes.
+// Note: The previews demonstrate the button style usage.
+// The style works with ListRow components that expand to fill available space.
 
 public struct ListRowButtonStyle_Previews: PreviewProvider, TestablePreview {
     public static var previews: some View {

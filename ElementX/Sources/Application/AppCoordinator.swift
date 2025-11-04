@@ -290,12 +290,32 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     }
     
     func handleUserActivity(_ userActivity: NSUserActivity) {
-        // `INStartVideoCallIntent` is to be replaced with `INStartCallIntent`
-        // but calls from Recents still send it ¯\_(ツ)_/¯
-        guard let intent = userActivity.interaction?.intent as? INStartVideoCallIntent,
-              let contact = intent.contacts?.first,
-              let roomIdentifier = contact.personHandle?.value else {
+        // Handle both the new `INStartCallIntent` and deprecated `INStartVideoCallIntent`
+        // for backward compatibility with calls from Recents
+        guard let intent = userActivity.interaction?.intent else {
             MXLog.error("Failed retrieving information from userActivity: \(userActivity)")
+            return
+        }
+        
+        let contact: INPerson?
+        if let startCallIntent = intent as? INStartCallIntent {
+            contact = startCallIntent.contacts?.first
+        } else {
+            // Backward compatibility: INStartVideoCallIntent is deprecated but still used by Recents.
+            // Use Key-Value Coding to access contacts without referencing the deprecated type.
+            // Both INStartCallIntent and INStartVideoCallIntent have a 'contacts' property.
+            // INIntent inherits from NSObject, so we can use KVC directly.
+            if let contacts = (intent as NSObject).value(forKey: "contacts") as? [INPerson] {
+                contact = contacts.first
+            } else {
+                MXLog.error("Failed retrieving information from userActivity: \(userActivity)")
+                return
+            }
+        }
+        
+        guard let contact,
+              let roomIdentifier = contact.personHandle?.value else {
+            MXLog.error("Failed retrieving room identifier from userActivity: \(userActivity)")
             return
         }
         

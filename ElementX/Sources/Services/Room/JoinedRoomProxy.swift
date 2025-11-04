@@ -802,7 +802,7 @@ class JoinedRoomProxy: JoinedRoomProxyProtocol {
     }()
 }
 
-private final class RoomTypingNotificationUpdateListener: TypingNotificationsListener {
+private final class RoomTypingNotificationUpdateListener: TypingNotificationsListener, @unchecked Sendable {
     private let onUpdateClosure: ([String]) -> Void
     
     init(_ onUpdateClosure: @escaping ([String]) -> Void) {
@@ -814,7 +814,7 @@ private final class RoomTypingNotificationUpdateListener: TypingNotificationsLis
     }
 }
 
-private final class RoomIdentityStatusChangeListener: IdentityStatusChangeListener {
+private final class RoomIdentityStatusChangeListener: IdentityStatusChangeListener, @unchecked Sendable {
     private let onUpdateClosure: ([IdentityStatusChange]) -> Void
     
     init(_ onUpdateClosure: @escaping ([IdentityStatusChange]) -> Void) {
@@ -826,7 +826,7 @@ private final class RoomIdentityStatusChangeListener: IdentityStatusChangeListen
     }
 }
 
-private final class RoomKnockRequestsListener: KnockRequestsListener {
+private final class RoomKnockRequestsListener: KnockRequestsListener, @unchecked Sendable {
     private let onUpdateClosure: ([KnockRequest]) -> Void
     
     init(_ onUpdateClosure: @escaping ([KnockRequest]) -> Void) {

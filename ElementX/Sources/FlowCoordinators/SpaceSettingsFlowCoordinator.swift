@@ -100,10 +100,7 @@ final class SpaceSettingsFlowCoordinator: FlowCoordinatorProtocol {
                                                                            attributedStringBuilder: AttributedStringBuilder(mentionBuilder: MentionBuilder()),
                                                                            appSettings: flowParameters.appSettings))
         
-        coordinator.actionsPublisher.sink { [weak self] action in
-            switch action { }
-        }
-        .store(in: &cancellables)
+        // SpaceSettingsScreenCoordinatorAction is currently empty, so no action handling needed
         
         navigationStackCoordinator.push(coordinator, animated: animated) { [weak self] in
             self?.actionsSubject.send(.finished)
