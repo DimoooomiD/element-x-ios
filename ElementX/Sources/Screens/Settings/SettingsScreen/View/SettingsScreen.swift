@@ -40,7 +40,6 @@ struct SettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonSettings)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar { toolbar }
     }
     
     private var userSection: some View {
@@ -235,13 +234,6 @@ struct SettingsScreen: View {
     
     private var versionText: Text {
         Text(L10n.settingsVersionNumber(InfoPlistReader.main.bundleShortVersionString, InfoPlistReader.main.bundleVersion))
-    }
-    
-    private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .confirmationAction) {
-            Button(L10n.actionDone) { context.send(viewAction: .close) }
-                .accessibilityIdentifier(A11yIdentifiers.settingsScreen.done)
-        }
     }
     
     @ViewBuilder
