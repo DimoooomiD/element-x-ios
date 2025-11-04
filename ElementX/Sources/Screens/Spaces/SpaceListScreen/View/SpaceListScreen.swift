@@ -74,22 +74,6 @@ struct SpaceListScreen: View {
     
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-                context.send(viewAction: .showSettings)
-            } label: {
-                LoadableAvatarImage(url: context.viewState.userAvatarURL,
-                                    name: context.viewState.userDisplayName,
-                                    contentID: context.viewState.userID,
-                                    avatarSize: .user(on: .spaces),
-                                    mediaProvider: context.mediaProvider)
-                    .accessibilityIdentifier(A11yIdentifiers.homeScreen.userAvatar)
-                    .compositingGroup()
-            }
-            .accessibilityLabel(L10n.commonSettings)
-        }
-        .backportSharedBackgroundVisibility(.hidden)
-        
         ToolbarItem(placement: .principal) {
             // Hides the navigationTitle (which is set for the navigation stack label).
             Text("").accessibilityHidden(true)
