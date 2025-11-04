@@ -1650,6 +1650,8 @@ internal enum L10n {
   internal static var screenEncryptionResetTitle: String { return L10n.tr("Localizable", "screen_encryption_reset_title") }
   /// Chats
   internal static var screenHomeTabChats: String { return L10n.tr("Localizable", "screen_home_tab_chats") }
+  /// Settings
+  internal static var screenHomeTabSettings: String { return L10n.tr("Localizable", "screen_home_tab_settings") }
   /// Spaces
   internal static var screenHomeTabSpaces: String { return L10n.tr("Localizable", "screen_home_tab_spaces") }
   /// Can't confirm?

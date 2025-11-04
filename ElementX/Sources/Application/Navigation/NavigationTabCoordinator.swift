@@ -31,6 +31,10 @@ import SwiftUI
         /// when pushing a child into the split view's details on iPhone/compact iPad.
         weak var navigationSplitCoordinator: NavigationSplitCoordinator?
         
+        /// Provide the tab's stack coordinator in here to have the tab bar automatically hidden
+        /// when pushing screens onto the navigation stack.
+        weak var navigationStackCoordinator: NavigationStackCoordinator?
+        
         init(tag: Tag, title: String, icon: KeyPath<CompoundIcons, Image>, selectedIcon: KeyPath<CompoundIcons, Image>) {
             self.tag = tag
             self.title = title
@@ -45,8 +49,10 @@ import SwiftUI
             } else if let barVisibilityOverride {
                 barVisibilityOverride
             } else if horizontalSizeClass == .compact, navigationSplitCoordinator?.detailCoordinator != nil {
-                // Whilst we support pushing screens on the stack in the sidebarCoordinator, in practice
-                // we never do that, so simply checking that the detailCoordinator exists is enough.
+                // Hide tab bar when inside a room (detail view) on compact devices
+                .hidden
+            } else if navigationStackCoordinator?.stackCoordinators.isEmpty == false {
+                // Hide tab bar when inside settings sub-screens (stack has pushed items)
                 .hidden
             } else {
                 .automatic

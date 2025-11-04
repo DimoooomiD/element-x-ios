@@ -45,7 +45,10 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     }
     
     func start(animated: Bool) {
-        fatalError("Unavailable")
+        // If settings screen is not already presented, present it
+        if navigationStackCoordinator.rootCoordinator == nil {
+            presentSettingsScreen(animated: animated)
+        }
     }
     
     func handleAppRoute(_ appRoute: AppRoute, animated: Bool) {

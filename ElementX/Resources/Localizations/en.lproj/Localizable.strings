@@ -1347,6 +1347,7 @@
 "screen_decline_and_block_report_user_reason_placeholder" = "Describe the reason to report…";
 "screen_home_tab_chats" = "Chats";
 "screen_home_tab_spaces" = "Spaces";
+"screen_home_tab_settings" = "Settings";
 "screen_join_room_decline_and_block_button_title" = "Decline and block";
 "screen_knock_requests_list_title" = "Requests to join";
 "screen_pinned_timeline_screen_title_empty" = "Pinned messages";
