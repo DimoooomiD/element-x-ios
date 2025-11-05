@@ -49,11 +49,6 @@ struct HomeScreenContent: View {
                     }
                 case .rooms:
                     LazyVStack(spacing: 0) {
-                        searchBar
-                            .padding(.horizontal, 16)
-                            .padding(.top, 8)
-                            .padding(.bottom, 8)
-                        
                         Section {
                             if !context.viewState.shouldShowEmptyFilterState {
                                 HomeScreenRoomList(context: context)
@@ -151,49 +146,6 @@ struct HomeScreenContent: View {
         .padding(.top, 8)
         .padding(.bottom, 8)
         .background(Color.compound.bgCanvasDefault)
-    }
-    
-    @ViewBuilder
-    private var searchBar: some View {
-        HStack(spacing: 8) {
-            CompoundIcon(\.search)
-                .foregroundStyle(.compound.textSecondary)
-            
-            TextField(L10n.actionSearch, text: $context.searchQuery)
-                .focused($isSearchFocused)
-                .textInputAutocapitalization(.never)
-                .font(.compound.bodyLG)
-                .foregroundStyle(.compound.textPrimary)
-                .introspect(.textField, on: .supportedVersions) { textField in
-                    textField.autocorrectionType = .no
-                    textField.smartInsertDeleteType = .no
-                    textField.smartQuotesType = .no
-                    textField.smartDashesType = .no
-                    // Ensure menu functionality is enabled
-                    textField.allowsEditingTextAttributes = false
-                }
-                .onChange(of: isSearchFocused) { newValue in
-                    context.isSearchFieldFocused = newValue
-                }
-                .onChange(of: context.isSearchFieldFocused) { newValue in
-                    if newValue != isSearchFocused {
-                        isSearchFocused = newValue
-                    }
-                }
-            
-            if !context.searchQuery.isEmpty {
-                Button {
-                    context.searchQuery = ""
-                } label: {
-                    CompoundIcon(\.close)
-                        .foregroundStyle(.compound.textSecondary)
-                }
-            }
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(Color.compound.bgSubtleSecondary)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
     
     @ViewBuilder
