@@ -103,6 +103,8 @@ private extension AppAppearance {
             return L10n.commonDark
         case .darkBlue:
             return "Dark Blue"
+        case .darkGreen:
+            return "Dark Green"
         }
     }
 }
