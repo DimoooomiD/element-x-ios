@@ -65,10 +65,64 @@ struct DefaultCompoundHook: CompoundHookProtocol {
             }
         })
         
+        // Override bgCanvasDefaultLevel1 for dark mode (used by ListRow backgrounds)
+        let customRowBackground = Color(UIColor { traitCollection in
+            guard traitCollection.userInterfaceStyle == .dark else {
+                // Light mode: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgCanvasDefaultLevel1)
+            }
+            
+            // Dark mode: check if darkBlue is selected
+            guard let appSettings = ServiceLocator.shared.settings else {
+                // If settings not available yet, use default dark theme
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgCanvasDefaultLevel1)
+            }
+            if appSettings.appAppearance == .darkBlue {
+                // Dark Blue theme: slightly lighter blue for menu items
+                return UIColor(red: 0.15, green: 0.20, blue: 0.30, alpha: 1.0)
+            } else {
+                // Default dark theme: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgCanvasDefaultLevel1)
+            }
+        })
+        
+        // Override bgSubtlePrimary for dark mode (used by ListRow pressed/highlighted state)
+        let customPressedBackground = Color(UIColor { traitCollection in
+            guard traitCollection.userInterfaceStyle == .dark else {
+                // Light mode: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtlePrimary)
+            }
+            
+            // Dark mode: check if darkBlue is selected
+            guard let appSettings = ServiceLocator.shared.settings else {
+                // If settings not available yet, use default dark theme
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtlePrimary)
+            }
+            if appSettings.appAppearance == .darkBlue {
+                // Dark Blue theme: lighter blue for pressed/highlighted state
+                return UIColor(red: 0.20, green: 0.25, blue: 0.35, alpha: 1.0)
+            } else {
+                // Default dark theme: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtlePrimary)
+            }
+        })
+        
         colors.override(\.bgCanvasDefault, with: customBackground)
         uiColors.override(\.bgCanvasDefault, with: UIColor(customBackground))
         
         colors.override(\.bgSubtleSecondaryLevel0, with: customFormBackground)
         uiColors.override(\.bgSubtleSecondaryLevel0, with: UIColor(customFormBackground))
+        
+        colors.override(\.bgCanvasDefaultLevel1, with: customRowBackground)
+        uiColors.override(\.bgCanvasDefaultLevel1, with: UIColor(customRowBackground))
+        
+        colors.override(\.bgSubtlePrimary, with: customPressedBackground)
+        uiColors.override(\.bgSubtlePrimary, with: UIColor(customPressedBackground))
     }
 }
