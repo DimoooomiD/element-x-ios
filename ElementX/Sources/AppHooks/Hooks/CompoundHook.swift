@@ -113,6 +113,30 @@ struct DefaultCompoundHook: CompoundHookProtocol {
             }
         })
         
+        // Override bgSubtleSecondary for dark mode (used by ListRow separators)
+        let customSubtleSecondary = Color(UIColor { traitCollection in
+            guard traitCollection.userInterfaceStyle == .dark else {
+                // Light mode: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtleSecondary)
+            }
+            
+            // Dark mode: check if darkBlue is selected
+            guard let appSettings = ServiceLocator.shared.settings else {
+                // If settings not available yet, use default dark theme
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtleSecondary)
+            }
+            if appSettings.appAppearance == .darkBlue {
+                // Dark Blue theme: subtle blue tint for separators
+                return UIColor(red: 0.18, green: 0.23, blue: 0.33, alpha: 1.0)
+            } else {
+                // Default dark theme: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtleSecondary)
+            }
+        })
+        
         colors.override(\.bgCanvasDefault, with: customBackground)
         uiColors.override(\.bgCanvasDefault, with: UIColor(customBackground))
         
@@ -124,5 +148,8 @@ struct DefaultCompoundHook: CompoundHookProtocol {
         
         colors.override(\.bgSubtlePrimary, with: customPressedBackground)
         uiColors.override(\.bgSubtlePrimary, with: UIColor(customPressedBackground))
+        
+        colors.override(\.bgSubtleSecondary, with: customSubtleSecondary)
+        uiColors.override(\.bgSubtleSecondary, with: UIColor(customSubtleSecondary))
     }
 }
