@@ -12,13 +12,14 @@ import SwiftUI
 enum AppAppearance: CaseIterable, Codable {
     case system
     case dark
+    case darkBlue
     case light
         
     var interfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .light:
             return .light
-        case .dark:
+        case .dark, .darkBlue:
             return .dark
         case .system:
             return .unspecified

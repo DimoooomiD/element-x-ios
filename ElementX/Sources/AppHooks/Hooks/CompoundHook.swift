@@ -16,38 +16,59 @@ protocol CompoundHookProtocol {
 
 struct DefaultCompoundHook: CompoundHookProtocol {
     func override(colors: CompoundColors, uiColors: CompoundUIColors) {
-        // Override bgCanvasDefault for dark mode with a dark blue (not black)
-        // RGB: (0.10, 0.15, 0.25) - a dark blue that's lighter than black
-        // This creates a dynamic color that adapts to light/dark mode
-        // Applies to all screens including HomeScreen and SettingsScreen
-        let darkBlueBackground = Color(UIColor { traitCollection in
-            if traitCollection.userInterfaceStyle == .dark {
-                // Dark mode: dark blue instead of black
+        // Create dynamic colors that check AppSettings.appAppearance at runtime
+        // Only apply dark blue when darkBlue is selected, otherwise use default dark theme
+        
+        let customBackground = Color(UIColor { traitCollection in
+            guard traitCollection.userInterfaceStyle == .dark else {
+                // Light mode: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgCanvasDefault)
+            }
+            
+            // Dark mode: check if darkBlue is selected
+            guard let appSettings = ServiceLocator.shared.settings else {
+                // If settings not available yet, use default dark theme
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgCanvasDefault)
+            }
+            if appSettings.appAppearance == .darkBlue {
+                // Dark Blue theme: RGB (0.10, 0.15, 0.25)
                 return UIColor(red: 0.10, green: 0.15, blue: 0.25, alpha: 1.0)
             } else {
-                // Light mode: use the default from tokens
+                // Default dark theme: use the default from tokens
                 let tokens = CompoundColorTokens()
                 return UIColor(tokens.bgCanvasDefault)
             }
         })
         
-        // Override bgSubtleSecondaryLevel0 for dark mode (used by Form/List backgrounds)
-        // SettingsScreen uses .compoundList() which applies bgSubtleSecondaryLevel0
-        let darkBlueFormBackground = Color(UIColor { traitCollection in
-            if traitCollection.userInterfaceStyle == .dark {
-                // Dark mode: dark blue instead of black
+        let customFormBackground = Color(UIColor { traitCollection in
+            guard traitCollection.userInterfaceStyle == .dark else {
+                // Light mode: use the default from tokens
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtleSecondaryLevel0)
+            }
+            
+            // Dark mode: check if darkBlue is selected
+            guard let appSettings = ServiceLocator.shared.settings else {
+                // If settings not available yet, use default dark theme
+                let tokens = CompoundColorTokens()
+                return UIColor(tokens.bgSubtleSecondaryLevel0)
+            }
+            if appSettings.appAppearance == .darkBlue {
+                // Dark Blue theme: RGB (0.10, 0.15, 0.25)
                 return UIColor(red: 0.10, green: 0.15, blue: 0.25, alpha: 1.0)
             } else {
-                // Light mode: use the default from tokens
+                // Default dark theme: use the default from tokens
                 let tokens = CompoundColorTokens()
                 return UIColor(tokens.bgSubtleSecondaryLevel0)
             }
         })
         
-        colors.override(\.bgCanvasDefault, with: darkBlueBackground)
-        uiColors.override(\.bgCanvasDefault, with: UIColor(darkBlueBackground))
+        colors.override(\.bgCanvasDefault, with: customBackground)
+        uiColors.override(\.bgCanvasDefault, with: UIColor(customBackground))
         
-        colors.override(\.bgSubtleSecondaryLevel0, with: darkBlueFormBackground)
-        uiColors.override(\.bgSubtleSecondaryLevel0, with: UIColor(darkBlueFormBackground))
+        colors.override(\.bgSubtleSecondaryLevel0, with: customFormBackground)
+        uiColors.override(\.bgSubtleSecondaryLevel0, with: UIColor(customFormBackground))
     }
 }

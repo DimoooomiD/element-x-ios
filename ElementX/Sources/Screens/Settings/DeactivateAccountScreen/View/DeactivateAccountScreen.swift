@@ -12,6 +12,8 @@ import SwiftUI
 struct DeactivateAccountScreen: View {
     @Bindable var context: DeactivateAccountScreenViewModel.Context
     
+    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
+    
     var body: some View {
         Form {
             infoSection
@@ -31,6 +33,10 @@ struct DeactivateAccountScreen: View {
         .navigationTitle(L10n.screenDeactivateAccountTitle)
         .navigationBarTitleDisplayMode(.inline)
         .alert(item: $context.alertInfo)
+        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
+            appearanceId = newAppearance
+        }
+        .id(appearanceId) // Force refresh when appearance changes
     }
     
     private var infoSection: some View {

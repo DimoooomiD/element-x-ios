@@ -12,6 +12,8 @@ import SwiftUI
 struct UserDetailsEditScreen: View {
     @Bindable var context: UserDetailsEditScreenViewModel.Context
     @FocusState private var focus: Bool
+    
+    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
         
     var body: some View {
         Form {
@@ -32,6 +34,10 @@ struct UserDetailsEditScreen: View {
         .navigationTitle(L10n.screenEditProfileTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
+        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
+            appearanceId = newAppearance
+        }
+        .id(appearanceId) // Force refresh when appearance changes
     }
     
     // MARK: - Private
