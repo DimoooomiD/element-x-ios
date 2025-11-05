@@ -14,48 +14,66 @@ protocol CompoundHookProtocol {
     func override(colors: CompoundColors, uiColors: CompoundUIColors)
 }
 
+/// Holds color override data for a specific color key path
+private struct ColorOverrideData {
+    let lightMode: Color
+    let darkMode: Color
+    var themeOverrides: [AppAppearance: UIColor]
+    let uiColorKeyPath: KeyPath<CompoundUIColorTokens, UIColor>
+}
+
 struct DefaultCompoundHook: CompoundHookProtocol {
     func override(colors: CompoundColors, uiColors: CompoundUIColors) {
-        // Apply theme configurations for all registered themes
+        // Collect all color overrides by key path to create unified dynamic colors
+        var colorOverridesMap: [KeyPath<CompoundColorTokens, Color>: ColorOverrideData] = [:]
+        
+        // First pass: collect all overrides from all themes
         for themeConfig in ThemeConfigurationRegistry.allConfigurations {
-            applyThemeConfiguration(themeConfig, to: colors, uiColors: uiColors)
+            for colorOverride in themeConfig.colorOverrides {
+                if colorOverridesMap[colorOverride.colorKeyPath] == nil {
+                    colorOverridesMap[colorOverride.colorKeyPath] = ColorOverrideData(
+                        lightMode: colorOverride.lightModeColor,
+                        darkMode: colorOverride.darkModeColor,
+                        themeOverrides: [:],
+                        uiColorKeyPath: colorOverride.uiColorKeyPath
+                    )
+                }
+                // Need to reassign to update the dictionary value
+                var colorData = colorOverridesMap[colorOverride.colorKeyPath]!
+                colorData.themeOverrides[themeConfig.appearance] = colorOverride.themeColor
+                colorOverridesMap[colorOverride.colorKeyPath] = colorData
+            }
+        }
+        
+        // Second pass: apply unified dynamic colors that check all themes
+        for (colorKeyPath, colorData) in colorOverridesMap {
+            let dynamicColor = createUnifiedDynamicColor(
+                lightModeToken: colorData.lightMode,
+                darkModeToken: colorData.darkMode,
+                themeOverrides: colorData.themeOverrides
+            )
+            
+            applyColorOverride(colors: colors,
+                             uiColors: uiColors,
+                             colorKeyPath: colorKeyPath,
+                             uiColorKeyPath: colorData.uiColorKeyPath,
+                             color: dynamicColor)
         }
     }
     
     // MARK: - Helper Functions
     
-    /// Applies a theme configuration to the color system
-    private func applyThemeConfiguration(_ config: ThemeConfiguration,
-                                        to colors: CompoundColors,
-                                        uiColors: CompoundUIColors) {
-        for colorOverride in config.colorOverrides {
-            let dynamicColor = createDynamicColor(
-                lightModeToken: colorOverride.lightModeColor,
-                darkModeToken: colorOverride.darkModeColor,
-                themeColor: colorOverride.themeColor,
-                themeAppearance: config.appearance
-            )
-            
-            applyColorOverride(colors: colors,
-                             uiColors: uiColors,
-                             colorKeyPath: colorOverride.colorKeyPath,
-                             uiColorKeyPath: colorOverride.uiColorKeyPath,
-                             color: dynamicColor)
-        }
-    }
-    
-    /// Creates a dynamic color that switches between light mode, default dark mode, and theme-specific colors
-    private func createDynamicColor(lightModeToken: Color,
-                                    darkModeToken: Color,
-                                    themeColor: UIColor,
-                                    themeAppearance: AppAppearance) -> Color {
+    /// Creates a unified dynamic color that checks all registered themes
+    private func createUnifiedDynamicColor(lightModeToken: Color,
+                                          darkModeToken: Color,
+                                          themeOverrides: [AppAppearance: UIColor]) -> Color {
         Color(UIColor { traitCollection in
             guard traitCollection.userInterfaceStyle == .dark else {
                 return UIColor(lightModeToken)
             }
             
             guard let appSettings = ServiceLocator.shared.settings,
-                  appSettings.appAppearance == themeAppearance else {
+                  let themeColor = themeOverrides[appSettings.appAppearance] else {
                 return UIColor(darkModeToken)
             }
             

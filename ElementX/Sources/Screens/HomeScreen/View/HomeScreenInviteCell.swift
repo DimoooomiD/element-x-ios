@@ -131,8 +131,8 @@ struct HomeScreenInviteCell: View {
     
     private var separator: some View {
         Rectangle()
-            .fill(Color.compound.borderDisabled)
-            .frame(height: 1 / UIScreen.main.scale)
+            .fill(Color.compound.borderInteractiveSecondary)
+            .frame(height: 1.0)
     }
         
     private var title: String {
