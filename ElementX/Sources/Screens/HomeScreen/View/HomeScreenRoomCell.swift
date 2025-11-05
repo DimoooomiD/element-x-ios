@@ -33,14 +33,14 @@ struct HomeScreenRoomCell: View {
                 
                 content
                     .padding(.vertical, verticalInsets)
-                    .overlay(alignment: .bottom) {
-                        Rectangle()
-                            .fill(Color.compound.borderInteractiveSecondary)
-                            .frame(height: 1.0)
-                            .padding(.trailing, -horizontalInsets)
-                    }
             }
             .padding(.horizontal, horizontalInsets)
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(Color.compound.borderInteractiveSecondary)
+                    .frame(height: 1.5)
+                    .padding(.horizontal, -horizontalInsets)
+            }
             .accessibilityElement(children: .combine)
         }
         .buttonStyle(HomeScreenRoomCellButtonStyle(isSelected: isSelected))
@@ -125,6 +125,11 @@ struct HomeScreenRoomCell: View {
                 
                 if room.badges.isDotShown {
                     Circle()
+                        .fill(room.isHighlighted ? .compound.iconAccentTertiary : .compound.iconQuaternary)
+                        .overlay {
+                            Circle()
+                                .strokeBorder(Color.compound.borderInteractiveSecondary, lineWidth: 1.5)
+                        }
                         .frame(width: 12, height: 12)
                         .accessibilityLabel(L10n.a11yNotificationsNewMessages)
                 }

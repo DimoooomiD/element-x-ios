@@ -132,7 +132,7 @@ struct HomeScreenInviteCell: View {
     private var separator: some View {
         Rectangle()
             .fill(Color.compound.borderInteractiveSecondary)
-            .frame(height: 1.0)
+            .frame(height: 1.5)
     }
         
     private var title: String {

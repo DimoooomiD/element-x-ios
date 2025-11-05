@@ -30,6 +30,7 @@ struct TimelineItemMenu: View {
             
             Divider()
                 .background(Color.compound.bgSubtlePrimary)
+                .padding(.horizontal, 40)
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 0.0) {
@@ -39,6 +40,7 @@ struct TimelineItemMenu: View {
 
                         Divider()
                             .background(Color.compound.bgSubtlePrimary)
+                            .padding(.horizontal, 40)
                     }
 
                     if !actions.actions.isEmpty {
@@ -46,6 +48,7 @@ struct TimelineItemMenu: View {
 
                         Divider()
                             .background(Color.compound.bgSubtlePrimary)
+                            .padding(.horizontal, 40)
                     }
                     
                     viewsForActions(actions.secondaryActions)

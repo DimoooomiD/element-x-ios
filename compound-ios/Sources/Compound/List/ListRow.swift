@@ -62,7 +62,13 @@ public struct ListRow<Icon: View, DetailsIcon: View, CustomContent: View, Select
             .buttonStyle(ListRowButtonStyle())
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.compound.bgCanvasDefaultLevel1)
-            .listRowSeparatorTint(separatorTint)
+            .listRowSeparator(.hidden)
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(separatorTint)
+                    .frame(height: 2.0)
+                    .padding(.leading, ListRowPadding.horizontal)
+            }
     }
     
     @ViewBuilder
