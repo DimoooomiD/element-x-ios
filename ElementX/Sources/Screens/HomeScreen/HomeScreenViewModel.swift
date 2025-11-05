@@ -134,6 +134,8 @@ class HomeScreenViewModel: HomeScreenViewModelType, HomeScreenViewModelProtocol 
                 let delay = isSearchFieldFocused == self.context.viewState.bindings.isSearchFieldFocused ? 0.0 : 0.05
                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                     self.updateFilter()
+                    // Also update rooms to apply client-side filtering for message content
+                    self.updateRooms()
                 }
             }
             .store(in: &cancellables)
@@ -240,7 +242,9 @@ class HomeScreenViewModel: HomeScreenViewModelType, HomeScreenViewModelProtocol 
             roomSummaryProvider?.setFilter(.excludeAll)
         } else {
             if state.bindings.isSearchFieldFocused {
-                roomSummaryProvider?.setFilter(.search(query: state.bindings.searchQuery))
+                // Don't use SDK search filter when searching message content
+                // We'll filter client-side in updateRooms() to include both name and message matches
+                roomSummaryProvider?.setFilter(.all(filters: state.bindings.filtersState.activeFilters.set))
             } else {
                 roomSummaryProvider?.setFilter(.all(filters: state.bindings.filtersState.activeFilters.set))
             }
@@ -313,12 +317,26 @@ class HomeScreenViewModel: HomeScreenViewModelType, HomeScreenViewModelProtocol 
         
         var rooms = [HomeScreenRoom]()
         let seenInvites = appSettings.seenInvites
+        let searchQuery = state.bindings.searchQuery.lowercased()
+        let isSearching = state.bindings.isSearchFieldFocused && !searchQuery.isEmpty
         
         for summary in roomSummaryProvider.roomListPublisher.value {
             let room = HomeScreenRoom(summary: summary,
                                       hideUnreadMessagesBadge: appSettings.hideUnreadMessagesBadge,
                                       seenInvites: seenInvites)
-            rooms.append(room)
+            
+            // If searching, filter by both room name and last message content
+            if isSearching {
+                let roomNameMatches = room.name.lowercased().contains(searchQuery)
+                let lastMessageString = room.lastMessage?.string ?? ""
+                let lastMessageMatches = lastMessageString.lowercased().contains(searchQuery)
+                
+                if roomNameMatches || lastMessageMatches {
+                    rooms.append(room)
+                }
+            } else {
+                rooms.append(room)
+            }
         }
         
         state.rooms = rooms

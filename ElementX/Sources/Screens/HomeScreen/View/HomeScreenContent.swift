@@ -9,6 +9,7 @@
 import Compound
 import SentrySwiftUI
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct HomeScreenContent: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass
@@ -161,9 +162,16 @@ struct HomeScreenContent: View {
             TextField(L10n.actionSearch, text: $context.searchQuery)
                 .focused($isSearchFocused)
                 .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
                 .font(.compound.bodyLG)
                 .foregroundStyle(.compound.textPrimary)
+                .introspect(.textField, on: .supportedVersions) { textField in
+                    textField.autocorrectionType = .no
+                    textField.smartInsertDeleteType = .no
+                    textField.smartQuotesType = .no
+                    textField.smartDashesType = .no
+                    // Ensure menu functionality is enabled
+                    textField.allowsEditingTextAttributes = false
+                }
                 .onChange(of: isSearchFocused) { newValue in
                     context.isSearchFieldFocused = newValue
                 }
