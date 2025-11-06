@@ -12,8 +12,6 @@ import SwiftUI
 struct AdvancedSettingsScreen: View {
     @Bindable var context: AdvancedSettingsScreenViewModel.Context
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     var body: some View {
         Form {
             Section {
@@ -43,10 +41,7 @@ struct AdvancedSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAdvancedSettings)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     @ViewBuilder

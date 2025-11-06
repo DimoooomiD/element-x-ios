@@ -12,8 +12,6 @@ import SwiftUI
 struct NotificationSettingsEditScreen: View {
     @Bindable var context: NotificationSettingsEditScreenViewModel.Context
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     var body: some View {
         Form {
             notificationModeSection
@@ -26,10 +24,7 @@ struct NotificationSettingsEditScreen: View {
         .navigationTitle(context.viewState.strings.navigationTitle)
         .alert(item: $context.alertInfo)
         .track(screen: .SettingsDefaultNotifications)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     // MARK: - Private

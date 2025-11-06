@@ -12,8 +12,6 @@ import SwiftUI
 struct AnalyticsSettingsScreen: View {
     @Bindable var context: AnalyticsSettingsScreenViewModel.Context
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     var body: some View {
         Form {
             analyticsSection
@@ -21,10 +19,7 @@ struct AnalyticsSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAnalytics)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     var analyticsSection: some View {

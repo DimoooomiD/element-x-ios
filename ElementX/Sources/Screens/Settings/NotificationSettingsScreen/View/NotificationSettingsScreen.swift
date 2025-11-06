@@ -12,8 +12,6 @@ import SwiftUI
 struct NotificationSettingsScreen: View {
     @Bindable var context: NotificationSettingsScreenViewModel.Context
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     var body: some View {
         Form {
             if context.viewState.settings?.inconsistentSettings.isEmpty == false {
@@ -48,10 +46,7 @@ struct NotificationSettingsScreen: View {
         .toolbar { toolbar }
         .alert(item: $context.alertInfo)
         .track(screen: .SettingsNotifications)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     // MARK: - Private

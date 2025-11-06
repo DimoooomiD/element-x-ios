@@ -12,8 +12,6 @@ import SwiftUI
 struct SpaceScreen: View {
     @Bindable var context: SpaceScreenViewModel.Context
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
@@ -27,13 +25,7 @@ struct SpaceScreen: View {
         .navigationTitle(context.viewState.space.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            // Update asynchronously to avoid interfering with tab selection
-            Task { @MainActor in
-                appearanceId = newAppearance
-            }
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
         .sheet(item: $context.leaveHandle) { leaveHandle in
             LeaveSpaceView(context: context, leaveHandle: leaveHandle)
         }

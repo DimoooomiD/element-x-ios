@@ -323,11 +323,9 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
             // This is safe because we're only configuring UIKit, not modifying SwiftUI state
             configureAppearance(tabBarController)
             
-            // Store reference and ensure appearance is set
+            // Store reference for theme updates
             Task { @MainActor in
                 self.tabBarController = tabBarController
-                // Reconfigure in case the first call didn't fully apply
-                configureAppearance(tabBarController)
             }
         }
         .task {

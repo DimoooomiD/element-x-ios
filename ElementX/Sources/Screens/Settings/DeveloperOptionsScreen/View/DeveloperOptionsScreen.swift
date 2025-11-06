@@ -13,7 +13,6 @@ struct DeveloperOptionsScreen: View {
     
     @State private var showConfetti = false
     @State private var elementCallURLOverrideString: String
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
     
     init(context: DeveloperOptionsScreenViewModel.Context) {
         self.context = context
@@ -150,10 +149,7 @@ struct DeveloperOptionsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonDeveloperOptions)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
 
     @ViewBuilder

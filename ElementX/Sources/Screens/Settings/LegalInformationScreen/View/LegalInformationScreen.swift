@@ -13,8 +13,6 @@ struct LegalInformationScreen: View {
     let context: LegalInformationScreenViewModel.Context
     @Environment(\.openURL) private var openURL
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     var body: some View {
         Form {
             Section {
@@ -32,10 +30,7 @@ struct LegalInformationScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAbout)
         .navigationBarTitleDisplayMode(.inline)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
 }
 

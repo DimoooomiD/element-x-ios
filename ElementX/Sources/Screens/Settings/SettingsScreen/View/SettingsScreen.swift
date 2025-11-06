@@ -12,8 +12,6 @@ import SwiftUI
 struct SettingsScreen: View {
     let context: SettingsScreenViewModel.Context
     
-    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
-    
     private var shouldHideManageAccountSection: Bool {
         context.viewState.accountProfileURL == nil &&
             context.viewState.accountSessionsListURL == nil &&
@@ -43,10 +41,7 @@ struct SettingsScreen: View {
             headerSection
         }
         .toolbarBloom(hasSearchBar: false)
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
-        }
-        .id(appearanceId) // Force refresh when appearance changes
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     @ViewBuilder
