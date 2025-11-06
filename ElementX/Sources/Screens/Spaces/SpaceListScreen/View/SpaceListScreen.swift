@@ -28,7 +28,10 @@ struct SpaceListScreen: View {
         .toolbarBloom(hasSearchBar: false)
         .onAppear { context.send(viewAction: .screenAppeared) }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
+            // Update asynchronously to avoid interfering with tab selection
+            Task { @MainActor in
+                appearanceId = newAppearance
+            }
         }
         .id(appearanceId) // Force refresh when appearance changes
         .sheet(isPresented: $context.isPresentingFeatureAnnouncement) {

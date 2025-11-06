@@ -28,7 +28,10 @@ struct SpaceScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
-            appearanceId = newAppearance
+            // Update asynchronously to avoid interfering with tab selection
+            Task { @MainActor in
+                appearanceId = newAppearance
+            }
         }
         .id(appearanceId) // Force refresh when appearance changes
         .sheet(item: $context.leaveHandle) { leaveHandle in
