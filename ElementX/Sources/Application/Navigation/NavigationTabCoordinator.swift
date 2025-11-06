@@ -323,9 +323,19 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
             // This is safe because we're only configuring UIKit, not modifying SwiftUI state
             configureAppearance(tabBarController)
             
-            // Defer state modification to avoid "Modifying state during view update" warning
+            // Store reference and ensure appearance is set
             Task { @MainActor in
                 self.tabBarController = tabBarController
+                // Reconfigure in case the first call didn't fully apply
+                configureAppearance(tabBarController)
+            }
+        }
+        .task {
+            // Fallback: ensure appearance is configured after view appears
+            // This helps prevent missing frame on startup if introspect is delayed
+            try? await Task.sleep(for: .milliseconds(50))
+            if let tabBarController = tabBarController {
+                configureAppearance(tabBarController)
             }
         }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
