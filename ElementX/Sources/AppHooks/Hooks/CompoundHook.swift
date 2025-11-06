@@ -68,16 +68,21 @@ struct DefaultCompoundHook: CompoundHookProtocol {
                                           darkModeToken: Color,
                                           themeOverrides: [AppAppearance: UIColor]) -> Color {
         Color(UIColor { traitCollection in
-            guard traitCollection.userInterfaceStyle == .dark else {
-                return UIColor(lightModeToken)
+            guard let appSettings = ServiceLocator.shared.settings else {
+                return traitCollection.userInterfaceStyle == .dark 
+                    ? UIColor(darkModeToken) 
+                    : UIColor(lightModeToken)
             }
             
-            guard let appSettings = ServiceLocator.shared.settings,
-                  let themeColor = themeOverrides[appSettings.appAppearance] else {
-                return UIColor(darkModeToken)
+            // Check if there's a theme override for the current appearance
+            if let themeColor = themeOverrides[appSettings.appAppearance] {
+                return themeColor
             }
             
-            return themeColor
+            // Fall back to default tokens based on interface style
+            return traitCollection.userInterfaceStyle == .dark 
+                ? UIColor(darkModeToken) 
+                : UIColor(lightModeToken)
         })
     }
     

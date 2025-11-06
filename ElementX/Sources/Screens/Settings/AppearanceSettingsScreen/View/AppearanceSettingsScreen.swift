@@ -16,7 +16,8 @@ struct AppearanceSettingsScreen: View {
         Form {
             Section {
                 ForEach(AppAppearance.allCases, id: \.self) { appearance in
-                    ListRow(label: .plain(title: appearance.name),
+                    ListRow(label: .default(title: appearance.name,
+                                           icon: Text(appearance.emoji)),
                             kind: .selection(isSelected: context.appAppearance == appearance) {
                                 context.appAppearance = appearance
                             })
@@ -45,6 +46,43 @@ private extension AppAppearance {
             return "Dark Green"
         case .darkPurple:
             return "Dark Purple"
+        case .darkGray:
+            return "Charcoal"
+        case .darkRed:
+            return "Burgundy"
+        case .darkOrange:
+            return "Amber"
+        case .lightGray:
+            return "Light Gray"
+        case .lightBlue:
+            return "Light Blue"
+        }
+    }
+    
+    var emoji: String {
+        switch self {
+        case .system:
+            return "⚙️"
+        case .light:
+            return "☀️"
+        case .dark:
+            return "🌙"
+        case .darkBlue:
+            return "🔵"
+        case .darkGreen:
+            return "🟢"
+        case .darkPurple:
+            return "🟣"
+        case .darkGray:
+            return "⚫️"
+        case .darkRed:
+            return "🍷"
+        case .darkOrange:
+            return "🟠"
+        case .lightGray:
+            return "⚪️"
+        case .lightBlue:
+            return "💙"
         }
     }
 }
