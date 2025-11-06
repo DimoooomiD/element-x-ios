@@ -45,41 +45,31 @@ struct DarkBlueThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.25, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.25, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.15, green: 0.20, blue: 0.30, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.20, green: 0.25, blue: 0.35, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.18, green: 0.23, blue: 0.33, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.25, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.25, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.15, green: 0.20, blue: 0.30, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.20, green: 0.25, blue: 0.35, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.18, green: 0.23, blue: 0.33, alpha: 1.0))
         ]
     }
     
@@ -103,41 +93,31 @@ struct DarkGreenThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.10, green: 0.20, blue: 0.15, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.10, green: 0.20, blue: 0.15, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.15, green: 0.25, blue: 0.20, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.20, green: 0.30, blue: 0.25, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.18, green: 0.28, blue: 0.23, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.10, green: 0.20, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.10, green: 0.20, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.15, green: 0.25, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.20, green: 0.30, blue: 0.25, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.18, green: 0.28, blue: 0.23, alpha: 1.0))
         ]
     }
     
@@ -161,41 +141,31 @@ struct DarkPurpleThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.15, green: 0.10, blue: 0.20, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.15, green: 0.10, blue: 0.20, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.20, green: 0.15, blue: 0.25, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.25, green: 0.20, blue: 0.30, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.23, green: 0.18, blue: 0.28, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.15, green: 0.10, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.15, green: 0.10, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.20, green: 0.15, blue: 0.25, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.25, green: 0.20, blue: 0.30, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.23, green: 0.18, blue: 0.28, alpha: 1.0))
         ]
     }
     
@@ -219,41 +189,31 @@ struct DarkGrayThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.20, green: 0.20, blue: 0.20, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.23, green: 0.23, blue: 0.23, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.20, green: 0.20, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.23, green: 0.23, blue: 0.23, alpha: 1.0))
         ]
     }
     
@@ -277,41 +237,31 @@ struct DarkRedThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.20, green: 0.12, blue: 0.14, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.20, green: 0.12, blue: 0.14, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.25, green: 0.17, blue: 0.19, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.30, green: 0.22, blue: 0.24, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.28, green: 0.20, blue: 0.22, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.20, green: 0.12, blue: 0.14, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.20, green: 0.12, blue: 0.14, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.25, green: 0.17, blue: 0.19, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.30, green: 0.22, blue: 0.24, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.28, green: 0.20, blue: 0.22, alpha: 1.0))
         ]
     }
     
@@ -335,41 +285,31 @@ struct DarkOrangeThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.22, green: 0.16, blue: 0.10, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.22, green: 0.16, blue: 0.10, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.27, green: 0.21, blue: 0.15, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.32, green: 0.26, blue: 0.20, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.30, green: 0.24, blue: 0.18, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.22, green: 0.16, blue: 0.10, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.22, green: 0.16, blue: 0.10, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.27, green: 0.21, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.32, green: 0.26, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.30, green: 0.24, blue: 0.18, alpha: 1.0))
         ]
     }
     
@@ -393,41 +333,31 @@ struct LightGrayThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.92, green: 0.92, blue: 0.92, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.92, green: 0.92, blue: 0.92, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.88, green: 0.88, blue: 0.88, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 1.0))
         ]
     }
     
@@ -451,41 +381,31 @@ struct LightBlueThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.93, green: 0.95, blue: 0.97, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.90, green: 0.93, blue: 0.96, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.92, green: 0.94, blue: 0.97, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.93, green: 0.95, blue: 0.97, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.90, green: 0.93, blue: 0.96, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.92, green: 0.94, blue: 0.97, alpha: 1.0))
         ]
     }
     
@@ -509,41 +429,31 @@ struct LightGreenThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.96, green: 0.98, blue: 0.96, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.96, green: 0.98, blue: 0.96, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.93, green: 0.97, blue: 0.94, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.90, green: 0.95, blue: 0.92, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.92, green: 0.96, blue: 0.94, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.96, green: 0.98, blue: 0.96, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.96, green: 0.98, blue: 0.96, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.93, green: 0.97, blue: 0.94, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.90, green: 0.95, blue: 0.92, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.92, green: 0.96, blue: 0.94, alpha: 1.0))
         ]
     }
     
@@ -567,41 +477,31 @@ struct LightPurpleThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.98, green: 0.96, blue: 0.98, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.98, green: 0.96, blue: 0.98, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.97, green: 0.94, blue: 0.97, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.95, green: 0.92, blue: 0.95, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.96, green: 0.94, blue: 0.96, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.98, green: 0.96, blue: 0.98, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.98, green: 0.96, blue: 0.98, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.97, green: 0.94, blue: 0.97, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.95, green: 0.92, blue: 0.95, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.96, green: 0.94, blue: 0.96, alpha: 1.0))
         ]
     }
     
@@ -625,41 +525,31 @@ struct LightOrangeThemeConfiguration: ThemeConfiguration {
         let tokens = CompoundColorTokens()
         
         return [
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefault,
-                uiColorKeyPath: \.bgCanvasDefault,
-                lightModeColor: tokens.bgCanvasDefault,
-                darkModeColor: tokens.bgCanvasDefault,
-                themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.95, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondaryLevel0,
-                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
-                lightModeColor: tokens.bgSubtleSecondaryLevel0,
-                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.95, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgCanvasDefaultLevel1,
-                uiColorKeyPath: \.bgCanvasDefaultLevel1,
-                lightModeColor: tokens.bgCanvasDefaultLevel1,
-                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.93, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtlePrimary,
-                uiColorKeyPath: \.bgSubtlePrimary,
-                lightModeColor: tokens.bgSubtlePrimary,
-                darkModeColor: tokens.bgSubtlePrimary,
-                themeColor: UIColor(red: 0.97, green: 0.93, blue: 0.90, alpha: 1.0)
-            ),
-            ThemeColorOverride(
-                colorKeyPath: \.bgSubtleSecondary,
-                uiColorKeyPath: \.bgSubtleSecondary,
-                lightModeColor: tokens.bgSubtleSecondary,
-                darkModeColor: tokens.bgSubtleSecondary,
-                themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.92, alpha: 1.0)
-            )
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.95, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.95, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.93, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.97, green: 0.93, blue: 0.90, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.92, alpha: 1.0))
         ]
     }
     
@@ -675,7 +565,7 @@ struct LightOrangeThemeConfiguration: ThemeConfiguration {
 // MARK: - Theme Configuration Registry
 
 /// Registry that maps AppAppearance to ThemeConfiguration
-struct ThemeConfigurationRegistry {
+enum ThemeConfigurationRegistry {
     /// All registered theme configurations
     static let allConfigurations: [ThemeConfiguration] = [
         DarkBlueThemeConfiguration(),
