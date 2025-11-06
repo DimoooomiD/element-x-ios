@@ -319,25 +319,32 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         }
         .backportTabBarMinimizeBehaviorOnScrollDown()
         .introspect(.tabView, on: .supportedVersions) { tabBarController in
+            // Store reference immediately for synchronous access
+            self.tabBarController = tabBarController
+            
             // Configure appearance immediately so tab bar has proper frame on first render
             // This is safe because we're only configuring UIKit, not modifying SwiftUI state
             configureAppearance(tabBarController)
-            
-            // Store reference for theme updates
-            Task { @MainActor in
-                self.tabBarController = tabBarController
+        }
+        .onAppear {
+            // Ensure appearance is configured when view appears
+            // This is critical for initial load to show the selection indicator
+            if let tabBarController = tabBarController {
+                configureAppearance(tabBarController)
             }
         }
         .task {
-            // Fallback: ensure appearance is configured after view appears
+            // Fallback: ensure appearance is configured after a short delay
             // This helps prevent missing frame on startup if introspect is delayed
-            try? await Task.sleep(for: .milliseconds(50))
+            try? await Task.sleep(for: .milliseconds(100))
             if let tabBarController = tabBarController {
                 configureAppearance(tabBarController)
             }
         }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
             // Update appearance asynchronously to avoid modifying state during view update
+            // This is critical for custom dark themes (darkBlue, darkGreen, darkPurple)
+            // which don't change interfaceStyle but still need appearance refresh
             Task { @MainActor in
                 updateTabBarAppearance()
             }
@@ -367,7 +374,8 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     private func configureAppearance(_ tabBarController: UITabBarController) {
         let standardAppearance = UITabBarAppearance()
         
-        // Configure with default background to get shadow/separator frame
+        // Configure with default background to preserve selection indicator
+        // This ensures the background frame around selected icons is displayed
         standardAppearance.configureWithDefaultBackground()
         
         // Override with theme-aware background color
@@ -412,10 +420,64 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         
         tabBarController.tabBar.standardAppearance = standardAppearance
         tabBarController.tabBar.scrollEdgeAppearance = standardAppearance
+        
+        // Ensure selection indicator is visible (background/frame around selected icon)
+        // Create a custom selection indicator to ensure it's visible on all themes
+        // This creates the visual frame around the selectable tab items
+        let selectionColor = UIColor.compound.bgSubtleSecondary.withAlphaComponent(0.3)
+        let selectionImage = createSelectionIndicatorImage(color: selectionColor)
+        tabBarController.tabBar.selectionIndicatorImage = selectionImage
+        
+        // Ensure the tab bar shows the top border/separator by configuring shadow
+        // This is needed to display the frame around the tab bar
+        tabBarController.tabBar.shadowImage = nil // Use default shadow
+        tabBarController.tabBar.clipsToBounds = false // Allow shadow to be visible
+        
+        // Force the tab bar to update its layout and selection indicator
+        // This ensures the frame appears immediately on startup and after theme changes
+        DispatchQueue.main.async {
+            tabBarController.tabBar.setNeedsLayout()
+            tabBarController.tabBar.layoutIfNeeded()
+            
+            // Force selection indicator to refresh by toggling selection
+            // This is necessary for custom dark themes where interfaceStyle doesn't change
+            if let selectedItem = tabBarController.tabBar.selectedItem {
+                let selectedIndex = tabBarController.tabBar.items?.firstIndex(of: selectedItem)
+                tabBarController.selectedIndex = selectedIndex ?? 0
+            }
+        }
     }
     
     private func updateTabBarAppearance() {
         guard let tabBarController = tabBarController else { return }
         configureAppearance(tabBarController)
+        
+        // Force immediate layout update to ensure selection indicator is visible
+        // This is critical when switching between themes with same interfaceStyle
+        tabBarController.tabBar.setNeedsLayout()
+        tabBarController.tabBar.layoutIfNeeded()
+    }
+    
+    /// Creates a custom selection indicator image for the tab bar
+    /// This ensures the selection indicator is visible on all themes
+    private func createSelectionIndicatorImage(color: UIColor) -> UIImage? {
+        let size = CGSize(width: 60, height: 30)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        defer { UIGraphicsEndImageContext() }
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        
+        // Create a rounded rectangle for the selection indicator
+        let rect = CGRect(origin: .zero, size: size)
+        let path = UIBezierPath(roundedRect: rect, cornerRadius: 15)
+        
+        context.setFillColor(color.cgColor)
+        path.fill()
+        
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        
+        // Make the image resizable so it adapts to different tab item sizes
+        let capInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        return image.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
     }
 }

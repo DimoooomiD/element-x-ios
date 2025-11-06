@@ -34,12 +34,12 @@ struct ComposerToolbar: View {
         }
         .padding(.leading, 5)
         .padding(.trailing, 8)
+        .padding(.top, context.composerFormattingEnabled ? 8 : 0)
         .padding(.bottom, context.composerFormattingEnabled ? 8 : 12)
         .background {
             if context.composerFormattingEnabled {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(Color.compound.borderInteractiveSecondary, lineWidth: 0.5)
-                    .ignoresSafeArea()
             }
         }
         .readFrame($frame)
