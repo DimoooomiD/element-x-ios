@@ -36,4 +36,3 @@ protocol AppearanceSettingsProtocol: AnyObject {
 }
 
 extension AppSettings: AppearanceSettingsProtocol { }
-

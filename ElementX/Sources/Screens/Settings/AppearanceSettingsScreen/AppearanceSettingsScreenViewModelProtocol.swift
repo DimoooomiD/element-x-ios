@@ -12,4 +12,3 @@ import Combine
 protocol AppearanceSettingsScreenViewModelProtocol {
     var context: AppearanceSettingsScreenViewModelType.Context { get }
 }
-

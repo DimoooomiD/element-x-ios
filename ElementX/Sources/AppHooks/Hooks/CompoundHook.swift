@@ -31,15 +31,15 @@ struct DefaultCompoundHook: CompoundHookProtocol {
         for themeConfig in ThemeConfigurationRegistry.allConfigurations {
             for colorOverride in themeConfig.colorOverrides {
                 if colorOverridesMap[colorOverride.colorKeyPath] == nil {
-                    colorOverridesMap[colorOverride.colorKeyPath] = ColorOverrideData(
-                        lightMode: colorOverride.lightModeColor,
-                        darkMode: colorOverride.darkModeColor,
-                        themeOverrides: [:],
-                        uiColorKeyPath: colorOverride.uiColorKeyPath
-                    )
+                    colorOverridesMap[colorOverride.colorKeyPath] = ColorOverrideData(lightMode: colorOverride.lightModeColor,
+                                                                                      darkMode: colorOverride.darkModeColor,
+                                                                                      themeOverrides: [:],
+                                                                                      uiColorKeyPath: colorOverride.uiColorKeyPath)
                 }
                 // Need to reassign to update the dictionary value
-                var colorData = colorOverridesMap[colorOverride.colorKeyPath]!
+                guard var colorData = colorOverridesMap[colorOverride.colorKeyPath] else {
+                    continue
+                }
                 colorData.themeOverrides[themeConfig.appearance] = colorOverride.themeColor
                 colorOverridesMap[colorOverride.colorKeyPath] = colorData
             }
@@ -47,17 +47,15 @@ struct DefaultCompoundHook: CompoundHookProtocol {
         
         // Second pass: apply unified dynamic colors that check all themes
         for (colorKeyPath, colorData) in colorOverridesMap {
-            let dynamicColor = createUnifiedDynamicColor(
-                lightModeToken: colorData.lightMode,
-                darkModeToken: colorData.darkMode,
-                themeOverrides: colorData.themeOverrides
-            )
+            let dynamicColor = createUnifiedDynamicColor(lightModeToken: colorData.lightMode,
+                                                         darkModeToken: colorData.darkMode,
+                                                         themeOverrides: colorData.themeOverrides)
             
             applyColorOverride(colors: colors,
-                             uiColors: uiColors,
-                             colorKeyPath: colorKeyPath,
-                             uiColorKeyPath: colorData.uiColorKeyPath,
-                             color: dynamicColor)
+                               uiColors: uiColors,
+                               colorKeyPath: colorKeyPath,
+                               uiColorKeyPath: colorData.uiColorKeyPath,
+                               color: dynamicColor)
         }
     }
     
@@ -65,12 +63,12 @@ struct DefaultCompoundHook: CompoundHookProtocol {
     
     /// Creates a unified dynamic color that checks all registered themes
     private func createUnifiedDynamicColor(lightModeToken: Color,
-                                          darkModeToken: Color,
-                                          themeOverrides: [AppAppearance: UIColor]) -> Color {
+                                           darkModeToken: Color,
+                                           themeOverrides: [AppAppearance: UIColor]) -> Color {
         Color(UIColor { traitCollection in
             guard let appSettings = ServiceLocator.shared.settings else {
-                return traitCollection.userInterfaceStyle == .dark 
-                    ? UIColor(darkModeToken) 
+                return traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(darkModeToken)
                     : UIColor(lightModeToken)
             }
             
@@ -80,8 +78,8 @@ struct DefaultCompoundHook: CompoundHookProtocol {
             }
             
             // Fall back to default tokens based on interface style
-            return traitCollection.userInterfaceStyle == .dark 
-                ? UIColor(darkModeToken) 
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(darkModeToken)
                 : UIColor(lightModeToken)
         })
     }
@@ -104,7 +102,7 @@ extension CompoundColors {
         guard let appSettings = ServiceLocator.shared.settings,
               let themeConfig = ThemeConfigurationRegistry.configuration(for: appSettings.appAppearance),
               let themeColor = themeConfig.bubbleIncomingColor else {
-            return self._bgBubbleIncoming
+            return _bgBubbleIncoming
         }
         return Color(themeColor)
     }
@@ -114,7 +112,7 @@ extension CompoundColors {
         guard let appSettings = ServiceLocator.shared.settings,
               let themeConfig = ThemeConfigurationRegistry.configuration(for: appSettings.appAppearance),
               let themeColor = themeConfig.bubbleOutgoingColor else {
-            return self._bgBubbleOutgoing
+            return _bgBubbleOutgoing
         }
         return Color(themeColor)
     }

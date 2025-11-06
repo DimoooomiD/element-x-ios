@@ -696,4 +696,3 @@ struct ThemeConfigurationRegistry {
         allConfigurations.first { $0.appearance == appearance }
     }
 }
-

@@ -22,4 +22,3 @@ enum BackgroundWallpaperColor: String, CaseIterable, Codable {
     case pink
     case gray
 }
-

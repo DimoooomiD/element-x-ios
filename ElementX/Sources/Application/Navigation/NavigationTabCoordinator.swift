@@ -492,7 +492,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     }
     
     private func updateTabBarAppearance() {
-        guard let tabBarController = tabBarController else { return }
+        guard let tabBarController else { return }
         configureAppearance(tabBarController)
         
         // Force layout update asynchronously to ensure selection indicator is visible

@@ -46,7 +46,7 @@ struct SettingsScreen: View {
     
     @ViewBuilder
     private var headerSection: some View {
-        HStack {
+        HStack(spacing: 0) {
             Text(L10n.commonSettings)
                 .font(.compound.headingMDBold)
                 .foregroundStyle(.compound.textPrimary)

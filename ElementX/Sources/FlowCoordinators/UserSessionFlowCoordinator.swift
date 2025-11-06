@@ -93,8 +93,8 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
         
         settingsNavigationStackCoordinator = NavigationStackCoordinator()
         settingsFlowCoordinator = SettingsFlowCoordinator(appLockService: appLockService,
-                                                         navigationStackCoordinator: settingsNavigationStackCoordinator,
-                                                         flowParameters: flowParameters)
+                                                          navigationStackCoordinator: settingsNavigationStackCoordinator,
+                                                          flowParameters: flowParameters)
         settingsTabDetails = .init(tag: HomeTab.settings, title: L10n.screenHomeTabSettings, icon: \.userProfile, selectedIcon: \.userProfile)
         settingsTabDetails.navigationStackCoordinator = settingsNavigationStackCoordinator
         
@@ -194,7 +194,7 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
                 self.navigationTabCoordinator.selectedTab = .settings
             }
         }
-        stateMachine.addRoutes(event: .dismissedSettingsScreen, transitions: [.settingsScreen => .tabBar]) { [weak self] _ in
+        stateMachine.addRoutes(event: .dismissedSettingsScreen, transitions: [.settingsScreen => .tabBar]) { _ in
             // Settings is now in a tab, no need to clean up
         }
         

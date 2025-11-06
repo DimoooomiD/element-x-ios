@@ -21,4 +21,3 @@ class AppearanceSettingsScreenViewModel: AppearanceSettingsScreenViewModelType, 
         // No actions needed for now
     }
 }
-

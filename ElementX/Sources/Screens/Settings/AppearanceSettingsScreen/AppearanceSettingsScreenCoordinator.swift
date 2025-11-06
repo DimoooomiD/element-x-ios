@@ -24,4 +24,3 @@ final class AppearanceSettingsScreenCoordinator: CoordinatorProtocol {
         AnyView(AppearanceSettingsScreen(context: viewModel.context))
     }
 }
-

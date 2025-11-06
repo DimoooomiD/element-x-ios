@@ -124,7 +124,7 @@ struct HomeScreenContent: View {
     
     @ViewBuilder
     private var headerSection: some View {
-        HStack {
+        HStack(spacing: 0) {
             Text(L10n.screenRoomlistMainSpaceTitle)
                 .font(.compound.headingMDBold)
                 .foregroundStyle(.compound.textPrimary)

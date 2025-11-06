@@ -17,7 +17,7 @@ struct AppearanceSettingsScreen: View {
             Section {
                 ForEach(AppAppearance.allCases, id: \.self) { appearance in
                     ListRow(label: .default(title: appearance.name,
-                                           icon: Text(appearance.emoji)),
+                                            icon: Text(appearance.emoji)),
                             kind: .selection(isSelected: context.appAppearance == appearance) {
                                 context.appAppearance = appearance
                             })
@@ -109,4 +109,3 @@ struct AppearanceSettingsScreen_Previews: PreviewProvider, TestablePreview {
         }
     }
 }
-
