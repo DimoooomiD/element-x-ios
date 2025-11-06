@@ -38,7 +38,7 @@ struct HomeScreenRoomCell: View {
             .overlay(alignment: .bottom) {
                 Rectangle()
                     .fill(Color.compound.borderInteractiveSecondary)
-                    .frame(height: 1.5)
+                    .frame(height: 0.5)
                     .padding(.horizontal, -horizontalInsets)
             }
             .accessibilityElement(children: .combine)
