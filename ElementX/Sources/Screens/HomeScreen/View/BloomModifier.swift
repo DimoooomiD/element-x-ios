@@ -29,7 +29,14 @@ private struct BloomModifier: ViewModifier {
     
     @State private var height = CGFloat.zero
     
-    private var endPointY: CGFloat { hasSearchBar ? 0.5 : 1.0 }
+    // Extend the gradient further down for a longer bright section
+    private var gradientHeight: CGFloat {
+        // Make the gradient 3x the safe area height to extend the bright section
+        height * 3.0
+    }
+    
+    // Keep endPoint at 1.0 to let the gradient complete fully across the extended height
+    private var endPointY: CGFloat { hasSearchBar ? 0.6 : 1.0 }
     
     func body(content: Content) -> some View {
         content
@@ -43,7 +50,7 @@ private struct BloomModifier: ViewModifier {
                                startPoint: .top,
                                endPoint: .init(x: 0.5, y: endPointY))
                     .ignoresSafeArea(edges: .all)
-                    .frame(height: height)
+                    .frame(height: gradientHeight)
                     .allowsHitTesting(false)
                     // Does not render properly on dark themes otherwise
                     .colorScheme(.light)
@@ -102,14 +109,16 @@ private struct OldBloomModifier: ViewModifier {
         return bloom
     }
     
-    private var endPointY: CGFloat { hasSearchBar ? 0.65 : 1.0 }
+    // Extend the gradient further down for a longer bright section
+    private var endPointY: CGFloat { hasSearchBar ? 0.6 : 1.0 }
     
     private var bloomGradient: some View {
         LinearGradient(gradient: .compound.subtle,
                        startPoint: .top,
                        endPoint: .init(x: 0.5, y: endPointY))
             .ignoresSafeArea(edges: .all)
-            .frame(width: 256, height: 256)
+            // Increase height to extend the bright section further down
+            .frame(width: 256, height: 384)
     }
     
     private func canUse(_ bloom: Bloom) -> Bool {
