@@ -299,6 +299,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     @Bindable var navigationTabCoordinator: NavigationTabCoordinator<Tag>
     
     @State private var tabBarController: UITabBarController?
+    @State private var hasInitialConfiguration = false
     
     var body: some View {
         TabView(selection: $navigationTabCoordinator.selectedTab) {
@@ -319,34 +320,63 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         }
         .backportTabBarMinimizeBehaviorOnScrollDown()
         .introspect(.tabView, on: .supportedVersions) { tabBarController in
-            // Store reference immediately for synchronous access
-            self.tabBarController = tabBarController
-            
-            // Configure appearance immediately so tab bar has proper frame on first render
-            // This is safe because we're only configuring UIKit, not modifying SwiftUI state
-            configureAppearance(tabBarController)
+            // Store reference and configure appearance asynchronously to avoid modifying state during view update
+            Task { @MainActor in
+                self.tabBarController = tabBarController
+                configureAppearance(tabBarController)
+            }
         }
         .onAppear {
             // Ensure appearance is configured when view appears
             // This is critical for initial load to show the selection indicator
-            if let tabBarController = tabBarController {
-                configureAppearance(tabBarController)
+            // Use async to avoid modifying state during view update
+            Task { @MainActor in
+                // Wait for ServiceLocator to be available and theme colors to be resolved
+                var attempts = 0
+                while attempts < 10 {
+                    if ServiceLocator.shared.settings != nil {
+                        // Additional delay to ensure theme colors are fully resolved
+                        try? await Task.sleep(for: .milliseconds(150))
+                        if let tabBarController = tabBarController {
+                            configureAppearance(tabBarController)
+                            hasInitialConfiguration = true
+                            break
+                        }
+                    }
+                    // Retry after a short delay if ServiceLocator isn't ready yet
+                    try? await Task.sleep(for: .milliseconds(50))
+                    attempts += 1
+                }
             }
         }
         .task {
-            // Fallback: ensure appearance is configured after a short delay
+            // Fallback: ensure appearance is configured after a delay
             // This helps prevent missing frame on startup if introspect is delayed
-            try? await Task.sleep(for: .milliseconds(100))
-            if let tabBarController = tabBarController {
-                configureAppearance(tabBarController)
+            // Wait for ServiceLocator to be available and theme colors to be resolved
+            var attempts = 0
+            while attempts < 10 {
+                if ServiceLocator.shared.settings != nil {
+                    // Additional delay to ensure theme colors are fully resolved
+                    try? await Task.sleep(for: .milliseconds(200))
+                    if let tabBarController = tabBarController, !hasInitialConfiguration {
+                        configureAppearance(tabBarController)
+                        hasInitialConfiguration = true
+                        break
+                    }
+                }
+                // Retry after a short delay if ServiceLocator isn't ready yet
+                try? await Task.sleep(for: .milliseconds(50))
+                attempts += 1
             }
         }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
             // Update appearance asynchronously to avoid modifying state during view update
             // This is critical for custom dark themes (darkBlue, darkGreen, darkPurple)
             // which don't change interfaceStyle but still need appearance refresh
+            // Also triggers on initial load when the publisher emits its first value
             Task { @MainActor in
                 updateTabBarAppearance()
+                hasInitialConfiguration = true
             }
         }
         .sheet(item: $navigationTabCoordinator.sheetModule) { module in
@@ -421,6 +451,14 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         tabBarController.tabBar.standardAppearance = standardAppearance
         tabBarController.tabBar.scrollEdgeAppearance = standardAppearance
         
+        // Explicitly configure the separator/border color for the tab bar
+        // This ensures the top border frame is visible on all themes
+        // Use a compound border color that adapts to the theme
+        let separatorColor = UIColor.compound.borderInteractiveSecondary
+        standardAppearance.shadowColor = separatorColor
+        tabBarController.tabBar.standardAppearance = standardAppearance
+        tabBarController.tabBar.scrollEdgeAppearance = standardAppearance
+        
         // Ensure selection indicator is visible (background/frame around selected icon)
         // Create a custom selection indicator to ensure it's visible on all themes
         // This creates the visual frame around the selectable tab items
@@ -432,6 +470,11 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         // This is needed to display the frame around the tab bar
         tabBarController.tabBar.shadowImage = nil // Use default shadow
         tabBarController.tabBar.clipsToBounds = false // Allow shadow to be visible
+        
+        // Explicitly set the separator line color for better visibility
+        // Create a 1-pixel separator image for the top border
+        let separatorImage = createSeparatorImage(color: separatorColor)
+        tabBarController.tabBar.shadowImage = separatorImage
         
         // Force the tab bar to update its layout and selection indicator
         // This ensures the frame appears immediately on startup and after theme changes
@@ -452,10 +495,12 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         guard let tabBarController = tabBarController else { return }
         configureAppearance(tabBarController)
         
-        // Force immediate layout update to ensure selection indicator is visible
+        // Force layout update asynchronously to ensure selection indicator is visible
         // This is critical when switching between themes with same interfaceStyle
-        tabBarController.tabBar.setNeedsLayout()
-        tabBarController.tabBar.layoutIfNeeded()
+        DispatchQueue.main.async {
+            tabBarController.tabBar.setNeedsLayout()
+            tabBarController.tabBar.layoutIfNeeded()
+        }
     }
     
     /// Creates a custom selection indicator image for the tab bar
@@ -479,5 +524,24 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         // Make the image resizable so it adapts to different tab item sizes
         let capInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return image.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
+    }
+    
+    /// Creates a separator image for the tab bar top border
+    /// This ensures the frame/border is visible on all themes
+    private func createSeparatorImage(color: UIColor) -> UIImage? {
+        let size = CGSize(width: 1, height: 1 / UIScreen.main.scale)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        defer { UIGraphicsEndImageContext() }
+        
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        
+        context.setFillColor(color.cgColor)
+        context.fill(CGRect(origin: .zero, size: size))
+        
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        
+        // Make the image resizable horizontally to span the full width
+        let capInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return image.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
     }
 }
