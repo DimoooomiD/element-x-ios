@@ -337,7 +337,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
                     if ServiceLocator.shared.settings != nil {
                         // Additional delay to ensure theme colors are fully resolved
                         try? await Task.sleep(for: .milliseconds(150))
-                        if let tabBarController = tabBarController {
+                        if let tabBarController {
                             configureAppearance(tabBarController)
                             hasInitialConfiguration = true
                             break
@@ -358,7 +358,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
                 if ServiceLocator.shared.settings != nil {
                     // Additional delay to ensure theme colors are fully resolved
                     try? await Task.sleep(for: .milliseconds(200))
-                    if let tabBarController = tabBarController, !hasInitialConfiguration {
+                    if let tabBarController, !hasInitialConfiguration {
                         configureAppearance(tabBarController)
                         hasInitialConfiguration = true
                         break

@@ -56,6 +56,12 @@ private extension AppAppearance {
             return "Light Gray"
         case .lightBlue:
             return "Light Blue"
+        case .lightGreen:
+            return "Mint"
+        case .lightPurple:
+            return "Lavender"
+        case .lightOrange:
+            return "Peach"
         }
     }
     
@@ -83,6 +89,12 @@ private extension AppAppearance {
             return "⚪️"
         case .lightBlue:
             return "💙"
+        case .lightGreen:
+            return "🌿"
+        case .lightPurple:
+            return "💜"
+        case .lightOrange:
+            return "🍑"
         }
     }
 }

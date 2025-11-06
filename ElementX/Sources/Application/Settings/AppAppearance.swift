@@ -21,10 +21,13 @@ enum AppAppearance: CaseIterable, Codable {
     case light
     case lightGray
     case lightBlue
+    case lightGreen
+    case lightPurple
+    case lightOrange
         
     var interfaceStyle: UIUserInterfaceStyle {
         switch self {
-        case .light, .lightGray, .lightBlue:
+        case .light, .lightGray, .lightBlue, .lightGreen, .lightPurple, .lightOrange:
             return .light
         case .dark, .darkBlue, .darkGreen, .darkPurple, .darkGray, .darkRed, .darkOrange:
             return .dark
