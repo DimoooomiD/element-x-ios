@@ -15,9 +15,12 @@ struct AppearanceSettingsScreen: View {
     var body: some View {
         Form {
             Section {
-                ListRow(label: .plain(title: L10n.commonAppearance),
-                        kind: .picker(selection: $context.appAppearance,
-                                      items: AppAppearance.allCases.map { (title: $0.name, tag: $0) }))
+                ForEach(AppAppearance.allCases, id: \.self) { appearance in
+                    ListRow(label: .plain(title: appearance.name),
+                            kind: .selection(isSelected: context.appAppearance == appearance) {
+                                context.appAppearance = appearance
+                            })
+                }
             }
         }
         .compoundList()
