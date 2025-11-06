@@ -369,7 +369,10 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     private func configureAppearance(_ tabBarController: UITabBarController) {
         let standardAppearance = UITabBarAppearance()
         
-        // Use theme-aware background color instead of default background
+        // Configure with default background to get shadow/separator frame
+        standardAppearance.configureWithDefaultBackground()
+        
+        // Override with theme-aware background color
         // This ensures dark blue and dark green themes are properly applied
         standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
         
@@ -378,31 +381,31 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         standardAppearance.compactInlineLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPhone Landscape
         standardAppearance.inlineLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPadOS 17 (doesn't work for 18+)
         
-        // Configure icon and text colors for normal state
-        standardAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.compound.iconSecondary
+        // Configure icon and text colors for normal (unselected) state - use bright colors
+        standardAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.compound.iconPrimary
         standardAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.compound.textSecondary
+            .foregroundColor: UIColor.compound.textPrimary
         ]
         
-        // Configure icon and text colors for selected state
+        // Configure icon and text colors for selected state - use bright colors
         standardAppearance.stackedLayoutAppearance.selected.iconColor = UIColor.compound.iconPrimary
         standardAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [
             .foregroundColor: UIColor.compound.textPrimary
         ]
         
         // Apply same configuration to compact and inline layouts
-        standardAppearance.compactInlineLayoutAppearance.normal.iconColor = UIColor.compound.iconSecondary
+        standardAppearance.compactInlineLayoutAppearance.normal.iconColor = UIColor.compound.iconPrimary
         standardAppearance.compactInlineLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.compound.textSecondary
+            .foregroundColor: UIColor.compound.textPrimary
         ]
         standardAppearance.compactInlineLayoutAppearance.selected.iconColor = UIColor.compound.iconPrimary
         standardAppearance.compactInlineLayoutAppearance.selected.titleTextAttributes = [
             .foregroundColor: UIColor.compound.textPrimary
         ]
         
-        standardAppearance.inlineLayoutAppearance.normal.iconColor = UIColor.compound.iconSecondary
+        standardAppearance.inlineLayoutAppearance.normal.iconColor = UIColor.compound.iconPrimary
         standardAppearance.inlineLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.compound.textSecondary
+            .foregroundColor: UIColor.compound.textPrimary
         ]
         standardAppearance.inlineLayoutAppearance.selected.iconColor = UIColor.compound.iconPrimary
         standardAppearance.inlineLayoutAppearance.selected.titleTextAttributes = [
