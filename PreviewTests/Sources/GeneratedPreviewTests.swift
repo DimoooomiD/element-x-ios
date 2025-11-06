@@ -53,6 +53,12 @@ extension PreviewTests {
         }
     }
 
+    func testAppearanceSettingsScreen() async throws {
+        for (index, preview) in AppearanceSettingsScreen_Previews._allPreviews.enumerated() {
+            try await assertSnapshots(matching: preview, step: index)
+        }
+    }
+
     func testAudioMediaEventsTimelineView() async throws {
         for (index, preview) in AudioMediaEventsTimelineView_Previews._allPreviews.enumerated() {
             try await assertSnapshots(matching: preview, step: index)

@@ -104,6 +104,8 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
                     presentBlockedUsersScreen()
                 case .notifications:
                     presentNotificationSettings()
+                case .appearance:
+                    presentAppearanceSettings()
                 case .advancedSettings:
                     presentAdvancedSettings()
                 case .labs:
@@ -206,6 +208,11 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
                                                                                      isModallyPresented: false,
                                                                                      appSettings: flowParameters.appSettings)
         let coordinator = NotificationSettingsScreenCoordinator(parameters: notificationParameters)
+        navigationStackCoordinator.push(coordinator)
+    }
+    
+    private func presentAppearanceSettings() {
+        let coordinator = AppearanceSettingsScreenCoordinator(parameters: .init(appSettings: flowParameters.appSettings))
         navigationStackCoordinator.push(coordinator)
     }
     

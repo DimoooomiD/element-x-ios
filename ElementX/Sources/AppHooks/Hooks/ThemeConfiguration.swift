@@ -150,6 +150,64 @@ struct DarkGreenThemeConfiguration: ThemeConfiguration {
     }
 }
 
+// MARK: - Dark Purple Theme Configuration
+
+struct DarkPurpleThemeConfiguration: ThemeConfiguration {
+    var appearance: AppAppearance {
+        .darkPurple
+    }
+    
+    var colorOverrides: [ThemeColorOverride] {
+        let tokens = CompoundColorTokens()
+        
+        return [
+            ThemeColorOverride(
+                colorKeyPath: \.bgCanvasDefault,
+                uiColorKeyPath: \.bgCanvasDefault,
+                lightModeColor: tokens.bgCanvasDefault,
+                darkModeColor: tokens.bgCanvasDefault,
+                themeColor: UIColor(red: 0.15, green: 0.10, blue: 0.20, alpha: 1.0)
+            ),
+            ThemeColorOverride(
+                colorKeyPath: \.bgSubtleSecondaryLevel0,
+                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                themeColor: UIColor(red: 0.15, green: 0.10, blue: 0.20, alpha: 1.0)
+            ),
+            ThemeColorOverride(
+                colorKeyPath: \.bgCanvasDefaultLevel1,
+                uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                lightModeColor: tokens.bgCanvasDefaultLevel1,
+                darkModeColor: tokens.bgCanvasDefaultLevel1,
+                themeColor: UIColor(red: 0.20, green: 0.15, blue: 0.25, alpha: 1.0)
+            ),
+            ThemeColorOverride(
+                colorKeyPath: \.bgSubtlePrimary,
+                uiColorKeyPath: \.bgSubtlePrimary,
+                lightModeColor: tokens.bgSubtlePrimary,
+                darkModeColor: tokens.bgSubtlePrimary,
+                themeColor: UIColor(red: 0.25, green: 0.20, blue: 0.30, alpha: 1.0)
+            ),
+            ThemeColorOverride(
+                colorKeyPath: \.bgSubtleSecondary,
+                uiColorKeyPath: \.bgSubtleSecondary,
+                lightModeColor: tokens.bgSubtleSecondary,
+                darkModeColor: tokens.bgSubtleSecondary,
+                themeColor: UIColor(red: 0.23, green: 0.18, blue: 0.28, alpha: 1.0)
+            )
+        ]
+    }
+    
+    var bubbleIncomingColor: UIColor? {
+        UIColor(red: 0.21, green: 0.16, blue: 0.26, alpha: 1.0)
+    }
+    
+    var bubbleOutgoingColor: UIColor? {
+        UIColor(red: 0.28, green: 0.23, blue: 0.33, alpha: 1.0)
+    }
+}
+
 // MARK: - Theme Configuration Registry
 
 /// Registry that maps AppAppearance to ThemeConfiguration
@@ -157,7 +215,8 @@ struct ThemeConfigurationRegistry {
     /// All registered theme configurations
     static let allConfigurations: [ThemeConfiguration] = [
         DarkBlueThemeConfiguration(),
-        DarkGreenThemeConfiguration()
+        DarkGreenThemeConfiguration(),
+        DarkPurpleThemeConfiguration()
     ]
     
     /// Get configuration for a specific appearance

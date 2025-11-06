@@ -95,6 +95,13 @@ struct SettingsScreen: View {
     
     private var manageMyAppSection: some View {
         Section {
+            ListRow(label: .default(title: L10n.commonAppearance,
+                                    icon: Text("🎨")),
+                    kind: .navigationLink {
+                        context.send(viewAction: .appearance)
+                    })
+                    .accessibilityIdentifier(A11yIdentifiers.settingsScreen.appearance)
+            
             ListRow(label: .default(title: L10n.screenNotificationSettingsTitle,
                                     icon: Text("🔔")),
                     kind: .navigationLink {

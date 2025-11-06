@@ -35,6 +35,10 @@ extension AccessibilityTests {
         try await performAccessibilityAudit(named: "AppLockSetupSettingsScreen_Previews")
     }
 
+    func testAppearanceSettingsScreen() async throws {
+        try await performAccessibilityAudit(named: "AppearanceSettingsScreen_Previews")
+    }
+
     func testAudioMediaEventsTimelineView() async throws {
         try await performAccessibilityAudit(named: "AudioMediaEventsTimelineView_Previews")
     }

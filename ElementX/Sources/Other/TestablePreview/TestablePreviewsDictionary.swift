@@ -16,6 +16,7 @@ enum TestablePreviewsDictionary {
         "AppLockSetupBiometricsScreen_Previews" : AppLockSetupBiometricsScreen_Previews.self,
         "AppLockSetupPINScreen_Previews" : AppLockSetupPINScreen_Previews.self,
         "AppLockSetupSettingsScreen_Previews" : AppLockSetupSettingsScreen_Previews.self,
+        "AppearanceSettingsScreen_Previews" : AppearanceSettingsScreen_Previews.self,
         "AudioMediaEventsTimelineView_Previews" : AudioMediaEventsTimelineView_Previews.self,
         "AudioRoomTimelineView_Previews" : AudioRoomTimelineView_Previews.self,
         "AuthenticationStartScreen_Previews" : AuthenticationStartScreen_Previews.self,
