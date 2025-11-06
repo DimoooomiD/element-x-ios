@@ -658,6 +658,16 @@ class ClientProxy: ClientProxyProtocol {
             userAvatarURLSubject.send(urlString.flatMap(URL.init))
             return .success(())
         } catch {
+            // Handle the case where the server returns null for avatar URL
+            // The Rust SDK fails to deserialize null as a string, but null is a valid response
+            let errorDescription = String(describing: error)
+            if errorDescription.contains("invalid type: null, expected a string") || 
+               errorDescription.contains("deserialization failed") {
+                MXLog.warning("Avatar URL is null on server, treating as no avatar: \(error)")
+                loadCachedAvatarURLTask?.cancel()
+                userAvatarURLSubject.send(nil)
+                return .success(())
+            }
             MXLog.error("Failed loading user avatar URL with error: \(error)")
             return .failure(.sdkError(error))
         }
