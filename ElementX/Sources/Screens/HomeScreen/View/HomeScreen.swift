@@ -15,6 +15,7 @@ struct HomeScreen: View {
     @ObservedObject var context: HomeScreenViewModel.Context
     
     @State private var scrollViewAdapter = ScrollViewAdapter()
+    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
     
     var body: some View {
         HomeScreenContent(context: context, scrollViewAdapter: scrollViewAdapter)
@@ -26,6 +27,13 @@ struct HomeScreen: View {
             .track(screen: .Home)
             .toolbarBloom(hasSearchBar: false)
             .sentryTrace("\(Self.self)")
+            .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
+                // Update asynchronously to avoid interfering with other operations
+                Task { @MainActor in
+                    appearanceId = newAppearance
+                }
+            }
+            .id(appearanceId) // Force refresh when appearance changes
     }
     
     // MARK: - Private
