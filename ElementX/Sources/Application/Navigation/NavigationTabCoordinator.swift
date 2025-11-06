@@ -298,7 +298,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     
     @Bindable var navigationTabCoordinator: NavigationTabCoordinator<Tag>
     
-    @State private var standardAppearance = UITabBarAppearance()
+    @State private var tabBarController: UITabBarController?
     
     var body: some View {
         TabView(selection: $navigationTabCoordinator.selectedTab) {
@@ -318,7 +318,22 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
             }
         }
         .backportTabBarMinimizeBehaviorOnScrollDown()
-        .introspect(.tabView, on: .supportedVersions, customize: configureAppearance)
+        .introspect(.tabView, on: .supportedVersions) { tabBarController in
+            // Configure appearance immediately so tab bar has proper frame on first render
+            // This is safe because we're only configuring UIKit, not modifying SwiftUI state
+            configureAppearance(tabBarController)
+            
+            // Defer state modification to avoid "Modifying state during view update" warning
+            Task { @MainActor in
+                self.tabBarController = tabBarController
+            }
+        }
+        .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
+            // Update appearance asynchronously to avoid modifying state during view update
+            Task { @MainActor in
+                updateTabBarAppearance()
+            }
+        }
         .sheet(item: $navigationTabCoordinator.sheetModule) { module in
             module.coordinator?.toPresentable()
                 .id(module.id)
@@ -342,10 +357,54 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     }
     
     private func configureAppearance(_ tabBarController: UITabBarController) {
-        standardAppearance.configureWithDefaultBackground()
+        let standardAppearance = UITabBarAppearance()
+        
+        // Use theme-aware background color instead of default background
+        // This ensures dark blue and dark green themes are properly applied
+        standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
+        
+        // Configure badge colors
         standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPhone Portrait
         standardAppearance.compactInlineLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPhone Landscape
         standardAppearance.inlineLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPadOS 17 (doesn't work for 18+)
+        
+        // Configure icon and text colors for normal state
+        standardAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.compound.iconSecondary
+        standardAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textSecondary
+        ]
+        
+        // Configure icon and text colors for selected state
+        standardAppearance.stackedLayoutAppearance.selected.iconColor = UIColor.compound.iconPrimary
+        standardAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        
+        // Apply same configuration to compact and inline layouts
+        standardAppearance.compactInlineLayoutAppearance.normal.iconColor = UIColor.compound.iconSecondary
+        standardAppearance.compactInlineLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textSecondary
+        ]
+        standardAppearance.compactInlineLayoutAppearance.selected.iconColor = UIColor.compound.iconPrimary
+        standardAppearance.compactInlineLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        
+        standardAppearance.inlineLayoutAppearance.normal.iconColor = UIColor.compound.iconSecondary
+        standardAppearance.inlineLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textSecondary
+        ]
+        standardAppearance.inlineLayoutAppearance.selected.iconColor = UIColor.compound.iconPrimary
+        standardAppearance.inlineLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        
         tabBarController.tabBar.standardAppearance = standardAppearance
+        tabBarController.tabBar.scrollEdgeAppearance = standardAppearance
+    }
+    
+    private func updateTabBarAppearance() {
+        guard let tabBarController = tabBarController else { return }
+        configureAppearance(tabBarController)
     }
 }

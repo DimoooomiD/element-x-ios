@@ -12,6 +12,8 @@ import SwiftUI
 struct SpaceListScreen: View {
     @Bindable var context: SpaceListScreenViewModel.Context
     
+    @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
@@ -25,6 +27,10 @@ struct SpaceListScreen: View {
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
         .toolbarBloom(hasSearchBar: false)
         .onAppear { context.send(viewAction: .screenAppeared) }
+        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
+            appearanceId = newAppearance
+        }
+        .id(appearanceId) // Force refresh when appearance changes
         .sheet(isPresented: $context.isPresentingFeatureAnnouncement) {
             SpacesAnnouncementSheetView(context: context)
         }
