@@ -880,7 +880,7 @@ internal enum L10n {
   internal static var emojiPickerCategorySymbols: String { return L10n.tr("Localizable", "emoji_picker_category_symbols") }
   /// Search emojis
   internal static var emojiPickerSearchPlaceholder: String { return L10n.tr("Localizable", "emoji_picker_search_placeholder") }
-  /// Your homeserver needs to be upgraded to support Matrix Authentication Service and account creation.
+  /// This server doesn't support OpenID Connect (OIDC) authentication, which is required for account creation in Element X. Please use a server that supports Matrix Authentication Service.
   internal static var errorAccountCreationNotPossible: String { return L10n.tr("Localizable", "error_account_creation_not_possible") }
   /// Failed creating the permalink
   internal static var errorFailedCreatingThePermalink: String { return L10n.tr("Localizable", "error_failed_creating_the_permalink") }

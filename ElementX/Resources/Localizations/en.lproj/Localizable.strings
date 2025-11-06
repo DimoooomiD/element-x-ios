@@ -392,7 +392,7 @@
 "error_room_address_already_exists" = "This room address already exists. Please try editing the room address field or change the room name";
 "error_room_address_invalid_symbols" = "Some characters are not allowed. Only letters, digits and the following symbols are supported ! $ & ‘ ( ) * + / ; = ? @ [ ] - . _";
 "error.account_already_logged_in" = "You're already logged in on this device as %1$@.";
-"error_account_creation_not_possible" = "Your homeserver needs to be upgraded to support Matrix Authentication Service and account creation.";
+"error_account_creation_not_possible" = "This server doesn't support OpenID Connect (OIDC) authentication, which is required for account creation in Element X. Please use a server that supports Matrix Authentication Service.";
 "error_failed_creating_the_permalink" = "Failed creating the permalink";
 "error_failed_loading_map" = "%1$@ could not load the map. Please try again later.";
 "error_failed_loading_messages" = "Failed loading messages";

@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Cocoanetics/DTFoundation.git",
       "state" : {
-        "revision" : "76062513434421cb6c8a1ae1d4f8368a7ebc2da3",
-        "version" : "1.7.18"
+        "revision" : "a61be65dd7d5b2cde3acabd13bf320b71f2907a5",
+        "version" : "1.7.19"
       }
     },
     {

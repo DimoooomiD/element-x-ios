@@ -37,6 +37,11 @@ enum Target: String {
     /// Returns a `ConfigurationResult` which should be stored to
     ///   a) detect whether the platform is already configured.
     ///   b) automatically reconfigure the platform as necessary.
+    ///
+    /// Note: You may see priority inversion warnings from the Rust SDK's Tokio runtime.
+    /// This is a known issue where high-priority threads wait on lower-priority runtime threads.
+    /// This warning is informational and doesn't cause crashes, but may impact performance.
+    /// The fix requires changes in the Matrix Rust SDK to configure Tokio thread QoS classes.
     func configure(logLevel: LogLevel,
                    traceLogPacks: Set<TraceLogPack>,
                    sentryURL: URL?,

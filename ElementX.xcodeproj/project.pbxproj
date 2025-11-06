@@ -6868,6 +6868,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CBD61DB8FBC472BAA66A0CBD /* Build configuration list for PBXNativeTarget "NSE" */;
 			buildPhases = (
+				EF3B04F3E2383682955A6EA4 /* Wait for SwiftGen Outputs */,
 				064584F7D1F4A58D753BDD96 /* Sources */,
 				804B8DA568046249B1261739 /* Resources */,
 				BF59B36A7B2DB184B62826F6 /* Frameworks */,
@@ -7230,7 +7231,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftgen >/dev/null; then\n    swiftgen config run --config Tools/SwiftGen/swiftgen-config.yml\nelse\n    echo \"warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftgen >/dev/null; then\n    swiftgen config run --config \"$SRCROOT/Tools/SwiftGen/swiftgen-config.yml\"\nelse\n    echo \"warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
 		};
 		B35AB66424BB30087EEE408C /* 🧹 SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -7269,6 +7270,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which sourcery >/dev/null; then\n    sourcery --config Tools/Sourcery/TestablePreviewsDictionary.yml\n    sourcery --config Tools/Sourcery/AccessibilityTests.yml\nelse\n    echo \"warning: Sourcery not installed, run swift run tools setup-project\"\nfi\n";
+		};
+		EF3B04F3E2383682955A6EA4 /* Wait for SwiftGen Outputs */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Wait for SwiftGen Outputs";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script ensures the generated files exist before NSE compiles\n# The input paths create a dependency on the files without creating a cycle\nexit 0\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

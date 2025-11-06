@@ -42,6 +42,19 @@ targets:
       - package: Version
       - package: SwiftSoup
 
+    preBuildScripts:
+    - name: Wait for SwiftGen Outputs
+      runOnlyWhenInstalling: false
+      basedOnDependencyAnalysis: false
+      shell: /bin/sh
+      inputPaths:
+        - $(SRCROOT)/ElementX/Sources/Generated/Assets.swift
+        - $(SRCROOT)/ElementX/Sources/Generated/Strings.swift
+      script: |
+        # This script ensures the generated files exist before NSE compiles
+        # The input paths create a dependency on the files without creating a cycle
+        exit 0
+
     info:
       path: Info.plist
       properties:
