@@ -31,7 +31,7 @@ struct DeactivateAccountScreen: View {
         }
         .navigationTitle(L10n.screenDeactivateAccountTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .alert(item: $context.alertInfo)
         .observeThemeChanges() // Synchronous update for immediate response
     }

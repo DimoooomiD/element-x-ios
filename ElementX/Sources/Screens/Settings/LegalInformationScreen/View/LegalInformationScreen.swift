@@ -31,7 +31,7 @@ struct LegalInformationScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAbout)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 }

@@ -30,7 +30,7 @@ struct ThreadTimelineScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
-            .toolbarBloom(hasSearchBar: false)
+            .toolbarBloom(hasSearchBar: false, headerOnly: true)
             .timelineMediaPreview(viewModel: $context.mediaPreviewViewModel)
             .overlay(alignment: .bottomTrailing) {
                 TimelineScrollToBottomButton(isVisible: isAtBottomAndLive) {

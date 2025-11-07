@@ -28,7 +28,7 @@ struct HeaderGradientSettingsScreen: View {
         .compoundList()
         .navigationTitle("Header Gradient")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 }

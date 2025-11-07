@@ -162,7 +162,7 @@ struct DeveloperOptionsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonDeveloperOptions)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 

@@ -71,7 +71,7 @@ struct RoomScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
-            .toolbarBloom(hasSearchBar: false)
+            .toolbarBloom(hasSearchBar: false, headerOnly: true)
             .overlay { loadingIndicator }
             .timelineMediaPreview(viewModel: $context.mediaPreviewViewModel)
             .track(screen: .Room)

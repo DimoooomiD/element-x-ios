@@ -14,24 +14,28 @@ import SwiftUIIntrospect
 
 extension View {
     /// Adds a bloom behind the navigation bar.
-    /// - Parameter hasSearchBar: Whether or not the navigation bar contains a search bar (so that
+    /// - Parameters:
+    ///   - hasSearchBar: Whether or not the navigation bar contains a search bar (so that
     /// the bloom can be sized appropriately).
-    @ViewBuilder func toolbarBloom(hasSearchBar: Bool) -> some View {
-        modifier(GradientToggleModifier(hasSearchBar: hasSearchBar))
+    ///   - headerOnly: If true, limits the gradient to just the header area (safe area + nav bar).
+    /// If false, extends the gradient further down for a longer bright section.
+    @ViewBuilder func toolbarBloom(hasSearchBar: Bool, headerOnly: Bool = false) -> some View {
+        modifier(GradientToggleModifier(hasSearchBar: hasSearchBar, headerOnly: headerOnly))
     }
 }
 
 private struct GradientToggleModifier: ViewModifier {
     let hasSearchBar: Bool
+    let headerOnly: Bool
     @State private var gradientEnabled: Bool = ServiceLocator.shared.settings.headerGradientEnabled
     
     func body(content: Content) -> some View {
         Group {
             if gradientEnabled {
                 if #available(iOS 26, *) {
-                    content.modifier(BloomModifier(hasSearchBar: hasSearchBar))
+                    content.modifier(BloomModifier(hasSearchBar: hasSearchBar, headerOnly: headerOnly))
                 } else {
-                    content.modifier(OldBloomModifier(hasSearchBar: hasSearchBar))
+                    content.modifier(OldBloomModifier(hasSearchBar: hasSearchBar, headerOnly: headerOnly))
                 }
             } else {
                 content
@@ -45,13 +49,19 @@ private struct GradientToggleModifier: ViewModifier {
 
 private struct BloomModifier: ViewModifier {
     let hasSearchBar: Bool
+    let headerOnly: Bool
     
     @State private var height = CGFloat.zero
     
     // Extend the gradient further down for a longer bright section
     private var gradientHeight: CGFloat {
-        // Make the gradient 3x the safe area height to extend the bright section
-        height * 3.0
+        if headerOnly {
+            // For header-only, limit to safe area + navigation bar height (44pt)
+            return height + 44
+        } else {
+            // Make the gradient 3x the safe area height to extend the bright section
+            return height * 3.0
+        }
     }
     
     // Keep endPoint at 1.0 to let the gradient complete fully across the extended height
@@ -81,12 +91,14 @@ private struct OldBloomModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
     
     let hasSearchBar: Bool
+    let headerOnly: Bool
     
     @State private var standardAppearance = UINavigationBarAppearance()
     @State private var scrollEdgeAppearance = UINavigationBarAppearance()
     
     @State private var bloom = Bloom()
     @State private var controllerRef = ControllerRef()
+    @State private var hasAppeared = false
     
     func body(content: Content) -> some View {
         content
@@ -96,28 +108,37 @@ private struct OldBloomModifier: ViewModifier {
                 Task { @MainActor in
                     // Small delay to ensure navigation controller is fully set up
                     try? await Task.sleep(nanoseconds: 50_000_000) // 50ms
-                    configureBloom(controller: controller)
+                    configureBloom(controller: controller, force: false)
                 }
             }
             .onAppear {
-                // Backup: Ensure gradient is applied when view appears
-                // This handles cases where introspect might not fire or fires too early
+                hasAppeared = true
+                // Always re-apply when view appears to handle navigation bar resets
                 Task { @MainActor in
-                    try? await Task.sleep(nanoseconds: 150_000_000) // 150ms
+                    try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
                     if let controller = controllerRef.controller {
-                        configureBloom(controller: controller)
+                        // Force re-application when returning to the view
+                        configureBloom(controller: controller, force: true)
                     }
                 }
             }
+            .onDisappear {
+                hasAppeared = false
+            }
     }
     
-    private func configureBloom(controller: UIViewController) {
-        // Check if already configured and still valid
-        if controller.navigationItem.standardAppearance == standardAppearance,
-           controller.navigationItem.scrollEdgeAppearance == scrollEdgeAppearance,
-           canUse(bloom),
-           bloom.image != nil {
-            return
+    private func configureBloom(controller: UIViewController, force: Bool) {
+        // If forcing (e.g., on appear), always re-apply to handle navigation bar resets
+        if !force {
+            // Check if already configured and still valid
+            // Compare by checking if the background image matches (more reliable than object reference)
+            if let standardAppearance = controller.navigationItem.standardAppearance,
+               let currentImage = standardAppearance.backgroundImage,
+               let bloomImage = bloom.image,
+               currentImage === bloomImage,
+               canUse(bloom) {
+                return
+            }
         }
         
         let bloom = makeBloom()
@@ -127,24 +148,38 @@ private struct OldBloomModifier: ViewModifier {
             // Retry after a short delay if image rendering failed
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
-                configureBloom(controller: controller)
+                configureBloom(controller: controller, force: force)
             }
             return
         }
         
+        // Create new appearance instances to avoid reference issues
+        let newStandardAppearance = UINavigationBarAppearance()
+        let newScrollEdgeAppearance = UINavigationBarAppearance()
+        
         // Use transparent background for consistency with main menus
         // This ensures the gradient depth is the same across all screens
-        standardAppearance.configureWithTransparentBackground()
-        standardAppearance.backgroundImage = bloom.image
-        standardAppearance.backgroundImageContentMode = .scaleToFill
-        standardAppearance.backgroundColor = .compound.bgCanvasDefault
-        controller.navigationItem.standardAppearance = standardAppearance
+        newStandardAppearance.configureWithTransparentBackground()
+        newStandardAppearance.backgroundImage = bloom.image
+        newStandardAppearance.backgroundImageContentMode = .scaleToFill
+        newStandardAppearance.backgroundColor = .compound.bgCanvasDefault
+        controller.navigationItem.standardAppearance = newStandardAppearance
         
-        scrollEdgeAppearance.configureWithTransparentBackground()
-        scrollEdgeAppearance.backgroundImage = bloom.image
-        scrollEdgeAppearance.backgroundImageContentMode = .scaleToFill
-        scrollEdgeAppearance.backgroundColor = .compound.bgCanvasDefault
-        controller.navigationItem.scrollEdgeAppearance = scrollEdgeAppearance
+        newScrollEdgeAppearance.configureWithTransparentBackground()
+        newScrollEdgeAppearance.backgroundImage = bloom.image
+        newScrollEdgeAppearance.backgroundImageContentMode = .scaleToFill
+        newScrollEdgeAppearance.backgroundColor = .compound.bgCanvasDefault
+        controller.navigationItem.scrollEdgeAppearance = newScrollEdgeAppearance
+        
+        // Update stored appearances for future comparisons
+        standardAppearance = newStandardAppearance
+        scrollEdgeAppearance = newScrollEdgeAppearance
+        
+        // Force navigation bar to update immediately
+        DispatchQueue.main.async {
+            controller.navigationController?.navigationBar.setNeedsLayout()
+            controller.navigationController?.navigationBar.layoutIfNeeded()
+        }
     }
     
     private func makeBloom() -> Bloom {
@@ -179,12 +214,12 @@ private struct OldBloomModifier: ViewModifier {
     private var endPointY: CGFloat { hasSearchBar ? 0.6 : 1.0 }
     
     private var bloomGradient: some View {
-        LinearGradient(gradient: .compound.subtle,
-                       startPoint: .top,
-                       endPoint: .init(x: 0.5, y: endPointY))
+        let gradientHeight: CGFloat = headerOnly ? 88 : 384 // Header-only: safe area (~44) + nav bar (44)
+        return LinearGradient(gradient: .compound.subtle,
+                             startPoint: .top,
+                             endPoint: .init(x: 0.5, y: endPointY))
             .ignoresSafeArea(edges: .all)
-            // Increase height to extend the bright section further down
-            .frame(width: 256, height: 384)
+            .frame(width: 256, height: gradientHeight)
     }
     
     private func canUse(_ bloom: Bloom) -> Bool {

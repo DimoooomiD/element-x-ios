@@ -28,7 +28,7 @@ struct AppearanceSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAppearance)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 }
