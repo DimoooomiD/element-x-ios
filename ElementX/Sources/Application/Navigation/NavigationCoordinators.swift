@@ -676,6 +676,9 @@ private struct NavigationSplitCoordinatorView: View {
 private struct NavigationStackCoordinatorView: View {
     @Bindable var navigationStackCoordinator: NavigationStackCoordinator
     
+    @State private var navigationController: UINavigationController?
+    @State private var hasInitialConfiguration = false
+    
     var body: some View {
         NavigationStack(path: $navigationStackCoordinator.stackModules) {
             navigationStackCoordinator.rootModule?.coordinator?.toPresentable()
@@ -685,6 +688,61 @@ private struct NavigationStackCoordinatorView: View {
                         .id(module.id)
                 }
         }
+        .onAppear {
+            // Ensure appearance is configured when view appears
+            // This is critical for initial load to show proper navigation bar styling
+            Task { @MainActor in
+                // Wait for ServiceLocator to be available and theme colors to be resolved
+                var attempts = 0
+                while attempts < 10 {
+                    if ServiceLocator.shared.settings != nil {
+                        // Additional delay to ensure theme colors are fully resolved
+                        try? await Task.sleep(for: .milliseconds(150))
+                        // Find navigation controller through window hierarchy
+                        if let foundController = findNavigationController() {
+                            navigationController = foundController
+                            configureNavigationBarAppearance(foundController)
+                            hasInitialConfiguration = true
+                            break
+                        }
+                    }
+                    // Retry after a short delay if ServiceLocator isn't ready yet
+                    try? await Task.sleep(for: .milliseconds(50))
+                    attempts += 1
+                }
+            }
+        }
+        .task {
+            // Fallback: ensure appearance is configured after a delay
+            // This helps prevent missing styling on startup
+            var attempts = 0
+            while attempts < 10 {
+                if ServiceLocator.shared.settings != nil {
+                    // Additional delay to ensure theme colors are fully resolved
+                    try? await Task.sleep(for: .milliseconds(200))
+                    // Find navigation controller through window hierarchy
+                    if let foundController = findNavigationController(), !hasInitialConfiguration {
+                        navigationController = foundController
+                        configureNavigationBarAppearance(foundController)
+                        hasInitialConfiguration = true
+                        break
+                    }
+                }
+                // Retry after a short delay if ServiceLocator isn't ready yet
+                try? await Task.sleep(for: .milliseconds(50))
+                attempts += 1
+            }
+        }
+        .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
+            // Update appearance asynchronously to avoid modifying state during view update
+            // This is critical for custom dark themes (darkBlue, darkGreen, darkPurple)
+            // which don't change interfaceStyle but still need appearance refresh
+            // Also triggers on initial load when the publisher emits its first value
+            Task { @MainActor in
+                updateNavigationBarAppearance()
+                hasInitialConfiguration = true
+            }
+        }
         .sheet(item: $navigationStackCoordinator.sheetModule) { module in
             module.coordinator?.toPresentable()
                 .id(module.id)
@@ -693,5 +751,95 @@ private struct NavigationStackCoordinatorView: View {
             module.coordinator?.toPresentable()
                 .id(module.id)
         }
+    }
+    
+    private func configureNavigationBarAppearance(_ navigationController: UINavigationController) {
+        let standardAppearance = UINavigationBarAppearance()
+        
+        // Configure with default background to preserve system styling
+        standardAppearance.configureWithDefaultBackground()
+        
+        // Override with theme-aware background color
+        // This ensures dark blue and dark green themes are properly applied
+        standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
+        
+        // Configure title text attributes with theme-aware colors
+        standardAppearance.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        standardAppearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        
+        // Configure button colors (back button, etc.)
+        standardAppearance.buttonAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        
+        // Configure done button colors
+        standardAppearance.doneButtonAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.compound.textPrimary
+        ]
+        
+        // Apply appearance configuration
+        navigationController.navigationBar.standardAppearance = standardAppearance
+        navigationController.navigationBar.scrollEdgeAppearance = standardAppearance
+        navigationController.navigationBar.compactAppearance = standardAppearance
+        if #available(iOS 15.0, *) {
+            navigationController.navigationBar.compactScrollEdgeAppearance = standardAppearance
+        }
+        
+        // Force the navigation bar to update its layout
+        DispatchQueue.main.async {
+            navigationController.navigationBar.setNeedsLayout()
+            navigationController.navigationBar.layoutIfNeeded()
+        }
+    }
+    
+    private func updateNavigationBarAppearance() {
+        // Find navigation controller if we don't have one yet
+        if navigationController == nil {
+            navigationController = findNavigationController()
+        }
+        
+        guard let navigationController else { return }
+        configureNavigationBarAppearance(navigationController)
+        
+        // Force layout update asynchronously to ensure appearance is visible
+        DispatchQueue.main.async {
+            navigationController.navigationBar.setNeedsLayout()
+            navigationController.navigationBar.layoutIfNeeded()
+        }
+    }
+    
+    /// Finds the navigation controller in the window hierarchy
+    private func findNavigationController() -> UINavigationController? {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow }) ?? windowScene.windows.first else {
+            return nil
+        }
+        
+        return findNavigationController(in: window)
+    }
+    
+    /// Recursively finds navigation controller in view hierarchy
+    private func findNavigationController(in view: UIView) -> UINavigationController? {
+        // Check if this view's view controller is a navigation controller
+        var responder: UIResponder? = view
+        while responder != nil {
+            if let navigationController = responder as? UINavigationController {
+                return navigationController
+            }
+            responder = responder?.next
+        }
+        
+        // Recursively search subviews
+        for subview in view.subviews {
+            if let navigationController = findNavigationController(in: subview) {
+                return navigationController
+            }
+        }
+        
+        return nil
     }
 }
