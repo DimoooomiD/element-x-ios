@@ -103,6 +103,12 @@ struct SettingsScreen: View {
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.appearance)
             
+            ListRow(label: .default(title: "Header Gradient",
+                                    icon: ColoredIcon(symbol: .paintbrush, color: .pink)),
+                    kind: .navigationLink {
+                        context.send(viewAction: .headerGradient)
+                    })
+            
             ListRow(label: .default(title: "Text Size",
                                     icon: ColoredIcon(symbol: .textformatSize, color: .blue)),
                     kind: .navigationLink {

@@ -269,6 +269,12 @@ extension PreviewTests {
         }
     }
 
+    func testHeaderGradientSettingsScreen() async throws {
+        for (index, preview) in HeaderGradientSettingsScreen_Previews._allPreviews.enumerated() {
+            try await assertSnapshots(matching: preview, step: index)
+        }
+    }
+
     func testHighlightedTimelineItemModifier() async throws {
         for (index, preview) in HighlightedTimelineItemModifier_Previews._allPreviews.enumerated() {
             try await assertSnapshots(matching: preview, step: index)

@@ -28,6 +28,7 @@ enum SettingsScreenCoordinatorAction {
     case manageAccount(url: URL)
     case notifications
     case appearance
+    case headerGradient
     case textSize
     case advancedSettings
     case labs
@@ -79,6 +80,8 @@ final class SettingsScreenCoordinator: CoordinatorProtocol {
                     actionsSubject.send(.notifications)
                 case .appearance:
                     actionsSubject.send(.appearance)
+                case .headerGradient:
+                    actionsSubject.send(.headerGradient)
                 case .textSize:
                     actionsSubject.send(.textSize)
                 case .advancedSettings:

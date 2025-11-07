@@ -21,6 +21,7 @@ enum SettingsScreenViewModelAction: Equatable {
     case secureBackup
     case notifications
     case appearance
+    case headerGradient
     case textSize
     case advancedSettings
     case labs
@@ -71,6 +72,7 @@ enum SettingsScreenViewAction {
     case manageAccount(url: URL)
     case notifications
     case appearance
+    case headerGradient
     case textSize
     case enableDeveloperOptions
     case developerOptions

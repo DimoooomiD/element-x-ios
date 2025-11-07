@@ -33,7 +33,6 @@ enum AppearanceSettingsScreenViewAction {
 
 protocol AppearanceSettingsProtocol: AnyObject {
     var appAppearance: AppAppearance { get set }
-    var headerGradientEnabled: Bool { get set }
 }
 
 extension AppSettings: AppearanceSettingsProtocol { }

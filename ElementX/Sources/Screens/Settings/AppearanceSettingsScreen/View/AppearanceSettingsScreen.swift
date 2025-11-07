@@ -24,13 +24,6 @@ struct AppearanceSettingsScreen: View {
                             })
                 }
             }
-            
-            Section {
-                ListRow(label: .default(title: "Header Gradient",
-                                     description: "Show gradient effect on menu headers",
-                                     icon: ColoredIcon(symbol: .paintbrush, color: .pink)),
-                        kind: .toggle($context.headerGradientEnabled))
-            }
         }
         .compoundList()
         .navigationTitle(L10n.commonAppearance)
