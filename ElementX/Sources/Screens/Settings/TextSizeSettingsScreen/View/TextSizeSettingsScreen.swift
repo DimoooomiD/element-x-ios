@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct TextSizeSettingsScreen: View {
@@ -19,14 +20,14 @@ struct TextSizeSettingsScreen: View {
     var body: some View {
         Form {
             Section {
+                ListRow(label: .default(title: "Text Size",
+                                        icon: ColoredIcon(symbol: .textformatSize, color: .blue)),
+                        kind: .label)
+                
                 VStack(spacing: 20) {
                     // Slider
                     VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            Text("Text Size")
-                                .font(.compound.headingSMSemibold)
-                                .foregroundStyle(.compound.textPrimary)
-                            
                             Spacer()
                             
                             Text(String(format: "%.1fx", context.chatRoomTextSize))
@@ -50,16 +51,17 @@ struct TextSizeSettingsScreen: View {
                         }
                     }
                     .padding(.vertical, 8)
+                    .padding(.horizontal, ListRowPadding.horizontal)
                 }
             }
             
             Section {
+                ListRow(label: .default(title: "Preview",
+                                        icon: ColoredIcon(symbol: .eye, color: .cyan)),
+                        kind: .label)
+                
                 // Preview section
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Preview")
-                        .font(.compound.headingSMSemibold)
-                        .foregroundStyle(.compound.textPrimary)
-                    
                     // Chat message preview
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
@@ -107,10 +109,7 @@ struct TextSizeSettingsScreen: View {
                     .cornerRadius(8)
                 }
                 .padding(.vertical, 8)
-            } header: {
-                Text("Preview")
-                    .font(.compound.bodySM)
-                    .foregroundStyle(.compound.textSecondary)
+                .padding(.horizontal, ListRowPadding.horizontal)
             }
         }
         .compoundList()
@@ -118,6 +117,19 @@ struct TextSizeSettingsScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
