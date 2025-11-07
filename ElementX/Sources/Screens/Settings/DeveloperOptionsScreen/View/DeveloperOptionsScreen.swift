@@ -15,6 +15,7 @@ struct DeveloperOptionsScreen: View {
     
     @State private var showConfetti = false
     @State private var elementCallURLOverrideString: String
+    @State private var isSDKTracePacksExpanded = false
     
     init(context: DeveloperOptionsScreenViewModel.Context) {
         self.context = context
@@ -30,7 +31,16 @@ struct DeveloperOptionsScreen: View {
                         kind: .picker(selection: $context.logLevel,
                                      items: logLevels.map { (title: $0.title, tag: $0) }))
                 
-                DisclosureGroup("SDK trace packs") {
+                ListRow(label: .default(title: "SDK trace packs",
+                                        icon: ColoredIcon(symbol: .docOnDoc, color: .gray)),
+                        details: .icon(chevronIconView),
+                        kind: .button {
+                            withAnimation {
+                                isSDKTracePacksExpanded.toggle()
+                            }
+                        })
+                
+                if isSDKTracePacksExpanded {
                     ForEach(TraceLogPack.allCases, id: \.self) { pack in
                         ListRow(label: .default(title: pack.title,
                                                 icon: ColoredIcon(symbol: .docOnDoc, color: .gray)),
@@ -174,6 +184,12 @@ struct DeveloperOptionsScreen: View {
     /// Allows the picker to work with associated values
     private var logLevels: [LogLevel] {
         [.error, .warn, .info, .debug, .trace]
+    }
+    
+    private var chevronIconView: some View {
+        CompoundIcon(\.chevronDown, size: .small, relativeTo: .compound.bodyLG)
+            .foregroundStyle(.compound.iconTertiary)
+            .rotationEffect(.degrees(isSDKTracePacksExpanded ? 180 : 0))
     }
 }
 
