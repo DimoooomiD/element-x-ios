@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct AppearanceSettingsScreen: View {
@@ -17,7 +18,7 @@ struct AppearanceSettingsScreen: View {
             Section {
                 ForEach(AppAppearance.allCases, id: \.self) { appearance in
                     ListRow(label: .default(title: appearance.name,
-                                            icon: Text(appearance.emoji)),
+                                            icon: ColoredIcon(symbol: appearance.systemIcon, color: appearance.iconColor)),
                             kind: .selection(isSelected: context.appAppearance == appearance) {
                                 context.appAppearance = appearance
                             })
@@ -25,8 +26,9 @@ struct AppearanceSettingsScreen: View {
             }
             
             Section {
-                ListRow(label: .plain(title: "Header Gradient",
-                                     description: "Show gradient effect on menu headers"),
+                ListRow(label: .default(title: "Header Gradient",
+                                     description: "Show gradient effect on menu headers",
+                                     icon: ColoredIcon(symbol: .paintbrush, color: .pink)),
                         kind: .toggle($context.headerGradientEnabled))
             }
         }
@@ -71,37 +73,83 @@ private extension AppAppearance {
         }
     }
     
-    var emoji: String {
+    var systemIcon: SFSymbol {
         switch self {
         case .system:
-            return "⚙️"
+            return .gearshape
         case .light:
-            return "☀️"
+            return .sunMax
         case .dark:
-            return "🌙"
+            return .moon
         case .darkBlue:
-            return "🔵"
+            return .circleFill
         case .darkGreen:
-            return "🟢"
+            return .circleFill
         case .darkPurple:
-            return "🟣"
+            return .circleFill
         case .darkGray:
-            return "⚫️"
+            return .circleFill
         case .darkRed:
-            return "🍷"
+            return .circleFill
         case .darkOrange:
-            return "🟠"
+            return .circleFill
         case .lightGray:
-            return "⚪️"
+            return .circle
         case .lightBlue:
-            return "💙"
+            return .circle
         case .lightGreen:
-            return "🌿"
+            return .circle
         case .lightPurple:
-            return "💜"
+            return .circle
         case .lightOrange:
-            return "🍑"
+            return .circle
         }
+    }
+    
+    var iconColor: Color {
+        switch self {
+        case .system:
+            return .gray
+        case .light:
+            return .yellow
+        case .dark:
+            return .indigo
+        case .darkBlue:
+            return .blue
+        case .darkGreen:
+            return .green
+        case .darkPurple:
+            return .purple
+        case .darkGray:
+            return .gray
+        case .darkRed:
+            return .red
+        case .darkOrange:
+            return .orange
+        case .lightGray:
+            return .gray.opacity(0.6)
+        case .lightBlue:
+            return .blue.opacity(0.7)
+        case .lightGreen:
+            return .green.opacity(0.7)
+        case .lightPurple:
+            return .purple.opacity(0.7)
+        case .lightOrange:
+            return .orange.opacity(0.7)
+        }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
