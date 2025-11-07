@@ -52,6 +52,7 @@ final class AppSettings {
         case appAppearance
         case sharePresence
         case backgroundWallpaperColor
+        case headerGradientEnabled
         
         case elementCallBaseURLOverride
         
@@ -216,6 +217,9 @@ final class AppSettings {
     
     @UserPreference(key: UserDefaultsKeys.backgroundWallpaperColor, defaultValue: .none, storageType: .userDefaults(store))
     var backgroundWallpaperColor: BackgroundWallpaperColor
+    
+    @UserPreference(key: UserDefaultsKeys.headerGradientEnabled, defaultValue: false, storageType: .userDefaults(store))
+    var headerGradientEnabled
     
     // MARK: - Security
     

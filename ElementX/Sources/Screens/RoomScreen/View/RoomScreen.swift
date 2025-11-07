@@ -140,7 +140,7 @@ struct RoomScreen: View {
             // We are not sure why but when wrapped in the room screen the composer toolbar breaks the accessibility tests
             composerToolbar
         } else {
-            ComposerDisabledView()
+            EmptyView()
         }
     }
     
@@ -192,38 +192,6 @@ struct RoomScreen: View {
                 .onTapGesture {
                     context.send(viewAction: .displayRoomDetails)
                 }
-        }
-        
-        if !ProcessInfo.processInfo.isiOSAppOnMac {
-            ToolbarItem(placement: .primaryAction) {
-                if context.viewState.shouldShowCallButton {
-                    callButton
-                        .disabled(!context.viewState.canJoinCall)
-                }
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var callButton: some View {
-        if context.viewState.hasOngoingCall {
-            Button {
-                context.send(viewAction: .displayCall)
-            } label: {
-                Label(L10n.actionJoin, icon: \.videoCallSolid)
-                    .labelStyle(.titleAndIcon)
-            }
-            .buttonStyle(ElementCallButtonStyle())
-            .accessibilityLabel(L10n.a11yJoinCall)
-            .accessibilityIdentifier(A11yIdentifiers.roomScreen.joinCall)
-        } else {
-            Button {
-                context.send(viewAction: .displayCall)
-            } label: {
-                CompoundIcon(\.videoCallSolid)
-            }
-            .accessibilityLabel(L10n.a11yStartCall)
-            .accessibilityIdentifier(A11yIdentifiers.roomScreen.joinCall)
         }
     }
 }

@@ -23,6 +23,12 @@ struct AppearanceSettingsScreen: View {
                             })
                 }
             }
+            
+            Section {
+                ListRow(label: .plain(title: "Header Gradient",
+                                     description: "Show gradient effect on menu headers"),
+                        kind: .toggle($context.headerGradientEnabled))
+            }
         }
         .compoundList()
         .navigationTitle(L10n.commonAppearance)

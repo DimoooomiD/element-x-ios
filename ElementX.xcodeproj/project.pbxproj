@@ -7291,7 +7291,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftgen >/dev/null; then\n    swiftgen config run --config \"$SRCROOT/Tools/SwiftGen/swiftgen-config.yml\"\nelse\n    echo \"warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftgen >/dev/null; then\n    CONFIG_PATH=\"$SRCROOT/Tools/SwiftGen/swiftgen-config.yml\"\n    if [ -f \"$CONFIG_PATH\" ]; then\n        swiftgen config run --config \"$CONFIG_PATH\"\n    else\n        echo \"error: SwiftGen config file not found at $CONFIG_PATH\"\n        exit 1\n    fi\nelse\n    echo \"warning: SwiftGen not installed, download from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
 		};
 		B35AB66424BB30087EEE408C /* 🧹 SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
