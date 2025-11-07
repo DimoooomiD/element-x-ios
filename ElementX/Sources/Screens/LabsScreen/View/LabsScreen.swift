@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct LabsScreen: View {
@@ -51,7 +52,7 @@ struct LabsScreen: View {
     private var threadsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenLabsEnableThreads,
-                                    icon: Text("🧵")),
+                                    icon: ColoredIcon(symbol: .bubbleLeftAndBubbleRight, color: .purple)),
                     kind: .toggle($context.threadsEnabled))
         } footer: {
             Text(L10n.screenLabsEnableThreadsDescription)
@@ -60,6 +61,19 @@ struct LabsScreen: View {
         .onChange(of: context.threadsEnabled) { _, _ in
             context.send(viewAction: .clearCache)
         }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
