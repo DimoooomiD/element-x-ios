@@ -20,6 +20,7 @@ struct AnalyticsSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAnalytics)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
     

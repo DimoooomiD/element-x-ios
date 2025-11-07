@@ -22,6 +22,8 @@ struct SpaceSettingsScreen: View {
         }
         .compoundList()
         .navigationTitle(L10n.commonSettings)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
     }
     
     private var editSection: some View {

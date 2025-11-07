@@ -44,6 +44,7 @@ struct NotificationSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.screenNotificationSettingsTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .alert(item: $context.alertInfo)
         .track(screen: .SettingsNotifications)

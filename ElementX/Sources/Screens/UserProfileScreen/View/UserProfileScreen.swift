@@ -19,6 +19,7 @@ struct UserProfileScreen: View {
         .compoundList()
         .navigationTitle(L10n.screenRoomMemberDetailsTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .alert(item: $context.alertInfo)
         .sheet(item: $context.inviteConfirmationUser) { user in

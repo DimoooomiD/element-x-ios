@@ -41,6 +41,7 @@ struct AdvancedSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAdvancedSettings)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
     

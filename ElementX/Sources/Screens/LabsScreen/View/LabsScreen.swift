@@ -21,6 +21,7 @@ struct LabsScreen: View {
         .compoundList()
         .navigationTitle(L10n.screenLabsTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
     }
     
     private var header: some View {

@@ -55,6 +55,7 @@ struct RoomDetailsScreen: View {
         }
         .navigationTitle(L10n.screenRoomDetailsTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .track(screen: .RoomDetails)
         .interactiveQuickLook(item: $context.mediaPreviewItem, allowEditing: false)
     }

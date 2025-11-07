@@ -23,6 +23,8 @@ struct NotificationSettingsEditScreen: View {
         }
         .compoundList()
         .navigationTitle(context.viewState.strings.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .alert(item: $context.alertInfo)
         .track(screen: .SettingsDefaultNotifications)
         .observeThemeChanges() // Synchronous update for immediate response
