@@ -448,16 +448,26 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
             .foregroundColor: UIColor.compound.textPrimary
         ]
         
-        tabBarController.tabBar.standardAppearance = standardAppearance
-        tabBarController.tabBar.scrollEdgeAppearance = standardAppearance
-        
         // Explicitly configure the separator/border color for the tab bar
         // This ensures the top border frame is visible on all themes
         // Use a compound border color that adapts to the theme
         let separatorColor = UIColor.compound.borderInteractiveSecondary
         standardAppearance.shadowColor = separatorColor
+        
+        // Create the separator image for the top border before applying appearance
+        // This ensures the frame is visible immediately on startup
+        let separatorImage = createSeparatorImage(color: separatorColor)
+        
+        // Apply appearance configuration
         tabBarController.tabBar.standardAppearance = standardAppearance
         tabBarController.tabBar.scrollEdgeAppearance = standardAppearance
+        
+        // Ensure the tab bar shows the top border/separator by configuring shadow
+        // This is needed to display the frame around the tab bar
+        // Set clipsToBounds to false to allow shadow/separator to be visible
+        tabBarController.tabBar.clipsToBounds = false
+        // Set the separator image as shadowImage to create the top border frame
+        tabBarController.tabBar.shadowImage = separatorImage
         
         // Ensure selection indicator is visible (background/frame around selected icon)
         // Create a custom selection indicator to ensure it's visible on all themes
@@ -466,19 +476,13 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         let selectionImage = createSelectionIndicatorImage(color: selectionColor)
         tabBarController.tabBar.selectionIndicatorImage = selectionImage
         
-        // Ensure the tab bar shows the top border/separator by configuring shadow
-        // This is needed to display the frame around the tab bar
-        tabBarController.tabBar.shadowImage = nil // Use default shadow
-        tabBarController.tabBar.clipsToBounds = false // Allow shadow to be visible
-        
-        // Explicitly set the separator line color for better visibility
-        // Create a 1-pixel separator image for the top border
-        let separatorImage = createSeparatorImage(color: separatorColor)
-        tabBarController.tabBar.shadowImage = separatorImage
-        
         // Force the tab bar to update its layout and selection indicator
         // This ensures the frame appears immediately on startup and after theme changes
         DispatchQueue.main.async {
+            // Ensure separator/frame is set after layout
+            tabBarController.tabBar.shadowImage = separatorImage
+            tabBarController.tabBar.clipsToBounds = false
+            
             tabBarController.tabBar.setNeedsLayout()
             tabBarController.tabBar.layoutIfNeeded()
             
