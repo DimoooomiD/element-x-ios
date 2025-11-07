@@ -43,7 +43,7 @@ struct AppLockSetupSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonScreenLock)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false, headerOnly: true)
+        .toolbarBloom(hasSearchBar: false)
         .alert(item: $context.alertInfo)
     }
 }
