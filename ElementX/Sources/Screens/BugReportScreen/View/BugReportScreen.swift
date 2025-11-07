@@ -8,6 +8,7 @@
 
 import Compound
 import PhotosUI
+import SFSafeSymbols
 import SwiftUI
 
 struct BugReportScreen: View {
@@ -30,6 +31,7 @@ struct BugReportScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonReportAProblem)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .interactiveDismissDisabled()
         .onChange(of: selectedScreenshot) { _, newItem in
@@ -46,7 +48,8 @@ struct BugReportScreen: View {
     
     private var textFieldSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenBugReportEditorPlaceholder),
+            ListRow(label: .default(title: L10n.screenBugReportEditorPlaceholder,
+                                    icon: ColoredIcon(symbol: .textBubble, color: .blue)),
                     kind: .textField(text: $context.reportText, axis: .vertical))
                 .lineLimit(4, reservesSpace: true)
                 .accessibilityIdentifier(A11yIdentifiers.bugReportScreen.report)
@@ -59,11 +62,13 @@ struct BugReportScreen: View {
     private var sendLogsSection: some View {
         Section {
             if canSendLogFiles {
-                ListRow(label: .plain(title: L10n.screenBugReportIncludeLogs),
+                ListRow(label: .default(title: L10n.screenBugReportIncludeLogs,
+                                        icon: ColoredIcon(symbol: .docText, color: .green)),
                         kind: .toggle($context.sendingLogsEnabled))
                     .accessibilityIdentifier(A11yIdentifiers.bugReportScreen.sendLogs)
             }
-            ListRow(label: .plain(title: L10n.screenBugReportViewLogs),
+            ListRow(label: .default(title: L10n.screenBugReportViewLogs,
+                                    icon: ColoredIcon(symbol: .docTextMagnifyingglass, color: .blue)),
                     kind: .navigationLink { context.send(viewAction: .viewLogs) })
                 .accessibilityIdentifier(A11yIdentifiers.bugReportScreen.sendLogs)
         } footer: {
@@ -80,7 +85,8 @@ struct BugReportScreen: View {
 
     private var canContactSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenBugReportContactMeTitle),
+            ListRow(label: .default(title: L10n.screenBugReportContactMeTitle,
+                                    icon: ColoredIcon(symbol: .envelope, color: .orange)),
                     kind: .toggle($context.canContact))
                 .accessibilityIdentifier(A11yIdentifiers.bugReportScreen.canContact)
         } footer: {
@@ -96,7 +102,8 @@ struct BugReportScreen: View {
                 PhotosPicker(selection: $selectedScreenshot,
                              matching: .screenshots,
                              photoLibrary: .shared()) {
-                    ListRowLabel.plain(title: photosPickerTitle)
+                    ListRowLabel.default(title: photosPickerTitle,
+                                         icon: ColoredIcon(symbol: .photo, color: .purple))
                 }
             })
             .accessibilityIdentifier(A11yIdentifiers.bugReportScreen.attachScreenshot)
@@ -144,6 +151,19 @@ struct BugReportScreen: View {
             .disabled(context.reportText.count < 5)
             .disabled(context.viewState.shouldDisableInteraction)
         }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
