@@ -144,8 +144,55 @@ targets:
         DEVELOPMENT_ASSET_PATHS: DevelopmentAssets/Media
         OTHER_SWIFT_FLAGS:
         - "-DIS_MAIN_APP"
+        ENABLE_PREMIUM_CAPABILITIES: $(ENABLE_PREMIUM_CAPABILITIES)
 
     preBuildScripts:
+    - name: 🔧 Configure Premium Capabilities
+      runOnlyWhenInstalling: false
+      basedOnDependencyAnalysis: false
+      shell: /bin/sh
+      inputPaths:
+        - $(SRCROOT)/ElementX/SupportingFiles/ElementX.entitlements
+      outputPaths:
+        - $(SRCROOT)/ElementX/SupportingFiles/ElementX.entitlements
+      script: |
+        ENTITLEMENTS_FILE="$SRCROOT/ElementX/SupportingFiles/ElementX.entitlements"
+        ENABLE_PREMIUM="${ENABLE_PREMIUM_CAPABILITIES:-YES}"
+        
+        # Normalize the value (handle YES/NO, 1/0, true/false, etc.)
+        case "$ENABLE_PREMIUM" in
+          YES|yes|1|TRUE|true|True)
+            ENABLE_PREMIUM_VALUE=true
+            ;;
+          *)
+            ENABLE_PREMIUM_VALUE=false
+            ;;
+        esac
+        
+        if [ "$ENABLE_PREMIUM_VALUE" = "false" ]; then
+            echo "⚠️  Premium capabilities disabled - removing Push Notifications, Communication Notifications, and Associated Domains"
+            echo "   This allows installation on devices without a paid Apple Developer account"
+            
+            # Use PlistBuddy to remove the problematic capabilities
+            # These capabilities require a paid Apple Developer account
+            /usr/libexec/PlistBuddy -c "Delete :aps-environment" "$ENTITLEMENTS_FILE" 2>/dev/null || true
+            /usr/libexec/PlistBuddy -c "Delete :com.apple.developer.associated-domains" "$ENTITLEMENTS_FILE" 2>/dev/null || true
+            /usr/libexec/PlistBuddy -c "Delete :com.apple.developer.usernotifications.communication" "$ENTITLEMENTS_FILE" 2>/dev/null || true
+            
+            # Update Application Group to use team-specific format for personal development teams
+            # Personal teams can't use group.io.element, they need group.<TEAM_ID>.element
+            if [ -n "$DEVELOPMENT_TEAM" ]; then
+                TEAM_APP_GROUP="group.$DEVELOPMENT_TEAM.element"
+                echo "   Updating Application Group to team-specific format: $TEAM_APP_GROUP"
+                /usr/libexec/PlistBuddy -c "Set :com.apple.security.application-groups:0 $TEAM_APP_GROUP" "$ENTITLEMENTS_FILE" 2>/dev/null || \
+                /usr/libexec/PlistBuddy -c "Add :com.apple.security.application-groups:0 string $TEAM_APP_GROUP" "$ENTITLEMENTS_FILE" 2>/dev/null || true
+            fi
+            
+            echo "   ✅ Removed premium capabilities from entitlements"
+        else
+            echo "✅ Premium capabilities enabled"
+            echo "   Push Notifications, Communication Notifications, and Associated Domains are active"
+        fi
     - name: 🛠 SwiftGen
       runOnlyWhenInstalling: false
       basedOnDependencyAnalysis: false

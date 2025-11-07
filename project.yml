@@ -54,6 +54,14 @@ settings:
   MARKETING_VERSION: 25.11.0
   CURRENT_PROJECT_VERSION: 1
   SUPPORTS_MACCATALYST: false
+  # Set to NO to disable Push Notifications, Communication Notifications, and Associated Domains
+  # This is useful for personal development teams that don't support these capabilities.
+  # You can also override this in Xcode: Build Settings > User-Defined > ENABLE_PREMIUM_CAPABILITIES
+  # Or via command line: xcodebuild ENABLE_PREMIUM_CAPABILITIES=NO
+  ENABLE_PREMIUM_CAPABILITIES: NO
+  # Application Group identifier - uses team-specific format for personal development teams
+  # When ENABLE_PREMIUM_CAPABILITIES is NO, this will be set to a team-specific format
+  APP_GROUP_IDENTIFIER_BASE: group.io.element
 
 include:
 - path: app.yml

@@ -6698,6 +6698,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A60414DDC2A95B206C91D4A4 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
 			buildPhases = (
+				8DABE254E432434E4047E853 /* 🔧 Configure Premium Capabilities */,
 				8431C24C3AE0AA27308F4185 /* Sources */,
 				087F14F27D0A6FDFB80392A1 /* Resources */,
 				7E8EB7CD881C54161D4474E5 /* Frameworks */,
@@ -6786,6 +6787,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B15427F8699AD5A5FC75C17E /* Build configuration list for PBXNativeTarget "ElementX" */;
 			buildPhases = (
+				120335A25AD3AD16EEECE2AE /* 🔧 Configure Premium Capabilities */,
 				A7130911BCB2DF3D249A1836 /* 🛠 SwiftGen */,
 				7F26850DA7BC749F6FC41586 /* 🧙 Sourcery - Generate mocks */,
 				024F73AD10ACB163505ABE1E /* 🧙 Sourcery - Generate preview tests */,
@@ -6868,6 +6870,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CBD61DB8FBC472BAA66A0CBD /* Build configuration list for PBXNativeTarget "NSE" */;
 			buildPhases = (
+				9AB8CC5AE5190461972BE4EE /* 🔧 Configure Premium Capabilities */,
 				EF3B04F3E2383682955A6EA4 /* Wait for SwiftGen Outputs */,
 				064584F7D1F4A58D753BDD96 /* Sources */,
 				804B8DA568046249B1261739 /* Resources */,
@@ -6904,31 +6907,31 @@
 				ORGANIZATIONNAME = Element;
 				TargetAttributes = {
 					0E28CD62691FDBC63147D5E3 = {
-						DevelopmentTeam = 7J4U792NQT;
+						DevelopmentTeam = X694KGHBPY;
 						TestTargetID = C0FAEB81CFD9776CD78CE489;
 					};
 					19F0C845D67E9BEA4BE7133E = {
 						DevelopmentTeam = "$(DEVELOPMENT_TEAM)";
 					};
 					32C23C8D224D46EFE62AFAD0 = {
-						DevelopmentTeam = 7J4U792NQT;
+						DevelopmentTeam = X694KGHBPY;
 					};
 					7A17BE29BAC81ADBAC6349D9 = {
-						DevelopmentTeam = 7J4U792NQT;
+						DevelopmentTeam = X694KGHBPY;
 					};
 					C0C687DE1D270F9895FEE186 = {
-						DevelopmentTeam = 7J4U792NQT;
+						DevelopmentTeam = X694KGHBPY;
 						TestTargetID = C0FAEB81CFD9776CD78CE489;
 					};
 					C0FAEB81CFD9776CD78CE489 = {
 						DevelopmentTeam = "$(DEVELOPMENT_TEAM)";
 					};
 					D3DB351B7FBE0F49649171FC = {
-						DevelopmentTeam = 7J4U792NQT;
+						DevelopmentTeam = X694KGHBPY;
 						TestTargetID = C0FAEB81CFD9776CD78CE489;
 					};
 					F8E276FD6DC43EADB85241BC = {
-						DevelopmentTeam = 7J4U792NQT;
+						DevelopmentTeam = X694KGHBPY;
 					};
 					FEB53A5BC378C913769656D8 = {
 						DevelopmentTeam = "$(DEVELOPMENT_TEAM)";
@@ -7157,6 +7160,25 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which sourcery >/dev/null; then\n    sourcery --config Tools/Sourcery/PreviewTestsConfig.yml\nelse\n    echo \"warning: Sourcery not installed, run swift run tools setup-project\"\nfi\n";
 		};
+		120335A25AD3AD16EEECE2AE /* 🔧 Configure Premium Capabilities */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "🔧 Configure Premium Capabilities";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ENTITLEMENTS_FILE=\"$SRCROOT/ElementX/SupportingFiles/ElementX.entitlements\"\nENABLE_PREMIUM=\"${ENABLE_PREMIUM_CAPABILITIES:-YES}\"\n\n# Normalize the value (handle YES/NO, 1/0, true/false, etc.)\ncase \"$ENABLE_PREMIUM\" in\n  YES|yes|1|TRUE|true|True)\n    ENABLE_PREMIUM_VALUE=true\n    ;;\n  *)\n    ENABLE_PREMIUM_VALUE=false\n    ;;\nesac\n\nif [ \"$ENABLE_PREMIUM_VALUE\" = \"false\" ]; then\n    echo \"⚠️  Premium capabilities disabled - removing Push Notifications, Communication Notifications, and Associated Domains\"\n    echo \"   This allows installation on devices without a paid Apple Developer account\"\n    \n    # Use PlistBuddy to remove the problematic capabilities\n    # These capabilities require a paid Apple Developer account\n    /usr/libexec/PlistBuddy -c \"Delete :aps-environment\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || true\n    /usr/libexec/PlistBuddy -c \"Delete :com.apple.developer.associated-domains\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || true\n    /usr/libexec/PlistBuddy -c \"Delete :com.apple.developer.usernotifications.communication\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || true\n    \n    # Update Application Group to use team-specific format for personal development teams\n    # Personal teams can't use group.io.element, they need group.<TEAM_ID>.element\n    if [ -n \"$DEVELOPMENT_TEAM\" ]; then\n        TEAM_APP_GROUP=\"group.$DEVELOPMENT_TEAM.element\"\n        echo \"   Updating Application Group to team-specific format: $TEAM_APP_GROUP\"\n        /usr/libexec/PlistBuddy -c \"Set :com.apple.security.application-groups:0 $TEAM_APP_GROUP\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || \\\n        /usr/libexec/PlistBuddy -c \"Add :com.apple.security.application-groups:0 string $TEAM_APP_GROUP\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || true\n    fi\n    \n    echo \"   ✅ Removed premium capabilities from entitlements\"\nelse\n    echo \"✅ Premium capabilities enabled\"\n    echo \"   Push Notifications, Communication Notifications, and Associated Domains are active\"\nfi\n";
+		};
 		23C8392ACDCF25131DAF6F9B /* Scan */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -7195,6 +7217,25 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which sourcery >/dev/null; then\n    sourcery --config Tools/Sourcery/AutoMockableConfig.yml\nelse\n    echo \"warning: Sourcery not installed, run swift run tools setup-project\"\nfi\n";
 		};
+		8DABE254E432434E4047E853 /* 🔧 Configure Premium Capabilities */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "🔧 Configure Premium Capabilities";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ENTITLEMENTS_FILE=\"$SRCROOT/ShareExtension/SupportingFiles/ShareExtension.entitlements\"\nENABLE_PREMIUM=\"${ENABLE_PREMIUM_CAPABILITIES:-YES}\"\n\n# Normalize the value (handle YES/NO, 1/0, true/false, etc.)\ncase \"$ENABLE_PREMIUM\" in\n  YES|yes|1|TRUE|true|True)\n    ENABLE_PREMIUM_VALUE=true\n    ;;\n  *)\n    ENABLE_PREMIUM_VALUE=false\n    ;;\nesac\n\nif [ \"$ENABLE_PREMIUM_VALUE\" = \"false\" ]; then\n    echo \"⚠️  ShareExtension: Updating Application Group for personal development team\"\n    \n    # Update Application Group to use team-specific format for personal development teams\n    # Personal teams can't use group.io.element, they need group.<TEAM_ID>.element\n    if [ -n \"$DEVELOPMENT_TEAM\" ]; then\n        TEAM_APP_GROUP=\"group.$DEVELOPMENT_TEAM.element\"\n        echo \"   Updating Application Group to team-specific format: $TEAM_APP_GROUP\"\n        /usr/libexec/PlistBuddy -c \"Set :com.apple.security.application-groups:0 $TEAM_APP_GROUP\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || \\\n        /usr/libexec/PlistBuddy -c \"Add :com.apple.security.application-groups:0 string $TEAM_APP_GROUP\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || true\n    fi\nfi\n";
+		};
 		98CA896D84BFD53B2554E891 /* ⚠️ SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -7213,6 +7254,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		9AB8CC5AE5190461972BE4EE /* 🔧 Configure Premium Capabilities */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "🔧 Configure Premium Capabilities";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ENTITLEMENTS_FILE=\"$SRCROOT/NSE/SupportingFiles/NSE.entitlements\"\nENABLE_PREMIUM=\"${ENABLE_PREMIUM_CAPABILITIES:-YES}\"\n\n# Normalize the value (handle YES/NO, 1/0, true/false, etc.)\ncase \"$ENABLE_PREMIUM\" in\n  YES|yes|1|TRUE|true|True)\n    ENABLE_PREMIUM_VALUE=true\n    ;;\n  *)\n    ENABLE_PREMIUM_VALUE=false\n    ;;\nesac\n\nif [ \"$ENABLE_PREMIUM_VALUE\" = \"false\" ]; then\n    echo \"⚠️  NSE: Updating Application Group for personal development team\"\n    \n    # Update Application Group to use team-specific format for personal development teams\n    # Personal teams can't use group.io.element, they need group.<TEAM_ID>.element\n    if [ -n \"$DEVELOPMENT_TEAM\" ]; then\n        TEAM_APP_GROUP=\"group.$DEVELOPMENT_TEAM.element\"\n        echo \"   Updating Application Group to team-specific format: $TEAM_APP_GROUP\"\n        /usr/libexec/PlistBuddy -c \"Set :com.apple.security.application-groups:0 $TEAM_APP_GROUP\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || \\\n        /usr/libexec/PlistBuddy -c \"Add :com.apple.security.application-groups:0 string $TEAM_APP_GROUP\" \"$ENTITLEMENTS_FILE\" 2>/dev/null || true\n    fi\nfi\n";
 		};
 		A7130911BCB2DF3D249A1836 /* 🛠 SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8894,6 +8954,7 @@
 				CODE_SIGN_ENTITLEMENTS = NSE/SupportingFiles/NSE.entitlements;
 				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREMIUM_CAPABILITIES = "$(ENABLE_PREMIUM_CAPABILITIES)";
 				INFOPLIST_FILE = NSE/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8946,6 +9007,7 @@
 				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				DEVELOPMENT_ASSET_PATHS = DevelopmentAssets/Media;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREMIUM_CAPABILITIES = "$(ENABLE_PREMIUM_CAPABILITIES)";
 				INFOPLIST_FILE = ElementX/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8974,6 +9036,7 @@
 				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				DEVELOPMENT_ASSET_PATHS = DevelopmentAssets/Media;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREMIUM_CAPABILITIES = "$(ENABLE_PREMIUM_CAPABILITIES)";
 				INFOPLIST_FILE = ElementX/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9017,6 +9080,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/SupportingFiles/ShareExtension.entitlements;
 				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREMIUM_CAPABILITIES = "$(ENABLE_PREMIUM_CAPABILITIES)";
 				INFOPLIST_FILE = ShareExtension/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9037,10 +9101,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_DISPLAY_NAME = "Element X";
-				APP_GROUP_IDENTIFIER = group.io.element;
+				APP_GROUP_IDENTIFIER = group.X694KGHBPY.element;
+				APP_GROUP_IDENTIFIER_BASE = group.io.element;
 				APP_NAME = ElementX;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "colors/accent-color";
-				BASE_BUNDLE_IDENTIFIER = io.element.elementx;
+				BASE_BUNDLE_IDENTIFIER = com.omidchaghaneh.elementx;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -9074,9 +9139,10 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				DEVELOPMENT_TEAM = X694KGHBPY;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREMIUM_CAPABILITIES = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -9107,10 +9173,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_DISPLAY_NAME = "Element X";
-				APP_GROUP_IDENTIFIER = group.io.element;
+				APP_GROUP_IDENTIFIER = group.X694KGHBPY.element;
+				APP_GROUP_IDENTIFIER_BASE = group.io.element;
 				APP_NAME = ElementX;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "colors/accent-color";
-				BASE_BUNDLE_IDENTIFIER = io.element.elementx;
+				BASE_BUNDLE_IDENTIFIER = com.omidchaghaneh.elementx;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -9144,8 +9211,9 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				DEVELOPMENT_TEAM = X694KGHBPY;
 				ENABLE_BITCODE = NO;
+				ENABLE_PREMIUM_CAPABILITIES = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -9245,6 +9313,7 @@
 				CODE_SIGN_ENTITLEMENTS = NSE/SupportingFiles/NSE.entitlements;
 				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREMIUM_CAPABILITIES = "$(ENABLE_PREMIUM_CAPABILITIES)";
 				INFOPLIST_FILE = NSE/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9294,6 +9363,7 @@
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/SupportingFiles/ShareExtension.entitlements;
 				CURRENT_PROJECT_VERSION = "$(CURRENT_PROJECT_VERSION)";
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				ENABLE_PREMIUM_CAPABILITIES = "$(ENABLE_PREMIUM_CAPABILITIES)";
 				INFOPLIST_FILE = ShareExtension/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

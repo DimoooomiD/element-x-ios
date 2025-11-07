@@ -43,6 +43,40 @@ targets:
       - package: SwiftSoup
 
     preBuildScripts:
+    - name: 🔧 Configure Premium Capabilities
+      runOnlyWhenInstalling: false
+      basedOnDependencyAnalysis: false
+      shell: /bin/sh
+      inputPaths:
+        - $(SRCROOT)/NSE/SupportingFiles/NSE.entitlements
+      outputPaths:
+        - $(SRCROOT)/NSE/SupportingFiles/NSE.entitlements
+      script: |
+        ENTITLEMENTS_FILE="$SRCROOT/NSE/SupportingFiles/NSE.entitlements"
+        ENABLE_PREMIUM="${ENABLE_PREMIUM_CAPABILITIES:-YES}"
+        
+        # Normalize the value (handle YES/NO, 1/0, true/false, etc.)
+        case "$ENABLE_PREMIUM" in
+          YES|yes|1|TRUE|true|True)
+            ENABLE_PREMIUM_VALUE=true
+            ;;
+          *)
+            ENABLE_PREMIUM_VALUE=false
+            ;;
+        esac
+        
+        if [ "$ENABLE_PREMIUM_VALUE" = "false" ]; then
+            echo "⚠️  NSE: Updating Application Group for personal development team"
+            
+            # Update Application Group to use team-specific format for personal development teams
+            # Personal teams can't use group.io.element, they need group.<TEAM_ID>.element
+            if [ -n "$DEVELOPMENT_TEAM" ]; then
+                TEAM_APP_GROUP="group.$DEVELOPMENT_TEAM.element"
+                echo "   Updating Application Group to team-specific format: $TEAM_APP_GROUP"
+                /usr/libexec/PlistBuddy -c "Set :com.apple.security.application-groups:0 $TEAM_APP_GROUP" "$ENTITLEMENTS_FILE" 2>/dev/null || \
+                /usr/libexec/PlistBuddy -c "Add :com.apple.security.application-groups:0 string $TEAM_APP_GROUP" "$ENTITLEMENTS_FILE" 2>/dev/null || true
+            fi
+        fi
     - name: Wait for SwiftGen Outputs
       runOnlyWhenInstalling: false
       basedOnDependencyAnalysis: false
@@ -89,6 +123,7 @@ targets:
         SWIFT_OBJC_INTERFACE_HEADER_NAME: GeneratedInterface-Swift.h
         OTHER_SWIFT_FLAGS:
         - "-DIS_NSE"
+        ENABLE_PREMIUM_CAPABILITIES: $(ENABLE_PREMIUM_CAPABILITIES)
 
     sources:
     - path: ../Sources
