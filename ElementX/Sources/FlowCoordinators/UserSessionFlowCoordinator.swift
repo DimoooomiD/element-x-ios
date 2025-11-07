@@ -97,7 +97,7 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
         libraryNavigationStackCoordinator = NavigationStackCoordinator()
         libraryFlowCoordinator = LibraryFlowCoordinator(navigationStackCoordinator: libraryNavigationStackCoordinator,
                                                         flowParameters: flowParameters)
-        libraryTabDetails = .init(tag: HomeTab.library, title: "Library", icon: \.image, selectedIcon: \.image)
+        libraryTabDetails = .init(tag: HomeTab.library, title: "Library", icon: \.document, selectedIcon: \.document)
         libraryTabDetails.navigationStackCoordinator = libraryNavigationStackCoordinator
         
         settingsNavigationStackCoordinator = NavigationStackCoordinator()
