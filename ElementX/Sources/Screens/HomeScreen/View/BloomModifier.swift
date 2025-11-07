@@ -86,20 +86,51 @@ private struct OldBloomModifier: ViewModifier {
     @State private var scrollEdgeAppearance = UINavigationBarAppearance()
     
     @State private var bloom = Bloom()
+    @State private var controllerRef = ControllerRef()
     
     func body(content: Content) -> some View {
         content
-            .introspect(.viewController, on: .supportedVersions, customize: configureBloom)
+            .introspect(.viewController, on: .supportedVersions) { controller in
+                controllerRef.controller = controller
+                // Apply asynchronously to ensure view is ready
+                Task { @MainActor in
+                    // Small delay to ensure navigation controller is fully set up
+                    try? await Task.sleep(nanoseconds: 50_000_000) // 50ms
+                    configureBloom(controller: controller)
+                }
+            }
+            .onAppear {
+                // Backup: Ensure gradient is applied when view appears
+                // This handles cases where introspect might not fire or fires too early
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 150_000_000) // 150ms
+                    if let controller = controllerRef.controller {
+                        configureBloom(controller: controller)
+                    }
+                }
+            }
     }
     
     private func configureBloom(controller: UIViewController) {
+        // Check if already configured and still valid
         if controller.navigationItem.standardAppearance == standardAppearance,
            controller.navigationItem.scrollEdgeAppearance == scrollEdgeAppearance,
-           canUse(bloom) {
+           canUse(bloom),
+           bloom.image != nil {
             return
         }
         
         let bloom = makeBloom()
+        
+        // Ensure we have a valid image before applying
+        guard bloom.image != nil else {
+            // Retry after a short delay if image rendering failed
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
+                configureBloom(controller: controller)
+            }
+            return
+        }
         
         // Use transparent background for consistency with main menus
         // This ensures the gradient depth is the same across all screens
@@ -123,9 +154,22 @@ private struct OldBloomModifier: ViewModifier {
         
         // There's a bug somewhere when rendering in dark mode (which we've mistakenly not been doing)
         // which results in the first 5 stops not having any alpha, only the last one…
-        let newImage = ImageRenderer(content: bloomGradient /* .colorScheme(colorScheme) */ ).uiImage
+        let renderer = ImageRenderer(content: bloomGradient /* .colorScheme(colorScheme) */ )
+        renderer.scale = UIScreen.main.scale
         
-        bloom.image = newImage
+        // Ensure rendering happens on main thread with proper scale
+        let newImage = renderer.uiImage
+        
+        // If rendering failed, try again with explicit size
+        if newImage == nil {
+            let fallbackRenderer = ImageRenderer(content: bloomGradient)
+            fallbackRenderer.scale = UIScreen.main.scale
+            fallbackRenderer.proposedSize = ProposedViewSize(width: 256, height: 384)
+            bloom.image = fallbackRenderer.uiImage
+        } else {
+            bloom.image = newImage
+        }
+        
         bloom.colorScheme = colorScheme
         bloom.baseColor = .compound.gradientSubtleStop1
         return bloom
@@ -155,6 +199,11 @@ private struct OldBloomModifier: ViewModifier {
         var image: UIImage?
         var colorScheme: ColorScheme?
         var baseColor: Color?
+    }
+    
+    // Store controller reference to allow re-application on appear
+    class ControllerRef {
+        weak var controller: UIViewController?
     }
 }
 
