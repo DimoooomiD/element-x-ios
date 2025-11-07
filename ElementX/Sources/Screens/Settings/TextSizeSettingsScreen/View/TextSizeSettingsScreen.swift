@@ -116,6 +116,8 @@ struct TextSizeSettingsScreen: View {
         .compoundList()
         .navigationTitle("Text Size")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
+        .observeThemeChanges() // Synchronous update for immediate response
     }
 }
 
