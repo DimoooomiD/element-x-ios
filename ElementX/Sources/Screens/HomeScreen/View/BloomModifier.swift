@@ -12,6 +12,22 @@ import Foundation
 import SwiftUI
 import SwiftUIIntrospect
 
+// MARK: - Custom Gradient Helper
+
+/// Creates a customizable header gradient
+/// Modify the color values here to change the gradient appearance
+private func headerGradient() -> Gradient {
+    // Original Compound subtle gradient
+    return Gradient(colors: [
+        .compound.gradientSubtleStop1,  // Top color - darkest
+        .compound.gradientSubtleStop2,
+        .compound.gradientSubtleStop3,
+        .compound.gradientSubtleStop4,
+        .compound.gradientSubtleStop5,
+        .compound.gradientSubtleStop6  // Bottom color - lightest
+    ])
+}
+
 extension View {
     /// Adds a bloom behind the navigation bar.
     /// - Parameters:
@@ -75,7 +91,7 @@ private struct BloomModifier: ViewModifier {
                 self.height = height
             }
             .overlay(alignment: .top) {
-                LinearGradient(gradient: .compound.subtle,
+                LinearGradient(gradient: headerGradient(),
                                startPoint: .top,
                                endPoint: .init(x: 0.5, y: endPointY))
                     .ignoresSafeArea(edges: .all)
@@ -215,7 +231,7 @@ private struct OldBloomModifier: ViewModifier {
     
     private var bloomGradient: some View {
         let gradientHeight: CGFloat = headerOnly ? 88 : 384 // Header-only: safe area (~44) + nav bar (44)
-        return LinearGradient(gradient: .compound.subtle,
+        return LinearGradient(gradient: headerGradient(),
                              startPoint: .top,
                              endPoint: .init(x: 0.5, y: endPointY))
             .ignoresSafeArea(edges: .all)
