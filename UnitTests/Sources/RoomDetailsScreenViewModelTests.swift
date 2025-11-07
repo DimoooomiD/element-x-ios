@@ -12,7 +12,7 @@ import MatrixRustSDK
 import SwiftUI
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 @MainActor
 class RoomDetailsScreenViewModelTests: XCTestCase {

@@ -9,7 +9,7 @@
 import MatrixRustSDK
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 class RoomPermissionsTests: XCTestCase {
     func testFromRust() {

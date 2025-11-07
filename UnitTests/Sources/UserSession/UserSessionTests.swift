@@ -6,7 +6,7 @@
 // Please see LICENSE files in the repository root for full details.
 //
 import Combine
-@testable import ElementX
+@testable import Lingugram
 import XCTest
 
 final class UserSessionTests: XCTestCase { }

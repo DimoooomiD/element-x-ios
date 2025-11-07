@@ -11,7 +11,7 @@ import XCTest
 
 import MatrixRustSDK
 
-@testable import ElementX
+@testable import Lingugram
 
 @MainActor
 final class QRCodeLoginScreenViewModelTests: XCTestCase {

@@ -7,7 +7,7 @@
 //
 
 import CoreLocation
-@testable import ElementX
+@testable import Lingugram
 import XCTest
 
 final class MapTilerURLBuilderTests: XCTestCase {

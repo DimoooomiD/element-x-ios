@@ -1,14 +1,14 @@
-name: ElementX
+name: Lingugram
 
 schemes:
-  ElementX:
+  Lingugram:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        ElementX:
+        Lingugram:
           - running
           - testing
           - profiling
@@ -32,13 +32,13 @@ schemes:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - ElementX
+        - Lingugram
       testPlans:
         - path: ../../UnitTests/SupportingFiles/UnitTests.xctestplan
           defaultPlan: true
 
 targets:
-  ElementX:
+  Lingugram:
     type: application
     platform: iOS
 

@@ -9,7 +9,7 @@
 import XCTest
 
 import Combine
-@testable import ElementX
+@testable import Lingugram
 
 @MainActor
 class ChatsFlowCoordinatorTests: XCTestCase {

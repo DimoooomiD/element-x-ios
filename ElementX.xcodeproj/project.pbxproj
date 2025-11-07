@@ -1946,7 +1946,7 @@
 		4B41FABA2B0AEF4389986495 /* LoginMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginMode.swift; sourceTree = "<group>"; };
 		4BD371B60E07A5324B9507EF /* AnalyticsSettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		4C8D988E82A8DFA13BE46F7C /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = pl; path = pl.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		4CD6AC7546E8D7E5C73CEA48 /* ElementX.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ElementX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CD6AC7546E8D7E5C73CEA48 /* Lingugram.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Lingugram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CDDDDD9FE1A699D23A5E096 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		4CF17EFB2833B4CE5C06E7F8 /* LabsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabsScreenCoordinator.swift; sourceTree = "<group>"; };
 		4D3A7375AB22721C436EB056 /* ComposerToolbarModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerToolbarModels.swift; sourceTree = "<group>"; };
@@ -4573,7 +4573,7 @@
 			isa = PBXGroup;
 			children = (
 				2363DB6162BBCC511B67B527 /* AccessibilityTests.xctest */,
-				4CD6AC7546E8D7E5C73CEA48 /* ElementX.app */,
+				4CD6AC7546E8D7E5C73CEA48 /* Lingugram.app */,
 				9C7F7DE62D33C6A26CBFCD72 /* IntegrationTests.xctest */,
 				0D8F620C8B314840D8602E3F /* NSE.appex */,
 				D95E8C0EFEC0C6F96EDAA71A /* PreviewTests.xctest */,
@@ -6878,9 +6878,9 @@
 			productReference = 2363DB6162BBCC511B67B527 /* AccessibilityTests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		C0FAEB81CFD9776CD78CE489 /* ElementX */ = {
+		C0FAEB81CFD9776CD78CE489 /* Lingugram */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B15427F8699AD5A5FC75C17E /* Build configuration list for PBXNativeTarget "ElementX" */;
+			buildConfigurationList = B15427F8699AD5A5FC75C17E /* Build configuration list for PBXNativeTarget "Lingugram" */;
 			buildPhases = (
 				A7130911BCB2DF3D249A1836 /* 🛠 SwiftGen */,
 				7F26850DA7BC749F6FC41586 /* 🧙 Sourcery - Generate mocks */,
@@ -6900,7 +6900,7 @@
 				2C29670603B37E38705D5FF1 /* PBXTargetDependency */,
 				58C473A5DEA945AACFEA8E9F /* PBXTargetDependency */,
 			);
-			name = ElementX;
+			name = Lingugram;
 			packageProductDependencies = (
 				A678E40E917620059695F067 /* MatrixRustSDK */,
 				07FEEEDB11543A7DED420F04 /* Compound */,
@@ -6928,8 +6928,8 @@
 				EDFB92E97D9AC4BA8540C18C /* SwiftSoup */,
 				2A4106A0A96DC4C273128AA5 /* DSWaveformImageViews */,
 			);
-			productName = ElementX;
-			productReference = 4CD6AC7546E8D7E5C73CEA48 /* ElementX.app */;
+			productName = Lingugram;
+			productReference = 4CD6AC7546E8D7E5C73CEA48 /* Lingugram.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D3DB351B7FBE0F49649171FC /* IntegrationTests */ = {
@@ -8975,7 +8975,7 @@
 				PRODUCT_NAME = AccessibilityTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ElementX;
+				TEST_TARGET_NAME = Lingugram;
 			};
 			name = Release;
 		};
@@ -8996,7 +8996,7 @@
 				PRODUCT_NAME = AccessibilityTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ElementX;
+				TEST_TARGET_NAME = Lingugram;
 			};
 			name = Debug;
 		};
@@ -9039,7 +9039,7 @@
 				PRODUCT_NAME = PreviewTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ElementX.app/ElementX";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lingugram.app/Lingugram";
 			};
 			name = Debug;
 		};
@@ -9119,7 +9119,7 @@
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ElementX.app/ElementX";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lingugram.app/Lingugram";
 			};
 			name = Debug;
 		};
@@ -9148,9 +9148,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_DISPLAY_NAME = "Element X";
+				APP_DISPLAY_NAME = "Lingugram";
 				APP_GROUP_IDENTIFIER = group.io.element;
-				APP_NAME = ElementX;
+				APP_NAME = Lingugram;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "colors/accent-color";
 				BASE_BUNDLE_IDENTIFIER = io.element.elementx;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -9218,9 +9218,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_DISPLAY_NAME = "Element X";
+				APP_DISPLAY_NAME = "Lingugram";
 				APP_GROUP_IDENTIFIER = group.io.element;
-				APP_NAME = ElementX;
+				APP_NAME = Lingugram;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "colors/accent-color";
 				BASE_BUNDLE_IDENTIFIER = io.element.elementx;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -9305,7 +9305,7 @@
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ElementX.app/ElementX";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lingugram.app/Lingugram";
 			};
 			name = Release;
 		};
@@ -9326,7 +9326,7 @@
 				PRODUCT_NAME = UITests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ElementX;
+				TEST_TARGET_NAME = Lingugram;
 			};
 			name = Debug;
 		};
@@ -9347,7 +9347,7 @@
 				PRODUCT_NAME = UITests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ElementX;
+				TEST_TARGET_NAME = Lingugram;
 			};
 			name = Release;
 		};
@@ -9390,7 +9390,7 @@
 				PRODUCT_NAME = IntegrationTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ElementX;
+				TEST_TARGET_NAME = Lingugram;
 			};
 			name = Debug;
 		};
@@ -9435,7 +9435,7 @@
 				PRODUCT_NAME = IntegrationTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ElementX;
+				TEST_TARGET_NAME = Lingugram;
 			};
 			name = Release;
 		};
@@ -9453,7 +9453,7 @@
 				PRODUCT_NAME = PreviewTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ElementX.app/ElementX";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lingugram.app/Lingugram";
 			};
 			name = Release;
 		};
@@ -9496,7 +9496,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		B15427F8699AD5A5FC75C17E /* Build configuration list for PBXNativeTarget "ElementX" */ = {
+		B15427F8699AD5A5FC75C17E /* Build configuration list for PBXNativeTarget "Lingugram" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6897D5BC19A2EA6ABD57DE7E /* Debug */,

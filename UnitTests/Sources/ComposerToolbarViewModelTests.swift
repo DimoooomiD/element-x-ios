@@ -7,7 +7,7 @@
 //
 
 import Combine
-@testable import ElementX
+@testable import Lingugram
 import MatrixRustSDK
 import XCTest
 

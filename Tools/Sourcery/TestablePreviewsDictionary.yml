@@ -6,4 +6,4 @@ templates:
 output:
   ../../ElementX/Sources/Other/TestablePreview/TestablePreviewsDictionary.swift
 args:
-  mainTarget: ElementX
+  mainTarget: Lingugram

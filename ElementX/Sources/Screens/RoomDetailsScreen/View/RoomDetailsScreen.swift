@@ -374,7 +374,7 @@ struct RoomDetailsScreen_Previews: PreviewProvider, TestablePreview {
         let roomProxy = JoinedRoomProxyMock(.init(id: "room_a_id",
                                                   name: "Room A",
                                                   topic: """
-                                                  Discussions about Element X iOS | https://github.com/vector-im/element-x-ios
+                                                  Discussions about Lingugram iOS | https://github.com/vector-im/element-x-ios
                                                   
                                                   Feature Status: https://github.com/vector-im/element-x-ios/issues/1225
                                                   

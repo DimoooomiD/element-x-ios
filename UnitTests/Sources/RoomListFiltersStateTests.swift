@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 final class RoomListFiltersStateTests: XCTestCase {
     var appSettings: AppSettings!
