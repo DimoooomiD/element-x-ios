@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct SettingsScreen: View {
@@ -96,27 +97,27 @@ struct SettingsScreen: View {
     private var manageMyAppSection: some View {
         Section {
             ListRow(label: .default(title: L10n.commonAppearance,
-                                    icon: Text("🎨")),
+                                    icon: ColoredIcon(symbol: .paintpalette, color: .purple)),
                     kind: .navigationLink {
                         context.send(viewAction: .appearance)
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.appearance)
             
             ListRow(label: .default(title: "Text Size",
-                                    icon: Text("🔤")),
+                                    icon: ColoredIcon(symbol: .textformatSize, color: .blue)),
                     kind: .navigationLink {
                         context.send(viewAction: .textSize)
                     })
             
             ListRow(label: .default(title: L10n.screenNotificationSettingsTitle,
-                                    icon: Text("🔔")),
+                                    icon: ColoredIcon(symbol: .bell, color: .orange)),
                     kind: .navigationLink {
                         context.send(viewAction: .notifications)
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.notifications)
             
             ListRow(label: .default(title: L10n.commonScreenLock,
-                                    icon: Text("🔒")),
+                                    icon: ColoredIcon(symbol: .lock, color: .red)),
                     kind: .navigationLink {
                         context.send(viewAction: .appLock)
                     })
@@ -125,7 +126,7 @@ struct SettingsScreen: View {
             switch context.viewState.securitySectionMode {
             case .secureBackup:
                 ListRow(label: .default(title: L10n.commonEncryption,
-                                        icon: Text("🔑")),
+                                        icon: ColoredIcon(symbol: .key, color: .yellow)),
                         details: context.viewState.showSecuritySectionBadge ? .icon(securitySectionBadge) : nil,
                         kind: .navigationLink { context.send(viewAction: .secureBackup) })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.secureBackup)
@@ -139,7 +140,7 @@ struct SettingsScreen: View {
         Section {
             if let url = context.viewState.accountProfileURL {
                 ListRow(label: .default(title: L10n.actionManageAccount,
-                                        icon: Text("👤")),
+                                        icon: ColoredIcon(symbol: .personCropCircle, color: .blue)),
                         kind: .button {
                             context.send(viewAction: .manageAccount(url: url))
                         })
@@ -148,7 +149,7 @@ struct SettingsScreen: View {
             
             if let url = context.viewState.accountSessionsListURL {
                 ListRow(label: .default(title: L10n.actionManageDevices,
-                                        icon: Text("📱")),
+                                        icon: ColoredIcon(symbol: .iphone, color: .gray)),
                         kind: .button {
                             context.send(viewAction: .manageAccount(url: url))
                         })
@@ -156,7 +157,7 @@ struct SettingsScreen: View {
             
             if context.viewState.showBlockedUsers {
                 ListRow(label: .default(title: L10n.commonBlockedUsers,
-                                        icon: Text("🚫")),
+                                        icon: ColoredIcon(symbol: .personCropCircleBadgeXmark, color: .red)),
                         kind: .navigationLink {
                             context.send(viewAction: .blockedUsers)
                         })
@@ -168,20 +169,20 @@ struct SettingsScreen: View {
     private var generalSection: some View {
         Section {
             ListRow(label: .default(title: L10n.commonAdvancedSettings,
-                                    icon: Text("⚙️")),
+                                    icon: ColoredIcon(symbol: .gearshape, color: .gray)),
                     kind: .navigationLink {
                         context.send(viewAction: .advancedSettings)
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.advancedSettings)
             
             ListRow(label: .default(title: L10n.screenAdvancedSettingsLabs,
-                                    icon: Text("🧪")),
+                                    icon: ColoredIcon(symbol: .flask, color: .green)),
                     kind: .navigationLink {
                         context.send(viewAction: .labs)
                     })
             
             ListRow(label: .default(title: L10n.commonAbout,
-                                    icon: Text("ℹ️")),
+                                    icon: ColoredIcon(symbol: .infoCircle, color: .blue)),
                     kind: .navigationLink {
                         context.send(viewAction: .about)
                     })
@@ -189,7 +190,7 @@ struct SettingsScreen: View {
             
             if context.viewState.isBugReportServiceEnabled {
                 ListRow(label: .default(title: L10n.commonReportAProblem,
-                                        icon: Text("🐛")),
+                                        icon: ColoredIcon(symbol: .ant, color: .brown)),
                         kind: .navigationLink {
                             context.send(viewAction: .reportBug)
                         })
@@ -198,7 +199,7 @@ struct SettingsScreen: View {
             
             if context.viewState.showAnalyticsSettings {
                 ListRow(label: .default(title: L10n.commonAnalytics,
-                                        icon: Text("📊")),
+                                        icon: ColoredIcon(symbol: .chartBar, color: .cyan)),
                         kind: .navigationLink {
                             context.send(viewAction: .analytics)
                         })
@@ -210,7 +211,7 @@ struct SettingsScreen: View {
     private var signOutSection: some View {
         Section {
             ListRow(label: .action(title: L10n.screenSignoutPreferenceItem,
-                                   icon: Text("🚪"),
+                                   icon: ColoredIcon(symbol: .rectanglePortraitAndArrowRight, color: .red),
                                    role: .destructive),
                     kind: .button {
                         context.send(viewAction: .logout)
@@ -219,7 +220,7 @@ struct SettingsScreen: View {
             
             if context.viewState.showAccountDeactivation {
                 ListRow(label: .action(title: L10n.actionDeactivateAccount,
-                                       icon: Text("⚠️"),
+                                       icon: ColoredIcon(symbol: .exclamationmarkTriangle, color: .orange),
                                        role: .destructive),
                         kind: .navigationLink {
                             context.send(viewAction: .deactivateAccount)
@@ -235,7 +236,7 @@ struct SettingsScreen: View {
     private var developerOptionsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.commonDeveloperOptions,
-                                    icon: Text("💻")),
+                                    icon: ColoredIcon(symbol: .laptopcomputer, color: .indigo)),
                     kind: .navigationLink {
                         context.send(viewAction: .developerOptions)
                     })
@@ -271,6 +272,19 @@ struct SettingsScreen: View {
         if context.viewState.showSecuritySectionBadge {
             BadgeView(size: 10)
         }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
