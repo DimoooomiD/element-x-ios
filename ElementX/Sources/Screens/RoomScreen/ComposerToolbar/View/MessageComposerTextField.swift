@@ -83,12 +83,7 @@ private struct UITextViewWrapper: UIViewRepresentable {
         textView.textContainer.lineFragmentPadding = 0.0
         textView.textContainerInset = .zero
         textView.keyboardType = .default
-        
-        // AutoCorrection doesn't work properly when running on the Mac
-        // https://github.com/element-hq/element-x-ios/issues/1786
-        if ProcessInfo.processInfo.isiOSAppOnMac {
-            textView.autocorrectionType = .no
-        }
+        textView.autocorrectionType = .no
 
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         

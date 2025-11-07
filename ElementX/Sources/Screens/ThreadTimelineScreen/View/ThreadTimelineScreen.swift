@@ -52,7 +52,7 @@ struct ThreadTimelineScreen: View {
         if context.viewState.canSendMessage {
             composerToolbar
         } else {
-            ComposerDisabledView()
+            EmptyView()
         }
     }
     

@@ -140,7 +140,7 @@ struct RoomScreen: View {
             // We are not sure why but when wrapped in the room screen the composer toolbar breaks the accessibility tests
             composerToolbar
         } else {
-            ComposerDisabledView()
+            EmptyView()
         }
     }
     
