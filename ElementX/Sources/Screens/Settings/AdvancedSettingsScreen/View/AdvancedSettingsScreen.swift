@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct AdvancedSettingsScreen: View {
@@ -15,16 +16,19 @@ struct AdvancedSettingsScreen: View {
     var body: some View {
         Form {
             Section {
-                ListRow(label: .plain(title: L10n.actionViewSource,
-                                      description: L10n.screenAdvancedSettingsViewSourceDescription),
+                ListRow(label: .default(title: L10n.actionViewSource,
+                                      description: L10n.screenAdvancedSettingsViewSourceDescription,
+                                      icon: ColoredIcon(symbol: .eye, color: .blue)),
                         kind: .toggle($context.viewSourceEnabled))
                 
-                ListRow(label: .plain(title: L10n.screenAdvancedSettingsSharePresence,
-                                      description: L10n.screenAdvancedSettingsSharePresenceDescription),
+                ListRow(label: .default(title: L10n.screenAdvancedSettingsSharePresence,
+                                      description: L10n.screenAdvancedSettingsSharePresenceDescription,
+                                      icon: ColoredIcon(symbol: .person2, color: .green)),
                         kind: .toggle($context.sharePresence))
                 
-                ListRow(label: .plain(title: L10n.screenAdvancedSettingsMediaCompressionTitle,
-                                      description: L10n.screenAdvancedSettingsMediaCompressionDescription),
+                ListRow(label: .default(title: L10n.screenAdvancedSettingsMediaCompressionTitle,
+                                      description: L10n.screenAdvancedSettingsMediaCompressionDescription,
+                                      icon: ColoredIcon(symbol: .photoStack, color: .purple)),
                         kind: .toggle($context.optimizeMediaUploads))
                     .onChange(of: context.optimizeMediaUploads) {
                         context.send(viewAction: .optimizeMediaUploadsChanged)
@@ -49,7 +53,8 @@ struct AdvancedSettingsScreen: View {
         })
         
         Section {
-            ListRow(label: .plain(title: L10n.screenAdvancedSettingsHideInviteAvatarsToggleTitle),
+            ListRow(label: .default(title: L10n.screenAdvancedSettingsHideInviteAvatarsToggleTitle,
+                                    icon: ColoredIcon(symbol: .personCropCircleBadgeXmark, color: .orange)),
                     details: context.viewState.isWaitingHideInviteAvatars ? .isWaiting(true) : nil,
                     kind: .toggle(binding))
                 .disabled(context.viewState.isWaitingHideInviteAvatars)
@@ -68,7 +73,8 @@ struct AdvancedSettingsScreen: View {
         })
         
         Section {
-            ListRow(label: .plain(title: L10n.screenAdvancedSettingsShowMediaTimelineTitle),
+            ListRow(label: .default(title: L10n.screenAdvancedSettingsShowMediaTimelineTitle,
+                                    icon: ColoredIcon(symbol: .photoOnRectangle, color: .cyan)),
                     details: .isWaiting(context.viewState.isWaitingTimelineMediaVisibility),
                     kind: .inlinePicker(selection: binding,
                                         items: TimelineMediaVisibility.items))
@@ -102,5 +108,18 @@ private extension TimelineMediaVisibility {
         [(title: L10n.screenAdvancedSettingsShowMediaTimelineAlwaysHide, tag: .never),
          (title: L10n.screenAdvancedSettingsShowMediaTimelinePrivateRooms, tag: .privateOnly),
          (title: L10n.screenAdvancedSettingsShowMediaTimelineAlwaysShow, tag: .always)]
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
