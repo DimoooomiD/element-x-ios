@@ -34,11 +34,11 @@ struct ThemeColorOverride {
     let themeColor: UIColor
 }
 
-// MARK: - Dark Blue Theme Configuration
+// MARK: - Dark Teal Theme Configuration
 
-struct DarkBlueThemeConfiguration: ThemeConfiguration {
+struct DarkTealThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .darkBlue
+        .darkTeal
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -49,44 +49,44 @@ struct DarkBlueThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.09, green: 0.13, blue: 0.22, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.08, green: 0.18, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.09, green: 0.13, blue: 0.22, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.08, green: 0.18, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.13, green: 0.18, blue: 0.28, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.12, green: 0.22, blue: 0.24, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.17, green: 0.22, blue: 0.33, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.16, green: 0.26, blue: 0.28, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.15, green: 0.20, blue: 0.30, alpha: 1.0))
+                               themeColor: UIColor(red: 0.14, green: 0.24, blue: 0.26, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.14, green: 0.19, blue: 0.29, alpha: 1.0)
+        UIColor(red: 0.13, green: 0.23, blue: 0.25, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.19, green: 0.25, blue: 0.36, alpha: 1.0)
+        UIColor(red: 0.18, green: 0.28, blue: 0.30, alpha: 1.0)
     }
 }
 
-// MARK: - Dark Green Theme Configuration
+// MARK: - Dark Indigo Theme Configuration
 
-struct DarkGreenThemeConfiguration: ThemeConfiguration {
+struct DarkIndigoThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .darkGreen
+        .darkIndigo
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -97,44 +97,44 @@ struct DarkGreenThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.09, green: 0.18, blue: 0.14, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.11, green: 0.12, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.09, green: 0.18, blue: 0.14, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.11, green: 0.12, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.13, green: 0.23, blue: 0.19, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.16, green: 0.17, blue: 0.25, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.17, green: 0.28, blue: 0.24, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.21, green: 0.22, blue: 0.30, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.15, green: 0.26, blue: 0.22, alpha: 1.0))
+                               themeColor: UIColor(red: 0.19, green: 0.20, blue: 0.28, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.14, green: 0.24, blue: 0.20, alpha: 1.0)
+        UIColor(red: 0.17, green: 0.18, blue: 0.26, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.19, green: 0.30, blue: 0.26, alpha: 1.0)
+        UIColor(red: 0.23, green: 0.24, blue: 0.32, alpha: 1.0)
     }
 }
 
-// MARK: - Dark Purple Theme Configuration
+// MARK: - Dark Slate Theme Configuration
 
-struct DarkPurpleThemeConfiguration: ThemeConfiguration {
+struct DarkSlateThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .darkPurple
+        .darkSlate
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -145,44 +145,44 @@ struct DarkPurpleThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.13, green: 0.09, blue: 0.18, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.14, green: 0.16, blue: 0.18, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.13, green: 0.09, blue: 0.18, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.14, green: 0.16, blue: 0.18, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.18, green: 0.14, blue: 0.23, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.19, green: 0.21, blue: 0.23, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.23, green: 0.19, blue: 0.28, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.24, green: 0.26, blue: 0.28, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.21, green: 0.17, blue: 0.26, alpha: 1.0))
+                               themeColor: UIColor(red: 0.22, green: 0.24, blue: 0.26, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.19, green: 0.15, blue: 0.24, alpha: 1.0)
+        UIColor(red: 0.20, green: 0.22, blue: 0.24, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.25, green: 0.21, blue: 0.30, alpha: 1.0)
+        UIColor(red: 0.26, green: 0.28, blue: 0.30, alpha: 1.0)
     }
 }
 
-// MARK: - Dark Gray Theme Configuration
+// MARK: - Dark Navy Theme Configuration
 
-struct DarkGrayThemeConfiguration: ThemeConfiguration {
+struct DarkNavyThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .darkGray
+        .darkNavy
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -193,44 +193,44 @@ struct DarkGrayThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.13, green: 0.13, blue: 0.13, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.07, green: 0.10, blue: 0.18, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.13, green: 0.13, blue: 0.13, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.07, green: 0.10, blue: 0.18, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.18, green: 0.18, blue: 0.18, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.11, green: 0.14, blue: 0.22, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.23, green: 0.23, blue: 0.23, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.15, green: 0.18, blue: 0.26, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.21, green: 0.21, blue: 0.21, alpha: 1.0))
+                               themeColor: UIColor(red: 0.13, green: 0.16, blue: 0.24, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.19, green: 0.19, blue: 0.19, alpha: 1.0)
+        UIColor(red: 0.12, green: 0.15, blue: 0.23, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1.0)
+        UIColor(red: 0.17, green: 0.20, blue: 0.28, alpha: 1.0)
     }
 }
 
-// MARK: - Dark Red Theme Configuration
+// MARK: - Dark Forest Theme Configuration
 
-struct DarkRedThemeConfiguration: ThemeConfiguration {
+struct DarkForestThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .darkRed
+        .darkForest
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -241,44 +241,44 @@ struct DarkRedThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.18, green: 0.11, blue: 0.13, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.12, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.18, green: 0.11, blue: 0.13, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.12, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.23, green: 0.16, blue: 0.18, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.14, green: 0.19, blue: 0.16, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.28, green: 0.21, blue: 0.23, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.18, green: 0.23, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.26, green: 0.19, blue: 0.21, alpha: 1.0))
+                               themeColor: UIColor(red: 0.16, green: 0.21, blue: 0.18, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.24, green: 0.17, blue: 0.19, alpha: 1.0)
+        UIColor(red: 0.15, green: 0.20, blue: 0.17, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.30, green: 0.23, blue: 0.25, alpha: 1.0)
+        UIColor(red: 0.20, green: 0.25, blue: 0.22, alpha: 1.0)
     }
 }
 
-// MARK: - Dark Orange Theme Configuration
+// MARK: - Dark Steel Theme Configuration
 
-struct DarkOrangeThemeConfiguration: ThemeConfiguration {
+struct DarkSteelThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .darkOrange
+        .darkSteel
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -289,44 +289,44 @@ struct DarkOrangeThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.20, green: 0.15, blue: 0.09, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.16, green: 0.18, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.20, green: 0.15, blue: 0.09, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.16, green: 0.18, blue: 0.20, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.25, green: 0.20, blue: 0.14, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.21, green: 0.23, blue: 0.25, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.30, green: 0.25, blue: 0.19, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.26, green: 0.28, blue: 0.30, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.28, green: 0.23, blue: 0.17, alpha: 1.0))
+                               themeColor: UIColor(red: 0.24, green: 0.26, blue: 0.28, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.26, green: 0.21, blue: 0.15, alpha: 1.0)
+        UIColor(red: 0.22, green: 0.24, blue: 0.26, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.32, green: 0.27, blue: 0.21, alpha: 1.0)
+        UIColor(red: 0.28, green: 0.30, blue: 0.32, alpha: 1.0)
     }
 }
 
-// MARK: - Light Gray Theme Configuration
+// MARK: - Light Teal Theme Configuration
 
-struct LightGrayThemeConfiguration: ThemeConfiguration {
+struct LightTealThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .lightGray
+        .lightTeal
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -337,44 +337,44 @@ struct LightGrayThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.97, green: 0.99, blue: 0.99, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.97, green: 0.99, blue: 0.99, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.94, green: 0.94, blue: 0.94, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.94, green: 0.98, blue: 0.98, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.91, green: 0.91, blue: 0.91, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.91, green: 0.96, blue: 0.96, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.93, green: 0.93, blue: 0.93, alpha: 1.0))
+                               themeColor: UIColor(red: 0.93, green: 0.97, blue: 0.97, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
+        UIColor(red: 0.95, green: 0.98, blue: 0.98, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.89, green: 0.89, blue: 0.89, alpha: 1.0)
+        UIColor(red: 0.89, green: 0.95, blue: 0.95, alpha: 1.0)
     }
 }
 
-// MARK: - Light Blue Theme Configuration
+// MARK: - Light Indigo Theme Configuration
 
-struct LightBlueThemeConfiguration: ThemeConfiguration {
+struct LightIndigoThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .lightBlue
+        .lightIndigo
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -385,44 +385,44 @@ struct LightBlueThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.97, green: 0.98, blue: 0.99, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.98, green: 0.98, blue: 0.99, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.97, green: 0.98, blue: 0.99, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.98, green: 0.98, blue: 0.99, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.94, green: 0.96, blue: 0.98, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.95, green: 0.96, blue: 0.98, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.91, green: 0.94, blue: 0.97, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.92, green: 0.93, blue: 0.96, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.93, green: 0.95, blue: 0.98, alpha: 1.0))
+                               themeColor: UIColor(red: 0.94, green: 0.95, blue: 0.97, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.95, green: 0.97, blue: 0.99, alpha: 1.0)
+        UIColor(red: 0.96, green: 0.97, blue: 0.99, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.89, green: 0.92, blue: 0.96, alpha: 1.0)
+        UIColor(red: 0.90, green: 0.92, blue: 0.95, alpha: 1.0)
     }
 }
 
-// MARK: - Light Green Theme Configuration
+// MARK: - Light Slate Theme Configuration
 
-struct LightGreenThemeConfiguration: ThemeConfiguration {
+struct LightSlateThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .lightGreen
+        .lightSlate
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -433,44 +433,44 @@ struct LightGreenThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.97, green: 0.99, blue: 0.97, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.97, green: 0.99, blue: 0.97, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.94, green: 0.98, blue: 0.95, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.95, green: 0.96, blue: 0.97, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.91, green: 0.96, blue: 0.93, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.92, green: 0.93, blue: 0.94, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.93, green: 0.97, blue: 0.95, alpha: 1.0))
+                               themeColor: UIColor(red: 0.94, green: 0.95, blue: 0.96, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.95, green: 0.98, blue: 0.96, alpha: 1.0)
+        UIColor(red: 0.96, green: 0.97, blue: 0.98, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.89, green: 0.95, blue: 0.92, alpha: 1.0)
+        UIColor(red: 0.90, green: 0.91, blue: 0.92, alpha: 1.0)
     }
 }
 
-// MARK: - Light Purple Theme Configuration
+// MARK: - Light Rose Theme Configuration
 
-struct LightPurpleThemeConfiguration: ThemeConfiguration {
+struct LightRoseThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .lightPurple
+        .lightRose
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -481,44 +481,44 @@ struct LightPurpleThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.99, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.97, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.99, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.99, green: 0.97, blue: 0.97, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.98, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.95, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.96, green: 0.93, blue: 0.96, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.97, green: 0.93, blue: 0.93, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.97, green: 0.95, blue: 0.97, alpha: 1.0))
+                               themeColor: UIColor(red: 0.98, green: 0.95, blue: 0.95, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.98, green: 0.96, blue: 0.98, alpha: 1.0)
+        UIColor(red: 0.98, green: 0.96, blue: 0.96, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.94, green: 0.91, blue: 0.94, alpha: 1.0)
+        UIColor(red: 0.96, green: 0.92, blue: 0.92, alpha: 1.0)
     }
 }
 
-// MARK: - Light Orange Theme Configuration
+// MARK: - Light Cream Theme Configuration
 
-struct LightOrangeThemeConfiguration: ThemeConfiguration {
+struct LightCreamThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .lightOrange
+        .lightCream
     }
     
     var colorOverrides: [ThemeColorOverride] {
@@ -529,36 +529,132 @@ struct LightOrangeThemeConfiguration: ThemeConfiguration {
                                uiColorKeyPath: \.bgCanvasDefault,
                                lightModeColor: tokens.bgCanvasDefault,
                                darkModeColor: tokens.bgCanvasDefault,
-                               themeColor: UIColor(red: 1.00, green: 0.98, blue: 0.96, alpha: 1.0)),
+                               themeColor: UIColor(red: 1.00, green: 0.99, blue: 0.97, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
                                uiColorKeyPath: \.bgSubtleSecondaryLevel0,
                                lightModeColor: tokens.bgSubtleSecondaryLevel0,
                                darkModeColor: tokens.bgSubtleSecondaryLevel0,
-                               themeColor: UIColor(red: 1.00, green: 0.98, blue: 0.96, alpha: 1.0)),
+                               themeColor: UIColor(red: 1.00, green: 0.99, blue: 0.97, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
                                uiColorKeyPath: \.bgCanvasDefaultLevel1,
                                lightModeColor: tokens.bgCanvasDefaultLevel1,
                                darkModeColor: tokens.bgCanvasDefaultLevel1,
-                               themeColor: UIColor(red: 0.99, green: 0.96, blue: 0.94, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.99, green: 0.98, blue: 0.96, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
                                uiColorKeyPath: \.bgSubtlePrimary,
                                lightModeColor: tokens.bgSubtlePrimary,
                                darkModeColor: tokens.bgSubtlePrimary,
-                               themeColor: UIColor(red: 0.98, green: 0.94, blue: 0.91, alpha: 1.0)),
+                               themeColor: UIColor(red: 0.98, green: 0.97, blue: 0.95, alpha: 1.0)),
             ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
                                uiColorKeyPath: \.bgSubtleSecondary,
                                lightModeColor: tokens.bgSubtleSecondary,
                                darkModeColor: tokens.bgSubtleSecondary,
-                               themeColor: UIColor(red: 0.99, green: 0.96, blue: 0.93, alpha: 1.0))
+                               themeColor: UIColor(red: 0.99, green: 0.98, blue: 0.96, alpha: 1.0))
         ]
     }
     
     var bubbleIncomingColor: UIColor? {
-        UIColor(red: 0.99, green: 0.97, blue: 0.95, alpha: 1.0)
+        UIColor(red: 0.99, green: 0.98, blue: 0.97, alpha: 1.0)
     }
     
     var bubbleOutgoingColor: UIColor? {
-        UIColor(red: 0.97, green: 0.93, blue: 0.89, alpha: 1.0)
+        UIColor(red: 0.97, green: 0.96, blue: 0.94, alpha: 1.0)
+    }
+}
+
+// MARK: - Light Azure Theme Configuration
+
+struct LightAzureThemeConfiguration: ThemeConfiguration {
+    var appearance: AppAppearance {
+        .lightAzure
+    }
+    
+    var colorOverrides: [ThemeColorOverride] {
+        let tokens = CompoundColorTokens()
+        
+        return [
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.98, green: 0.99, blue: 1.00, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.98, green: 0.99, blue: 1.00, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.95, green: 0.97, blue: 0.99, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.92, green: 0.95, blue: 0.98, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.94, green: 0.96, blue: 0.99, alpha: 1.0))
+        ]
+    }
+    
+    var bubbleIncomingColor: UIColor? {
+        UIColor(red: 0.96, green: 0.98, blue: 1.00, alpha: 1.0)
+    }
+    
+    var bubbleOutgoingColor: UIColor? {
+        UIColor(red: 0.90, green: 0.93, blue: 0.97, alpha: 1.0)
+    }
+}
+
+// MARK: - Light Pearl Theme Configuration
+
+struct LightPearlThemeConfiguration: ThemeConfiguration {
+    var appearance: AppAppearance {
+        .lightPearl
+    }
+    
+    var colorOverrides: [ThemeColorOverride] {
+        let tokens = CompoundColorTokens()
+        
+        return [
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               themeColor: UIColor(red: 0.99, green: 0.99, blue: 0.99, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               themeColor: UIColor(red: 0.99, green: 0.99, blue: 0.99, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               themeColor: UIColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               themeColor: UIColor(red: 0.95, green: 0.95, blue: 0.96, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               themeColor: UIColor(red: 0.96, green: 0.96, blue: 0.97, alpha: 1.0))
+        ]
+    }
+    
+    var bubbleIncomingColor: UIColor? {
+        UIColor(red: 0.98, green: 0.98, blue: 0.99, alpha: 1.0)
+    }
+    
+    var bubbleOutgoingColor: UIColor? {
+        UIColor(red: 0.94, green: 0.94, blue: 0.95, alpha: 1.0)
     }
 }
 
@@ -568,17 +664,19 @@ struct LightOrangeThemeConfiguration: ThemeConfiguration {
 enum ThemeConfigurationRegistry {
     /// All registered theme configurations
     static let allConfigurations: [ThemeConfiguration] = [
-        DarkBlueThemeConfiguration(),
-        DarkGreenThemeConfiguration(),
-        DarkPurpleThemeConfiguration(),
-        DarkGrayThemeConfiguration(),
-        DarkRedThemeConfiguration(),
-        DarkOrangeThemeConfiguration(),
-        LightGrayThemeConfiguration(),
-        LightBlueThemeConfiguration(),
-        LightGreenThemeConfiguration(),
-        LightPurpleThemeConfiguration(),
-        LightOrangeThemeConfiguration()
+        DarkTealThemeConfiguration(),
+        DarkIndigoThemeConfiguration(),
+        DarkSlateThemeConfiguration(),
+        DarkNavyThemeConfiguration(),
+        DarkForestThemeConfiguration(),
+        DarkSteelThemeConfiguration(),
+        LightTealThemeConfiguration(),
+        LightIndigoThemeConfiguration(),
+        LightSlateThemeConfiguration(),
+        LightRoseThemeConfiguration(),
+        LightCreamThemeConfiguration(),
+        LightAzureThemeConfiguration(),
+        LightPearlThemeConfiguration()
     ]
     
     /// Get configuration for a specific appearance

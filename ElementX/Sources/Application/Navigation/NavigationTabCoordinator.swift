@@ -314,6 +314,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
                 // Store reference and configure appearance asynchronously to avoid modifying state during view update
                 Task { @MainActor in
                     self.tabBarController = tabBarController
+                    // Configure immediately but asynchronously to ensure glass frame appears on startup
                     configureAppearance(tabBarController)
                 }
             }
@@ -350,13 +351,32 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     private func configureAppearance(_ tabBarController: UITabBarController) {
         let standardAppearance = UITabBarAppearance()
         
-        // Configure with default background to preserve selection indicator
-        // This ensures the background frame around selected icons is displayed
+        // Configure with default background to preserve glass blur effect
+        // This ensures the professional glass/frosted frame appearance
         standardAppearance.configureWithDefaultBackground()
         
-        // Override with theme-aware background color
-        // This ensures dark blue and dark green themes are properly applied
-        standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
+        // Apply blur effect with theme-aware style for enhanced glass effect
+        // This creates the professional glass/frosted appearance with proper blur
+        let interfaceStyle = ServiceLocator.shared.settings?.appAppearance.interfaceStyle ?? .unspecified
+        let blurStyle: UIBlurEffect.Style = {
+            switch interfaceStyle {
+            case .dark:
+                return .systemMaterialDark
+            case .light:
+                return .systemMaterialLight
+            default:
+                // Fallback to system style if interface style is unspecified
+                return UITraitCollection.current.userInterfaceStyle == .dark ? .systemMaterialDark : .systemMaterialLight
+            }
+        }()
+        let blurEffect = UIBlurEffect(style: blurStyle)
+        standardAppearance.backgroundEffect = blurEffect
+        
+        // Apply theme-aware background color with transparency to tint the glass effect
+        // Using a semi-transparent color allows the blur to show through while maintaining theme
+        // Lower alpha (0.5) ensures the glass blur effect is clearly visible
+        let themeColor = UIColor.compound.bgCanvasDefault.withAlphaComponent(0.5)
+        standardAppearance.backgroundColor = themeColor
         
         // Configure badge colors
         standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPhone Portrait

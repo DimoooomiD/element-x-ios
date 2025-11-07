@@ -14,20 +14,74 @@ struct LibraryScreen: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(context.viewState.languagePackages) { package in
-                    LanguagePackageRow(package: package) {
-                        context.send(viewAction: .purchasePackage(packageId: package.id))
-                    }
-                }
+            LazyVStack(spacing: 0) {
+                header
+                languagePackages
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+        }
+        .safeAreaInset(edge: .top) {
+            headerSection
         }
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
-        .navigationTitle("Library")
-        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
+    }
+    
+    @ViewBuilder
+    private var headerSection: some View {
+        HStack(spacing: 0) {
+            Text("Library")
+                .font(.compound.headingMDBold)
+                .foregroundStyle(.compound.textPrimary)
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 8)
+        .background(Color.compound.bgCanvasDefault)
+    }
+    
+    var header: some View {
+        VStack(spacing: 16) {
+            BigIcon(icon: \.document)
+            
+            VStack(spacing: 8) {
+                Text("Library")
+                    .font(.compound.headingLGBold)
+                    .foregroundStyle(.compound.textPrimary)
+                    .multilineTextAlignment(.center)
+                
+                Text("\(context.viewState.languagePackages.count) courses available")
+                    .font(.compound.bodyLG)
+                    .foregroundStyle(.compound.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+            
+            Text("Explore language learning courses and expand your skills")
+                .font(.compound.bodyMD)
+                .foregroundStyle(.compound.textPrimary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16)
+        .padding(.top, 32)
+        .padding(.bottom, 24)
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(Color.compound.borderDisabled)
+                .frame(height: 1 / UIScreen.main.scale)
+        }
+    }
+    
+    var languagePackages: some View {
+        LazyVStack(spacing: 16) {
+            ForEach(context.viewState.languagePackages) { package in
+                LanguagePackageRow(package: package) {
+                    context.send(viewAction: .purchasePackage(packageId: package.id))
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
     }
 }
 

@@ -48,28 +48,32 @@ private extension AppAppearance {
             return L10n.commonLight
         case .dark:
             return L10n.commonDark
-        case .darkBlue:
-            return "Dark Blue"
-        case .darkGreen:
-            return "Dark Green"
-        case .darkPurple:
-            return "Dark Purple"
-        case .darkGray:
-            return "Charcoal"
-        case .darkRed:
-            return "Burgundy"
-        case .darkOrange:
-            return "Amber"
-        case .lightGray:
-            return "Light Gray"
-        case .lightBlue:
-            return "Light Blue"
-        case .lightGreen:
-            return "Mint"
-        case .lightPurple:
-            return "Lavender"
-        case .lightOrange:
-            return "Peach"
+        case .darkTeal:
+            return "Ocean"
+        case .darkIndigo:
+            return "Midnight"
+        case .darkSlate:
+            return "Graphite"
+        case .darkNavy:
+            return "Navy"
+        case .darkForest:
+            return "Forest"
+        case .darkSteel:
+            return "Steel"
+        case .lightTeal:
+            return "Aqua"
+        case .lightIndigo:
+            return "Sky"
+        case .lightSlate:
+            return "Silver"
+        case .lightRose:
+            return "Blush"
+        case .lightCream:
+            return "Cream"
+        case .lightAzure:
+            return "Azure"
+        case .lightPearl:
+            return "Pearl"
         }
     }
     
@@ -81,27 +85,9 @@ private extension AppAppearance {
             return .sunMax
         case .dark:
             return .moon
-        case .darkBlue:
+        case .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel:
             return .circleFill
-        case .darkGreen:
-            return .circleFill
-        case .darkPurple:
-            return .circleFill
-        case .darkGray:
-            return .circleFill
-        case .darkRed:
-            return .circleFill
-        case .darkOrange:
-            return .circleFill
-        case .lightGray:
-            return .circle
-        case .lightBlue:
-            return .circle
-        case .lightGreen:
-            return .circle
-        case .lightPurple:
-            return .circle
-        case .lightOrange:
+        case .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
             return .circle
         }
     }
@@ -114,28 +100,32 @@ private extension AppAppearance {
             return .yellow
         case .dark:
             return .indigo
-        case .darkBlue:
-            return .blue
-        case .darkGreen:
-            return .green
-        case .darkPurple:
-            return .purple
-        case .darkGray:
-            return .gray
-        case .darkRed:
-            return .red
-        case .darkOrange:
-            return .orange
-        case .lightGray:
-            return .gray.opacity(0.6)
-        case .lightBlue:
-            return .blue.opacity(0.7)
-        case .lightGreen:
-            return .green.opacity(0.7)
-        case .lightPurple:
-            return .purple.opacity(0.7)
-        case .lightOrange:
-            return .orange.opacity(0.7)
+        case .darkTeal:
+            return Color(red: 0.0, green: 0.5, blue: 0.5)
+        case .darkIndigo:
+            return Color(red: 0.29, green: 0.0, blue: 0.51)
+        case .darkSlate:
+            return Color(red: 0.28, green: 0.32, blue: 0.36)
+        case .darkNavy:
+            return Color(red: 0.0, green: 0.0, blue: 0.5)
+        case .darkForest:
+            return Color(red: 0.0, green: 0.27, blue: 0.13)
+        case .darkSteel:
+            return Color(red: 0.27, green: 0.31, blue: 0.35)
+        case .lightTeal:
+            return Color(red: 0.0, green: 0.5, blue: 0.5).opacity(0.7)
+        case .lightIndigo:
+            return Color(red: 0.29, green: 0.0, blue: 0.51).opacity(0.7)
+        case .lightSlate:
+            return Color(red: 0.28, green: 0.32, blue: 0.36).opacity(0.7)
+        case .lightRose:
+            return Color(red: 1.0, green: 0.75, blue: 0.8).opacity(0.7)
+        case .lightCream:
+            return Color(red: 1.0, green: 0.99, blue: 0.82).opacity(0.7)
+        case .lightAzure:
+            return Color(red: 0.0, green: 0.5, blue: 1.0).opacity(0.7)
+        case .lightPearl:
+            return Color(red: 0.94, green: 0.92, blue: 0.84).opacity(0.7)
         }
     }
 }
