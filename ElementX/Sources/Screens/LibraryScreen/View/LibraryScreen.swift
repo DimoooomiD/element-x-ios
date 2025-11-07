@@ -27,6 +27,7 @@ struct LibraryScreen: View {
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
         .navigationTitle("Library")
         .navigationBarTitleDisplayMode(.inline)
+        .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
     }
 }
 
