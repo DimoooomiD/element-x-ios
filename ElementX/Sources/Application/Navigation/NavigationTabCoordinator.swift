@@ -318,14 +318,14 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
                 }
             }
             .modifier(AppearanceConfigurationModifier(tabBarController: $tabBarController,
-                hasInitialConfiguration: $hasInitialConfiguration,
-                configureAppearance: configureAppearance,
-                updateTabBarAppearance: updateTabBarAppearance))
+                                                      hasInitialConfiguration: $hasInitialConfiguration,
+                                                      configureAppearance: configureAppearance,
+                                                      updateTabBarAppearance: updateTabBarAppearance))
             .modifier(TabChangeModifier(tabBarController: $tabBarController,
-                selectedTab: navigationTabCoordinator.selectedTab,
-                configureAppearance: configureAppearance))
+                                        selectedTab: navigationTabCoordinator.selectedTab,
+                                        configureAppearance: configureAppearance))
             .modifier(TabBarVisibilityModifier(tabBarController: $tabBarController,
-                configureAppearance: configureAppearance))
+                                               configureAppearance: configureAppearance))
     }
     
     private var tabView: some View {
