@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct DeactivateAccountScreen: View {
@@ -54,7 +55,8 @@ struct DeactivateAccountScreen: View {
     
     private var eraseDataSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenDeactivateAccountDeleteAllMessages),
+            ListRow(label: .default(title: L10n.screenDeactivateAccountDeleteAllMessages,
+                                    icon: ColoredIcon(symbol: .trash, color: .red)),
                     kind: .toggle($context.eraseData))
         } footer: {
             Text(L10n.screenDeactivateAccountDeleteAllMessagesNotice)
@@ -64,7 +66,8 @@ struct DeactivateAccountScreen: View {
     
     private var passwordSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.commonPassword),
+            ListRow(label: .default(title: L10n.commonPassword,
+                                    icon: ColoredIcon(symbol: .lock, color: .orange)),
                     kind: .secureField(text: $context.password))
                 .submitLabel(.done)
         } header: {
@@ -88,6 +91,19 @@ private struct InfoItem: View {
                 .foregroundStyle(isSuccess ? .compound.iconSuccessPrimary : .compound.iconCriticalPrimary)
         }
         .labelStyle(.custom(spacing: 8, alignment: .top))
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
