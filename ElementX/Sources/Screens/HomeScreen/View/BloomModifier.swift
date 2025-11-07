@@ -101,9 +101,12 @@ private struct OldBloomModifier: ViewModifier {
         
         let bloom = makeBloom()
         
-        standardAppearance.configureWithDefaultBackground()
+        // Use transparent background for consistency with main menus
+        // This ensures the gradient depth is the same across all screens
+        standardAppearance.configureWithTransparentBackground()
         standardAppearance.backgroundImage = bloom.image
         standardAppearance.backgroundImageContentMode = .scaleToFill
+        standardAppearance.backgroundColor = .compound.bgCanvasDefault
         controller.navigationItem.standardAppearance = standardAppearance
         
         scrollEdgeAppearance.configureWithTransparentBackground()
