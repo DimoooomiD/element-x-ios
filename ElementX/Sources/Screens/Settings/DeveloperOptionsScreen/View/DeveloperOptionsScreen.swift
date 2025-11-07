@@ -51,7 +51,7 @@ struct DeveloperOptionsScreen: View {
                         kind: .toggle($context.publicSearchEnabled))
                 
                 ListRow(label: .default(title: "Hide grey dots",
-                                        icon: ColoredIcon(symbol: .circleBadge, color: .gray)),
+                                        icon: ColoredIcon(symbol: .circle, color: .gray)),
                         kind: .toggle($context.hideUnreadMessagesBadge))
                 
                 ListRow(label: .default(title: "Fuzzy searching",
