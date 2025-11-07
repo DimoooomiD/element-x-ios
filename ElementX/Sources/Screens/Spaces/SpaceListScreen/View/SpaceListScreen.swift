@@ -37,16 +37,6 @@ struct SpaceListScreen: View {
             Text(L10n.screenSpaceListTitle)
                 .font(.compound.headingMDBold)
                 .foregroundStyle(.compound.textPrimary)
-            
-            Spacer()
-            
-            Button {
-                context.send(viewAction: .startChat)
-            } label: {
-                CompoundIcon(\.plus)
-            }
-            .buttonStyle(.compound(.super, size: .toolbarIcon))
-            .accessibilityLabel(L10n.actionStartChat)
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)
