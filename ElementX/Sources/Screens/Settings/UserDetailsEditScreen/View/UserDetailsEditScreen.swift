@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct UserDetailsEditScreen: View {
@@ -72,7 +73,8 @@ struct UserDetailsEditScreen: View {
 
     private var nameSection: some View {
         Section {
-            ListRow(label: .plain(title: L10n.screenEditProfileDisplayNamePlaceholder),
+            ListRow(label: .default(title: L10n.screenEditProfileDisplayNamePlaceholder,
+                                    icon: ColoredIcon(symbol: .person, color: .blue)),
                     kind: .textField(text: $context.name, axis: .horizontal))
                 .focused($focus)
         } header: {
@@ -111,6 +113,19 @@ struct UserDetailsEditScreen: View {
                 Text(L10n.actionRemove)
             }
         }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 
