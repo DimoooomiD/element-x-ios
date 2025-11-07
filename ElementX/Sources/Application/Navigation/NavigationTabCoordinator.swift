@@ -48,8 +48,8 @@ import SwiftUI
                 .hidden
             } else if let barVisibilityOverride {
                 barVisibilityOverride
-            } else if horizontalSizeClass == .compact, navigationSplitCoordinator?.detailCoordinator != nil {
-                // Hide tab bar when inside a room (detail view) on compact devices
+            } else if navigationSplitCoordinator?.detailCoordinator != nil {
+                // Hide tab bar when inside a room (detail view) - applies to all devices
                 .hidden
             } else if navigationStackCoordinator?.stackCoordinators.isEmpty == false {
                 // Hide tab bar when inside settings sub-screens (stack has pushed items)
@@ -302,6 +302,33 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     @State private var hasInitialConfiguration = false
     
     var body: some View {
+        baseView
+            .modifier(SheetAndCoverModifier(navigationTabCoordinator: navigationTabCoordinator))
+            .modifier(OverlayModifier(navigationTabCoordinator: navigationTabCoordinator))
+    }
+    
+    private var baseView: some View {
+        tabView
+            .backportTabBarMinimizeBehaviorOnScrollDown()
+            .introspect(.tabView, on: .supportedVersions) { tabBarController in
+                // Store reference and configure appearance asynchronously to avoid modifying state during view update
+                Task { @MainActor in
+                    self.tabBarController = tabBarController
+                    configureAppearance(tabBarController)
+                }
+            }
+            .modifier(AppearanceConfigurationModifier(tabBarController: $tabBarController,
+                hasInitialConfiguration: $hasInitialConfiguration,
+                configureAppearance: configureAppearance,
+                updateTabBarAppearance: updateTabBarAppearance))
+            .modifier(TabChangeModifier(tabBarController: $tabBarController,
+                selectedTab: navigationTabCoordinator.selectedTab,
+                configureAppearance: configureAppearance))
+            .modifier(TabBarVisibilityModifier(tabBarController: $tabBarController,
+                configureAppearance: configureAppearance))
+    }
+    
+    private var tabView: some View {
         TabView(selection: $navigationTabCoordinator.selectedTab) {
             ForEach(navigationTabCoordinator.tabModules) { module in
                 module.coordinator?.toPresentable()
@@ -317,87 +344,6 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
                     .badge(module.details.badgeCount)
                     .toolbar(module.details.barVisibility(in: horizontalSizeClass), for: .tabBar)
             }
-        }
-        .backportTabBarMinimizeBehaviorOnScrollDown()
-        .introspect(.tabView, on: .supportedVersions) { tabBarController in
-            // Store reference and configure appearance asynchronously to avoid modifying state during view update
-            Task { @MainActor in
-                self.tabBarController = tabBarController
-                configureAppearance(tabBarController)
-            }
-        }
-        .onAppear {
-            // Ensure appearance is configured when view appears
-            // This is critical for initial load to show the selection indicator
-            // Use async to avoid modifying state during view update
-            Task { @MainActor in
-                // Wait for ServiceLocator to be available and theme colors to be resolved
-                var attempts = 0
-                while attempts < 10 {
-                    if ServiceLocator.shared.settings != nil {
-                        // Additional delay to ensure theme colors are fully resolved
-                        try? await Task.sleep(for: .milliseconds(150))
-                        if let tabBarController {
-                            configureAppearance(tabBarController)
-                            hasInitialConfiguration = true
-                            break
-                        }
-                    }
-                    // Retry after a short delay if ServiceLocator isn't ready yet
-                    try? await Task.sleep(for: .milliseconds(50))
-                    attempts += 1
-                }
-            }
-        }
-        .task {
-            // Fallback: ensure appearance is configured after a delay
-            // This helps prevent missing frame on startup if introspect is delayed
-            // Wait for ServiceLocator to be available and theme colors to be resolved
-            var attempts = 0
-            while attempts < 10 {
-                if ServiceLocator.shared.settings != nil {
-                    // Additional delay to ensure theme colors are fully resolved
-                    try? await Task.sleep(for: .milliseconds(200))
-                    if let tabBarController, !hasInitialConfiguration {
-                        configureAppearance(tabBarController)
-                        hasInitialConfiguration = true
-                        break
-                    }
-                }
-                // Retry after a short delay if ServiceLocator isn't ready yet
-                try? await Task.sleep(for: .milliseconds(50))
-                attempts += 1
-            }
-        }
-        .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
-            // Update appearance asynchronously to avoid modifying state during view update
-            // This is critical for custom dark themes (darkBlue, darkGreen, darkPurple)
-            // which don't change interfaceStyle but still need appearance refresh
-            // Also triggers on initial load when the publisher emits its first value
-            Task { @MainActor in
-                updateTabBarAppearance()
-                hasInitialConfiguration = true
-            }
-        }
-        .sheet(item: $navigationTabCoordinator.sheetModule) { module in
-            module.coordinator?.toPresentable()
-                .id(module.id)
-        }
-        .fullScreenCover(item: $navigationTabCoordinator.fullScreenCoverModule) { module in
-            module.coordinator?.toPresentable()
-                .id(module.id)
-        }
-        .accessibilityHidden(navigationTabCoordinator.overlayModule?.coordinator != nil && navigationTabCoordinator.overlayPresentationMode == .fullScreen)
-        .overlay {
-            Group {
-                if let coordinator = navigationTabCoordinator.overlayModule?.coordinator {
-                    coordinator.toPresentable()
-                        .opacity(navigationTabCoordinator.overlayPresentationMode == .minimized ? 0 : 1)
-                        .transition(.opacity)
-                }
-            }
-            .animation(.elementDefault, value: navigationTabCoordinator.overlayPresentationMode)
-            .animation(.elementDefault, value: navigationTabCoordinator.overlayModule)
         }
     }
     
@@ -502,6 +448,12 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         // Force layout update asynchronously to ensure selection indicator is visible
         // This is critical when switching between themes with same interfaceStyle
         DispatchQueue.main.async {
+            // Re-apply separator to ensure frame is always visible
+            let separatorColor = UIColor.compound.borderInteractiveSecondary
+            let separatorImage = createSeparatorImage(color: separatorColor)
+            tabBarController.tabBar.shadowImage = separatorImage
+            tabBarController.tabBar.clipsToBounds = false
+            
             tabBarController.tabBar.setNeedsLayout()
             tabBarController.tabBar.layoutIfNeeded()
         }
@@ -547,5 +499,150 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         // Make the image resizable horizontally to span the full width
         let capInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return image.resizableImage(withCapInsets: capInsets, resizingMode: .tile)
+    }
+}
+
+/// View modifier to handle appearance configuration to reduce type-checking complexity
+private struct AppearanceConfigurationModifier: ViewModifier {
+    @Binding var tabBarController: UITabBarController?
+    @Binding var hasInitialConfiguration: Bool
+    let configureAppearance: (UITabBarController) -> Void
+    let updateTabBarAppearance: () -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                // Ensure appearance is configured when view appears
+                // This is critical for initial load to show the selection indicator
+                // Use async to avoid modifying state during view update
+                Task { @MainActor in
+                    // Wait for ServiceLocator to be available and theme colors to be resolved
+                    var attempts = 0
+                    while attempts < 10 {
+                        if ServiceLocator.shared.settings != nil {
+                            // Additional delay to ensure theme colors are fully resolved
+                            try? await Task.sleep(for: .milliseconds(150))
+                            if let tabBarController {
+                                configureAppearance(tabBarController)
+                                hasInitialConfiguration = true
+                                break
+                            }
+                        }
+                        // Retry after a short delay if ServiceLocator isn't ready yet
+                        try? await Task.sleep(for: .milliseconds(50))
+                        attempts += 1
+                    }
+                }
+            }
+            .task {
+                // Fallback: ensure appearance is configured after a delay
+                // This helps prevent missing frame on startup if introspect is delayed
+                // Wait for ServiceLocator to be available and theme colors to be resolved
+                var attempts = 0
+                while attempts < 10 {
+                    if ServiceLocator.shared.settings != nil {
+                        // Additional delay to ensure theme colors are fully resolved
+                        try? await Task.sleep(for: .milliseconds(200))
+                        if let tabBarController, !hasInitialConfiguration {
+                            configureAppearance(tabBarController)
+                            hasInitialConfiguration = true
+                            break
+                        }
+                    }
+                    // Retry after a short delay if ServiceLocator isn't ready yet
+                    try? await Task.sleep(for: .milliseconds(50))
+                    attempts += 1
+                }
+            }
+            .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
+                // Update appearance asynchronously to avoid modifying state during view update
+                // This is critical for custom dark themes (darkBlue, darkGreen, darkPurple)
+                // which don't change interfaceStyle but still need appearance refresh
+                // Also triggers on initial load when the publisher emits its first value
+                Task { @MainActor in
+                    updateTabBarAppearance()
+                    hasInitialConfiguration = true
+                }
+            }
+    }
+}
+
+/// View modifier to handle tab change events
+private struct TabChangeModifier<Tag: Hashable>: ViewModifier {
+    @Binding var tabBarController: UITabBarController?
+    let selectedTab: Tag?
+    let configureAppearance: (UITabBarController) -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: selectedTab) { _, _ in
+                // Re-apply appearance when tab changes to ensure frame is visible
+                Task { @MainActor in
+                    if let tabBarController {
+                        // Small delay to ensure tab bar is fully updated
+                        try? await Task.sleep(for: .milliseconds(100))
+                        configureAppearance(tabBarController)
+                    }
+                }
+            }
+    }
+}
+
+/// View modifier to handle tab bar visibility changes
+private struct TabBarVisibilityModifier: ViewModifier {
+    @Binding var tabBarController: UITabBarController?
+    let configureAppearance: (UITabBarController) -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .onChange(of: tabBarController?.tabBar.isHidden) { _, isHidden in
+                // Re-apply appearance when tab bar visibility changes (becomes visible)
+                // This ensures the frame is restored after the tab bar is shown again
+                if let isHidden, !isHidden, let tabBarController {
+                    Task { @MainActor in
+                        // Small delay to ensure tab bar is fully visible
+                        try? await Task.sleep(for: .milliseconds(150))
+                        configureAppearance(tabBarController)
+                    }
+                }
+            }
+    }
+}
+
+/// View modifier to handle sheets and full screen covers
+private struct SheetAndCoverModifier<Tag: Hashable>: ViewModifier {
+    @Bindable var navigationTabCoordinator: NavigationTabCoordinator<Tag>
+    
+    func body(content: Content) -> some View {
+        content
+            .sheet(item: $navigationTabCoordinator.sheetModule) { module in
+                module.coordinator?.toPresentable()
+                    .id(module.id)
+            }
+            .fullScreenCover(item: $navigationTabCoordinator.fullScreenCoverModule) { module in
+                module.coordinator?.toPresentable()
+                    .id(module.id)
+            }
+            .accessibilityHidden(navigationTabCoordinator.overlayModule?.coordinator != nil && navigationTabCoordinator.overlayPresentationMode == .fullScreen)
+    }
+}
+
+/// View modifier to handle overlay
+private struct OverlayModifier<Tag: Hashable>: ViewModifier {
+    @Bindable var navigationTabCoordinator: NavigationTabCoordinator<Tag>
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                Group {
+                    if let coordinator = navigationTabCoordinator.overlayModule?.coordinator {
+                        coordinator.toPresentable()
+                            .opacity(navigationTabCoordinator.overlayPresentationMode == .minimized ? 0 : 1)
+                            .transition(.opacity)
+                    }
+                }
+                .animation(.elementDefault, value: navigationTabCoordinator.overlayPresentationMode)
+                .animation(.elementDefault, value: navigationTabCoordinator.overlayModule)
+            }
     }
 }
