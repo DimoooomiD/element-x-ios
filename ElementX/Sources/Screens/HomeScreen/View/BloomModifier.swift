@@ -6,6 +6,7 @@
 // Please see LICENSE files in the repository root for full details.
 //
 
+import Combine
 import Compound
 import Foundation
 import SwiftUI
@@ -16,10 +17,28 @@ extension View {
     /// - Parameter hasSearchBar: Whether or not the navigation bar contains a search bar (so that
     /// the bloom can be sized appropriately).
     @ViewBuilder func toolbarBloom(hasSearchBar: Bool) -> some View {
-        if #available(iOS 26, *) {
-            modifier(BloomModifier(hasSearchBar: hasSearchBar))
-        } else {
-            modifier(OldBloomModifier(hasSearchBar: hasSearchBar))
+        modifier(GradientToggleModifier(hasSearchBar: hasSearchBar))
+    }
+}
+
+private struct GradientToggleModifier: ViewModifier {
+    let hasSearchBar: Bool
+    @State private var gradientEnabled: Bool = ServiceLocator.shared.settings.headerGradientEnabled
+    
+    func body(content: Content) -> some View {
+        Group {
+            if gradientEnabled {
+                if #available(iOS 26, *) {
+                    content.modifier(BloomModifier(hasSearchBar: hasSearchBar))
+                } else {
+                    content.modifier(OldBloomModifier(hasSearchBar: hasSearchBar))
+                }
+            } else {
+                content
+            }
+        }
+        .onReceive(ServiceLocator.shared.settings.$headerGradientEnabled) { newValue in
+            gradientEnabled = newValue
         }
     }
 }
