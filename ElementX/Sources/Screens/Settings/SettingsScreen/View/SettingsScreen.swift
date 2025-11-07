@@ -102,6 +102,12 @@ struct SettingsScreen: View {
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.appearance)
             
+            ListRow(label: .default(title: "Text Size",
+                                    icon: Text("🔤")),
+                    kind: .navigationLink {
+                        context.send(viewAction: .textSize)
+                    })
+            
             ListRow(label: .default(title: L10n.screenNotificationSettingsTitle,
                                     icon: Text("🔔")),
                     kind: .navigationLink {

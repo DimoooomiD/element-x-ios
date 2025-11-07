@@ -113,6 +113,8 @@ class SettingsScreenViewModel: SettingsScreenViewModelType, SettingsScreenViewMo
             actionsSubject.send(.notifications)
         case .appearance:
             actionsSubject.send(.appearance)
+        case .textSize:
+            actionsSubject.send(.textSize)
         case .advancedSettings:
             actionsSubject.send(.advancedSettings)
         case .labs:

@@ -106,6 +106,8 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
                     presentNotificationSettings()
                 case .appearance:
                     presentAppearanceSettings()
+                case .textSize:
+                    presentTextSizeSettings()
                 case .advancedSettings:
                     presentAdvancedSettings()
                 case .labs:
@@ -213,6 +215,11 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     
     private func presentAppearanceSettings() {
         let coordinator = AppearanceSettingsScreenCoordinator(parameters: .init(appSettings: flowParameters.appSettings))
+        navigationStackCoordinator.push(coordinator)
+    }
+    
+    private func presentTextSizeSettings() {
+        let coordinator = TextSizeSettingsScreenCoordinator(parameters: .init(appSettings: flowParameters.appSettings))
         navigationStackCoordinator.push(coordinator)
     }
     

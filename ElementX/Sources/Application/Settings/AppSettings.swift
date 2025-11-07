@@ -53,6 +53,7 @@ final class AppSettings {
         case sharePresence
         case backgroundWallpaperColor
         case headerGradientEnabled
+        case chatRoomTextSize
         
         case elementCallBaseURLOverride
         
@@ -220,6 +221,10 @@ final class AppSettings {
     
     @UserPreference(key: UserDefaultsKeys.headerGradientEnabled, defaultValue: false, storageType: .userDefaults(store))
     var headerGradientEnabled
+    
+    /// Text size multiplier for chat room messages (0.8 to 1.5, default 1.0)
+    @UserPreference(key: UserDefaultsKeys.chatRoomTextSize, defaultValue: 1.0, storageType: .userDefaults(store))
+    var chatRoomTextSize: Double
     
     // MARK: - Security
     
