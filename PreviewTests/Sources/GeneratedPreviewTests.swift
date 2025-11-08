@@ -659,6 +659,12 @@ extension PreviewTests {
         }
     }
 
+    func testRegistrationScreen() async throws {
+        for (index, preview) in RegistrationScreen_Previews._allPreviews.enumerated() {
+            try await assertSnapshots(matching: preview, step: index)
+        }
+    }
+
     func testReportContentScreen() async throws {
         for (index, preview) in ReportContentScreen_Previews._allPreviews.enumerated() {
             try await assertSnapshots(matching: preview, step: index)

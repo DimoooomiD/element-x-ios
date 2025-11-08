@@ -69,12 +69,11 @@ class SpaceListScreenViewModel: SpaceListScreenViewModelType, SpaceListScreenVie
         case .startChat:
             actionsSubject.send(.startChat)
         case .screenAppeared:
-            if !appSettings.hasSeenSpacesAnnouncement {
-                // Use a task otherwise the presentation isn't animated.
-                Task { state.bindings.isPresentingFeatureAnnouncement = true }
-            }
+            // Spaces announcement disabled - never show it
+            break
         case .featureAnnouncementAppeared:
-            appSettings.hasSeenSpacesAnnouncement = true
+            // Spaces announcement disabled
+            break
         }
     }
     

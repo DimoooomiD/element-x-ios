@@ -54,6 +54,8 @@ protocol AuthenticationServiceProtocol: QRCodeLoginServiceProtocol {
     func loginWithOIDCCallback(_ callbackURL: URL) async -> Result<UserSessionProtocol, AuthenticationServiceError>
     /// Performs a password login using the current homeserver.
     func login(username: String, password: String, initialDeviceName: String?, deviceID: String?) async -> Result<UserSessionProtocol, AuthenticationServiceError>
+    /// Performs a password registration using the current homeserver.
+    func register(username: String, password: String, initialDeviceName: String?) async -> Result<UserSessionProtocol, AuthenticationServiceError>
     
     /// Resets the current configuration requiring `configure(for:flow:)` to be called again.
     func reset()

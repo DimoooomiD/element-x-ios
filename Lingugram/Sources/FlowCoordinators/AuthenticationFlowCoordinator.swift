@@ -43,6 +43,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         case oidcAuthentication
         /// The screen to login with a password.
         case loginScreen
+        /// The screen to register with a password.
+        case registrationScreen
         
         /// The screen to report an error.
         case bugReportFlow
@@ -83,6 +85,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         case continueWithPassword
         /// The password login was aborted.
         case cancelledPasswordLogin(previousState: State)
+        /// The password registration was aborted.
+        case cancelledPasswordRegistration(previousState: State)
         
         /// The user has finished reporting a problem (or viewing the logs).
         case bugReportFlowComplete
@@ -161,6 +165,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             navigationStackCoordinator.popToRoot(animated: animated)
         case .loginScreen:
             navigationStackCoordinator.popToRoot(animated: animated)
+        case .registrationScreen:
+            navigationStackCoordinator.popToRoot(animated: animated)
         case .bugReportFlow:
             navigationStackCoordinator.setSheetCoordinator(nil)
         case .complete:
@@ -217,12 +223,26 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         stateMachine.addRoutes(event: .cancelledOIDCAuthentication(previousState: .startScreen), transitions: [.oidcAuthentication => .startScreen])
         
         stateMachine.addRoutes(event: .continueWithPassword, transitions: [.serverConfirmationScreen => .loginScreen,
-                                                                           .startScreen => .loginScreen]) { [weak self] context in
+                                                                           .serverConfirmationScreen => .registrationScreen,
+                                                                           .startScreen => .loginScreen,
+                                                                           .startScreen => .registrationScreen]) { [weak self] context in
             let loginHint = context.userInfo as? String
-            self?.showLoginScreen(loginHint: loginHint, fromState: context.fromState)
+            // Check the authentication flow to determine which screen to show
+            guard let self = self else { return }
+            let currentFlow = self.authenticationService.flow
+            MXLog.info("continueWithPassword: current flow is \(currentFlow), fromState is \(context.fromState)")
+            if currentFlow == .register {
+                MXLog.info("Showing registration screen")
+                self.showRegistrationScreen(fromState: context.fromState)
+            } else {
+                MXLog.info("Showing login screen")
+                self.showLoginScreen(loginHint: loginHint, fromState: context.fromState)
+            }
         }
         stateMachine.addRoutes(event: .cancelledPasswordLogin(previousState: .serverConfirmationScreen), transitions: [.loginScreen => .serverConfirmationScreen])
         stateMachine.addRoutes(event: .cancelledPasswordLogin(previousState: .startScreen), transitions: [.loginScreen => .startScreen])
+        stateMachine.addRoutes(event: .cancelledPasswordRegistration(previousState: .serverConfirmationScreen), transitions: [.registrationScreen => .serverConfirmationScreen])
+        stateMachine.addRoutes(event: .cancelledPasswordRegistration(previousState: .startScreen), transitions: [.registrationScreen => .startScreen])
         
         // Bug Report
         
@@ -235,7 +255,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         stateMachine.addRoutes(event: .signedIn, transitions: [.qrCodeLoginScreen => .complete,
                                                                .oidcAuthentication => .complete,
-                                                               .loginScreen => .complete]) { [weak self] context in
+                                                               .loginScreen => .complete,
+                                                               .registrationScreen => .complete]) { [weak self] context in
             guard let userSession = context.userInfo as? UserSessionProtocol else { fatalError("The user session wasn't included in the context") }
             self?.userHasSignedIn(userSession: userSession)
         }
@@ -331,11 +352,15 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
     
     private func showServerConfirmationScreen(authenticationFlow: AuthenticationFlow) {
         let homeserver = authenticationService.homeserver.value
+        let currentFlow = authenticationService.flow
+        
+        MXLog.info("showServerConfirmationScreen: flow=\(authenticationFlow), homeserver.loginMode=\(homeserver.loginMode), currentFlow=\(currentFlow)")
         
         // If server is already configured for this flow, skip the confirmation screen and proceed directly
         // However, if it was configured for a different flow, we need to reconfigure
-        if homeserver.loginMode != .unknown && authenticationService.flow == authenticationFlow {
+        if homeserver.loginMode != .unknown && currentFlow == authenticationFlow {
             // Server is already configured for this flow, proceed directly
+            MXLog.info("Server already configured for \(authenticationFlow), proceeding directly")
             Task {
                 await proceedWithConfiguredServer(authenticationFlow: authenticationFlow, homeserver: homeserver)
             }
@@ -345,7 +370,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         // Reset the service back to the default homeserver before continuing. This ensures
         // we check that registration is supported if it was previously configured for login.
         // But don't reset if we're coming from automatic configuration - preserve the configured server
-        if homeserver.loginMode == .unknown || authenticationService.flow != authenticationFlow {
+        if homeserver.loginMode == .unknown || currentFlow != authenticationFlow {
+            MXLog.info("Resetting authentication service: loginMode=\(homeserver.loginMode), flow mismatch (\(currentFlow) != \(authenticationFlow))")
             authenticationService.reset()
         }
         
@@ -375,15 +401,24 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
     }
     
     private func proceedWithConfiguredServer(authenticationFlow: AuthenticationFlow, homeserver: LoginHomeserver) async {
+        // Ensure the authentication service flow matches the requested flow
+        // This is important when transitioning between login and registration
+        if authenticationService.flow != authenticationFlow {
+            // Flow mismatch - reconfigure if needed, but for now just proceed
+            // The flow should already be set by configureAccountProviderForRegistration
+            MXLog.warning("Flow mismatch: service flow is \(authenticationService.flow), requested flow is \(authenticationFlow)")
+        }
+        
+        // For password-based authentication (login or registration), proceed directly
+        if homeserver.loginMode == .password {
+            stateMachine.tryEvent(.continueWithPassword)
+            return
+        }
+        
+        // For OIDC, check if it redirects to matrix.org and avoid it
         guard homeserver.loginMode.supportsOIDCFlow else {
-            // For registration, OIDC is required. If not supported, show server confirmation to display error.
-            // For login, proceed to password login.
-            if authenticationFlow == .register {
-                // Registration requires OIDC, so show server confirmation screen to handle the error
-                showServerConfirmationScreen(authenticationFlow: authenticationFlow)
-            } else {
-                stateMachine.tryEvent(.continueWithPassword)
-            }
+            // No OIDC support and no password support - show error
+            showServerConfirmationScreen(authenticationFlow: authenticationFlow)
             return
         }
         
@@ -400,16 +435,25 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         switch await authenticationService.urlForOIDCLogin(loginHint: nil) {
         case .success(let oidcData):
-            stateMachine.tryEvent(.continueWithOIDC, userInfo: (oidcData, window))
+            // Check if OIDC URL contains matrix.org - if so, use password registration instead
+            let oidcURLString = oidcData.url.absoluteString
+            if oidcURLString.contains("matrix.org") {
+                // OIDC redirects to matrix.org, use password authentication instead if available
+                if homeserver.loginMode == .password {
+                    stateMachine.tryEvent(.continueWithPassword)
+                } else {
+                    // Can't use password, show error
+                    showServerConfirmationScreen(authenticationFlow: authenticationFlow)
+                }
+            } else {
+                // OIDC is for local server, proceed with OIDC
+                stateMachine.tryEvent(.continueWithOIDC, userInfo: (oidcData, window))
+            }
         case .failure:
-            // If OIDC fails, fall back appropriately based on flow
-            if authenticationFlow == .register {
-                // Registration requires OIDC, show server confirmation to handle error
-                showServerConfirmationScreen(authenticationFlow: authenticationFlow)
-            } else if homeserver.loginMode == .password {
+            // If OIDC fails, fall back to password if available
+            if homeserver.loginMode == .password {
                 stateMachine.tryEvent(.continueWithPassword)
             } else {
-                // Show server confirmation screen as fallback
                 showServerConfirmationScreen(authenticationFlow: authenticationFlow)
             }
         }
@@ -486,6 +530,31 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         navigationStackCoordinator.push(coordinator) { [weak self] in
             self?.stateMachine.tryEvent(.cancelledPasswordLogin(previousState: fromState))
+        }
+    }
+    
+    private func showRegistrationScreen(fromState: State) {
+        let parameters = RegistrationScreenCoordinatorParameters(authenticationService: authenticationService,
+                                                                userIndicatorController: userIndicatorController,
+                                                                appSettings: appSettings,
+                                                                analytics: analytics)
+        let coordinator = RegistrationScreenCoordinator(parameters: parameters)
+        
+        coordinator.start()
+        
+        coordinator.actions
+            .sink { [weak self] (action: RegistrationScreenCoordinatorAction) in
+                guard let self else { return }
+
+                switch action {
+                case .signedIn(let userSession):
+                    stateMachine.tryEvent(.signedIn, userInfo: userSession)
+                }
+            }
+            .store(in: &cancellables)
+        
+        navigationStackCoordinator.push(coordinator) { [weak self] in
+            self?.stateMachine.tryEvent(.cancelledPasswordRegistration(previousState: fromState))
         }
     }
     

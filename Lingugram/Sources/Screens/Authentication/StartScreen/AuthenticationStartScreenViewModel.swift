@@ -133,37 +133,52 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
         
         switch await authenticationService.configure(for: accountProvider, flow: .register) {
         case .success:
-            // Registration requires OIDC support, so if we get here, OIDC is supported
-            guard authenticationService.homeserver.value.loginMode.supportsOIDCFlow else {
-                // This shouldn't happen as configuration should have failed, but handle it anyway
-                // Fall back to showing server confirmation screen which will display the error
+            let loginMode = authenticationService.homeserver.value.loginMode
+            
+            // Prefer password-based registration for local server to avoid matrix.org redirects
+            if loginMode == .password {
+                // Use password-based registration - go to login screen which can handle registration
                 actionsSubject.send(.register)
                 return
             }
             
-            // Try to get window from state first, if not available, wait a bit and try again
-            var window = state.window
-            if window == nil {
-                // Wait a short moment for the window to be set
-                try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
-                window = state.window
-            }
-            
-            // If window is still not available, fall back to server confirmation screen
-            // which can handle getting the window and proceeding
-            guard let window = window else {
-                // Fall back to server confirmation screen which will handle this
-                actionsSubject.send(.register)
-                return
-            }
-            
-            switch await authenticationService.urlForOIDCLogin(loginHint: nil) {
-            case .success(let oidcData):
-                // Go directly to OIDC registration, skipping server confirmation screen
-                actionsSubject.send(.loginDirectlyWithOIDC(data: oidcData, window: window))
-            case .failure:
-                // If OIDC URL fetch fails, fall back to server confirmation screen
-                // which will display the error properly
+            // If OIDC is supported, check if it redirects to matrix.org
+            if loginMode.supportsOIDCFlow {
+                // Try to get window from state first, if not available, wait a bit and try again
+                var window = state.window
+                if window == nil {
+                    // Wait a short moment for the window to be set
+                    try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
+                    window = state.window
+                }
+                
+                // If window is still not available, fall back to server confirmation screen
+                guard let window = window else {
+                    actionsSubject.send(.register)
+                    return
+                }
+                
+                switch await authenticationService.urlForOIDCLogin(loginHint: nil) {
+                case .success(let oidcData):
+                    // Check if OIDC URL contains matrix.org - if so, use password registration instead
+                    let oidcURLString = oidcData.url.absoluteString
+                    if oidcURLString.contains("matrix.org") {
+                        // OIDC redirects to matrix.org, use password registration instead
+                        actionsSubject.send(.register)
+                    } else {
+                        // OIDC is for local server, proceed with OIDC
+                        actionsSubject.send(.loginDirectlyWithOIDC(data: oidcData, window: window))
+                    }
+                case .failure:
+                    // If OIDC URL fetch fails, fall back to password registration if available
+                    if loginMode == .password {
+                        actionsSubject.send(.register)
+                    } else {
+                        actionsSubject.send(.register)
+                    }
+                }
+            } else {
+                // No OIDC support, use password registration
                 actionsSubject.send(.register)
             }
         case .failure:

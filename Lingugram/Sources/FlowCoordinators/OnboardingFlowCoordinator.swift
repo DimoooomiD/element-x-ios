@@ -133,7 +133,7 @@ class OnboardingFlowCoordinator: FlowCoordinatorProtocol {
     }
     
     private var requiresAnalyticsSetup: Bool {
-        analyticsService.shouldShowAnalyticsPrompt
+        false // Analytics prompt disabled - never show it
     }
     
     private var requiresNotificationsSetup: Bool {
@@ -216,7 +216,8 @@ class OnboardingFlowCoordinator: FlowCoordinatorProtocol {
             case (_, _, .appLockSetup):
                 presentAppLockSetupFlow()
             case (_, _, .analyticsPrompt):
-                presentAnalyticsPromptScreen()
+                // Analytics prompt disabled - skip to next state
+                stateMachine.tryEvent(.next)
             case (_, _, .notificationPermissions):
                 presentNotificationPermissionsScreen()
             case (_, _, .finished):
@@ -376,21 +377,7 @@ class OnboardingFlowCoordinator: FlowCoordinatorProtocol {
         coordinator.start()
     }
 
-    private func presentAnalyticsPromptScreen() {
-        let coordinator = AnalyticsPromptScreenCoordinator(analytics: analyticsService, termsURL: appSettings.analyticsTermsURL)
-        
-        coordinator.actions
-            .sink { [weak self] action in
-                guard let self else { return }
-                switch action {
-                case .done:
-                    stateMachine.tryEvent(.next)
-                }
-            }
-            .store(in: &cancellables)
-        
-        presentCoordinator(coordinator)
-    }
+    // Analytics prompt screen removed - no longer shown
     
     private func presentNotificationPermissionsScreen() {
         let coordinator = NotificationPermissionsScreenCoordinator(parameters: .init(notificationManager: notificationManager))

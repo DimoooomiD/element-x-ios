@@ -140,7 +140,7 @@ class AppLockFlowCoordinator: CoordinatorProtocol {
     
     private func configureStateMachine() {
         stateMachine.addRouteMapping { [weak self] event, fromState, _ in
-            guard let self, appLockService.isEnabled else { return fromState }
+            guard let self, appLockService.isEnabled, appLockService.isMandatory else { return fromState }
             
             switch (fromState, event) {
             case (.initial, .start):
