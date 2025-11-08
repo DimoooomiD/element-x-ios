@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct LoginScreen: View {
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     /// The focus state of the username text field.
     @FocusState private var isUsernameFocused: Bool
     /// The focus state of the password text field.
@@ -29,7 +30,7 @@ struct LoginScreen: View {
                     .frame(width: geometry.size.width)
                     .padding(.bottom, UIConstants.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
-                    .padding(.top, 8)
+                    .padding(.top, 32)
                 
                 Spacer()
                     .frame(height: UIConstants.spacerHeight(in: geometry))
@@ -37,7 +38,7 @@ struct LoginScreen: View {
             .frame(maxHeight: .infinity)
         }
         .background {
-            LanguageLearningBackground()
+            LanguageLearningBackground(config: backgroundConfig)
         }
         .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -48,21 +49,6 @@ struct LoginScreen: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            // Large title like the first page
-            VStack(spacing: 16) {
-                Text("Welcome Back")
-                    .font(.system(size: 42, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                
-                Text("Continue your language learning journey")
-                    .font(.system(size: 18, weight: .regular, design: .default))
-                    .foregroundColor(.white.opacity(0.9))
-                    .multilineTextAlignment(.center)
-            }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 48)
-            
             switch context.viewState.loginMode {
             case .password:
                 loginForm
@@ -80,7 +66,7 @@ struct LoginScreen: View {
     
     /// The form with text fields for username and password.
     var loginForm: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 18) {
             TextField(text: $context.username) {
                 Text(L10n.commonUsername).foregroundColor(.white.opacity(0.7))
             }
@@ -94,7 +80,6 @@ struct LoginScreen: View {
                 usernameFocusChanged(isFocussed: newValue)
             }
             .onSubmit { isPasswordFocused = true }
-            .padding(.bottom, 20)
             
             SecureField(text: $context.password) {
                 Text(L10n.commonPassword).foregroundColor(.white.opacity(0.7))
@@ -105,6 +90,7 @@ struct LoginScreen: View {
             .submitLabel(.done)
             .onSubmit(submit)
         }
+        .frame(maxWidth: .infinity)
     }
     
     /// The action buttons.
@@ -129,6 +115,32 @@ struct LoginScreen: View {
             .foregroundColor(.compound.textPrimary)
             .frame(maxWidth: .infinity)
             .accessibilityIdentifier(A11yIdentifiers.loginScreen.unsupportedServer)
+    }
+    
+    private var backgroundConfig: LanguageBackgroundConfig {
+        if verticalSizeClass == .regular {
+            return LanguageBackgroundConfig(
+                emojiCount: 36,
+                verticalStart: 0.05,
+                verticalEnd: 0.95,
+                horizontalPadding: 12,
+                centerGapFraction: 0.0,
+                speedMultiplier: 1.0,
+                uniformDistribution: false,
+                randomDistribution: true
+            )
+        } else {
+            return LanguageBackgroundConfig(
+                emojiCount: 28,
+                verticalStart: 0.05,
+                verticalEnd: 0.95,
+                horizontalPadding: 10,
+                centerGapFraction: 0.0,
+                speedMultiplier: 0.9,
+                uniformDistribution: false,
+                randomDistribution: true
+            )
+        }
     }
     
     /// Parses the username for a homeserver.

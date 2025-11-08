@@ -8,24 +8,60 @@
 
 import SwiftUI
 
+/// Configuration for the language learning animated background.
+struct LanguageBackgroundConfig {
+    /// Number of emojis to show (nil = all).
+    var emojiCount: Int? = nil
+    /// Normalized vertical range [0, 1] where emojis may appear.
+    var verticalStart: CGFloat = 0.35
+    var verticalEnd: CGFloat = 0.75
+    /// Horizontal padding on both sides in points.
+    var horizontalPadding: CGFloat = 32
+    /// Fraction of the screen width to keep clear in the horizontal center (0-1).
+    /// Example: 0.4 leaves 40% of the center empty to avoid the main content.
+    var centerGapFraction: CGFloat = 0.38
+    /// Multiplier for animation speed (1.0 = default).
+    var speedMultiplier: Double = 1.0
+    /// Spread emojis uniformly across the available region.
+    var uniformDistribution: Bool = false
+    /// Spread emojis randomly across the region (ignores lanes). Stable per index.
+    var randomDistribution: Bool = false
+    
+    static let `default` = LanguageBackgroundConfig()
+}
+
 /// Professional animated background matching LinguaFlow Pro website style
 struct LanguageLearningBackground: View {
+    let config: LanguageBackgroundConfig
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animationPhase: Double = 0
     @State private var animationTask: Task<Void, Never>?
     
-    // Comprehensive emoji collection matching the website
+    // Expanded emoji collection for language learning theme
     private let emojis: [String] = [
         // Study & Learning Emojis
-        "🌍", "📚", "🎯", "🚀", "💡", "⭐", "📖", "✏️", "🎓", "🧠",
-        "📝", "🔍", "💭", "🎨", "📊", "🏆", "🎪", "🔬", "📐", "🎵",
+        "🌍", "📚", "🎯", "💡", "📖", "🎓", "✏️", "📝", "📊", "📋",
         // Country Flags
-        "🇪🇸", "🇫🇷", "🇩🇪", "🇯🇵", "🇨🇳", "🇸🇦", "🇮🇹", "🇷🇺", "🇰🇷", "🇧🇷",
-        "🇮🇳", "🇬🇧", "🇨🇦", "🇦🇺", "🇳🇱", "🇸🇪", "🇳🇴", "🇩🇰", "🇫🇮", "🇵🇱",
-        "🇺🇸", "🇲🇽", "🇵🇹", "🇬🇷", "🇹🇷",
+        "🇪🇸", "🇫🇷", "🇩🇪", "🇯🇵", "🇬🇧", "🇺🇸", "🇮🇹", "🇵🇹", "🇷🇺", "🇨🇳", "🇰🇷", "🇧🇷", "🇲🇽", "🇮🇳",
         // Achievement & Success
-        "🏅", "🥇", "🥈", "🥉", "🎖️", "🏵️", "🎗️", "🎀", "🎁", "🎊",
-        "🎉", "🎈", "🎂", "🍰", "🍭"
+        "🏅", "🥇", "🏆", "🎉", "⭐", "✨", "🌟", "💫",
+        // Communication & Language
+        "💬", "🗣️", "👥", "🤝", "🌐", "🔤", "🔠", "📱", "💻",
+        // Learning Tools
+        "🎧", "🎤", "📹", "🎬", "🎨", "🧠", "💭", "🔍", "📌"
     ]
+    
+    init(config: LanguageBackgroundConfig = .default) {
+        self.config = config
+    }
+    
+    private var renderEmojis: [String] {
+        if let limit = config.emojiCount, limit > 0 {
+            // Only use unique emojis, never repeat
+            return Array(emojis.prefix(min(limit, emojis.count)))
+        }
+        return emojis
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -81,14 +117,22 @@ struct LanguageLearningBackground: View {
                 .ignoresSafeArea()
                 
                 // Floating emojis with website-style animations
-                ForEach(0..<emojis.count, id: \.self) { index in
+                ForEach(0..<renderEmojis.count, id: \.self) { index in
                     FloatingEmoji(
-                        emoji: emojis[index],
+                        emoji: renderEmojis[index],
                         index: index,
-                        totalCount: emojis.count,
+                        totalCount: renderEmojis.count,
                         screenWidth: geometry.size.width,
                         screenHeight: geometry.size.height,
-                        animationPhase: animationPhase
+                        animationPhase: animationPhase,
+                        horizontalPadding: config.horizontalPadding,
+                        verticalStart: config.verticalStart,
+                        verticalEnd: config.verticalEnd,
+                        centerGapFraction: config.centerGapFraction,
+                        uniformDistribution: config.uniformDistribution,
+                        randomDistribution: config.randomDistribution,
+                        reduceMotion: reduceMotion,
+                        speedMultiplier: config.speedMultiplier
                     )
                 }
             }
@@ -110,6 +154,7 @@ struct LanguageLearningBackground: View {
         animationTask?.cancel()
         
         // Start new animation task with faster updates
+        guard !reduceMotion else { return }
         animationTask = Task {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 16_666_667) // ~60fps
@@ -125,6 +170,13 @@ struct LanguageLearningBackground: View {
     }
 }
 
+/// Circle packing structure for emoji positioning
+private struct EmojiCircle {
+    let centerX: CGFloat
+    let centerY: CGFloat
+    let radius: CGFloat
+}
+
 /// Individual floating emoji with gentle vertical float only
 private struct FloatingEmoji: View {
     let emoji: String
@@ -133,9 +185,22 @@ private struct FloatingEmoji: View {
     let screenWidth: CGFloat
     let screenHeight: CGFloat
     let animationPhase: Double
+    let horizontalPadding: CGFloat
+    let verticalStart: CGFloat
+    let verticalEnd: CGFloat
+    let centerGapFraction: CGFloat
+    let uniformDistribution: Bool
+    let randomDistribution: Bool
+    let reduceMotion: Bool
+    let speedMultiplier: Double
     
     private var baseSize: CGFloat {
         CGFloat(18 + (index % 5) * 3) // Smaller sizes: 18 to 30
+    }
+    
+    // Circle radius for collision detection (emoji size + padding)
+    private var circleRadius: CGFloat {
+        baseSize * 0.5 + 20 // Half emoji size + padding
     }
     
     // Gentle animation speeds - only vertical float
@@ -143,13 +208,13 @@ private struct FloatingEmoji: View {
         // Varied speeds for natural floating
         let category = index % 7
         switch category {
-        case 0: return 0.15 // Slow
-        case 1: return 0.2
-        case 2: return 0.18
-        case 3: return 0.22
-        case 4: return 0.16
-        case 5: return 0.19
-        default: return 0.21
+        case 0: return 0.15 * speedMultiplier // Slow
+        case 1: return 0.20 * speedMultiplier
+        case 2: return 0.18 * speedMultiplier
+        case 3: return 0.22 * speedMultiplier
+        case 4: return 0.16 * speedMultiplier
+        case 5: return 0.19 * speedMultiplier
+        default: return 0.21 * speedMultiplier
         }
     }
     
@@ -162,39 +227,131 @@ private struct FloatingEmoji: View {
         0.35 + sin(Double(index) * 0.4) * 0.15 // Range: 0.2 to 0.5
     }
     
-    // Completely random distribution across entire screen - more widespread
+    // Circle packing algorithm to position emojis without collisions
+    private var initialPosition: (x: CGFloat, y: CGFloat) {
+        // Calculate available area
+        let minX = horizontalPadding
+        let maxX = screenWidth - horizontalPadding
+        let availableWidth = max(0, maxX - minX)
+        
+        let start = max(0, min(1, verticalStart))
+        let end = max(0, min(1, verticalEnd))
+        let minV = min(start, end)
+        let maxV = max(start, end)
+        let minY = minV * screenHeight
+        let maxY = maxV * screenHeight
+        let availableHeight = max(0, maxY - minY)
+        
+        // Generate positions for all previous emojis (deterministic)
+        var placedCircles: [EmojiCircle] = []
+        
+        for i in 0..<index {
+            let prevSize = CGFloat(18 + (i % 5) * 3)
+            let prevRadius = prevSize * 0.5 + 20
+            
+            // Try to find a non-colliding position for this emoji
+            var attempts = 0
+            var foundPosition = false
+            var candidateX: CGFloat = 0
+            var candidateY: CGFloat = 0
+            
+            while attempts < 100 && !foundPosition {
+                // Deterministic pseudo-random based on index and attempt
+                let seedX = sin(Double(i) * 17.217 + Double(attempts) * 0.1) * 10000.0
+                let seedY = cos(Double(i) * 23.731 + Double(attempts) * 0.1) * 10000.0
+                let fracX = CGFloat(seedX - floor(seedX))
+                let fracY = CGFloat(seedY - floor(seedY))
+                
+                candidateX = minX + fracX * availableWidth
+                candidateY = minY + fracY * availableHeight
+                
+                // Ensure circle stays within bounds
+                candidateX = max(minX + prevRadius, min(maxX - prevRadius, candidateX))
+                candidateY = max(minY + prevRadius, min(maxY - prevRadius, candidateY))
+                
+                // Check collision with all previously placed circles
+                var collides = false
+                for existing in placedCircles {
+                    let dx = candidateX - existing.centerX
+                    let dy = candidateY - existing.centerY
+                    let distance = sqrt(dx * dx + dy * dy)
+                    if distance < (prevRadius + existing.radius) {
+                        collides = true
+                        break
+                    }
+                }
+                
+                if !collides {
+                    foundPosition = true
+                } else {
+                    attempts += 1
+                }
+            }
+            
+            if foundPosition {
+                placedCircles.append(EmojiCircle(centerX: candidateX, centerY: candidateY, radius: prevRadius))
+            } else {
+                // Fallback: place at a safe distance from previous
+                let fallbackX = minX + CGFloat(i) * (availableWidth / CGFloat(max(totalCount, 1)))
+                let fallbackY = minY + CGFloat(i % 5) * (availableHeight / 4.0)
+                placedCircles.append(EmojiCircle(centerX: fallbackX, centerY: fallbackY, radius: prevRadius))
+            }
+        }
+        
+        // Now find position for current emoji
+        var attempts = 0
+        var foundPosition = false
+        var finalX: CGFloat = 0
+        var finalY: CGFloat = 0
+        
+        while attempts < 150 && !foundPosition {
+            // Deterministic pseudo-random based on index and attempt
+            let seedX = sin(Double(index) * 17.217 + Double(attempts) * 0.1) * 10000.0
+            let seedY = cos(Double(index) * 23.731 + Double(attempts) * 0.1) * 10000.0
+            let fracX = CGFloat(seedX - floor(seedX))
+            let fracY = CGFloat(seedY - floor(seedY))
+            
+            finalX = minX + fracX * availableWidth
+            finalY = minY + fracY * availableHeight
+            
+            // Ensure circle stays within bounds
+            finalX = max(minX + circleRadius, min(maxX - circleRadius, finalX))
+            finalY = max(minY + circleRadius, min(maxY - circleRadius, finalY))
+            
+            // Check collision with all previously placed circles
+            var collides = false
+            for existing in placedCircles {
+                let dx = finalX - existing.centerX
+                let dy = finalY - existing.centerY
+                let distance = sqrt(dx * dx + dy * dy)
+                if distance < (circleRadius + existing.radius) {
+                    collides = true
+                    break
+                }
+            }
+            
+            if !collides {
+                foundPosition = true
+            } else {
+                attempts += 1
+            }
+        }
+        
+        if !foundPosition {
+            // Fallback: place at a safe position
+            finalX = minX + CGFloat(index) * (availableWidth / CGFloat(max(totalCount, 1)))
+            finalY = minY + CGFloat(index % 5) * (availableHeight / 4.0)
+        }
+        
+        return (finalX, finalY)
+    }
+    
     private var initialX: CGFloat {
-        // Use multiple sine/cosine functions with different frequencies and prime numbers for better randomness
-        let seed1 = sin(Double(index) * 0.847 + Double(index % 7) * 1.234 + Double(index % 23) * 0.567)
-        let seed2 = cos(Double(index) * 0.623 + Double(index % 11) * 0.891 + Double(index % 29) * 0.789)
-        let seed3 = sin(Double(index) * 1.127 + Double(index % 13) * 0.456 + Double(index % 31) * 0.345)
-        let seed4 = cos(Double(index) * 0.934 + Double(index % 17) * 1.123 + Double(index % 37) * 0.678)
-        
-        // Combine seeds for more random-like distribution
-        let combined = (seed1 + seed2 * 0.7 + seed3 * 0.5 + seed4 * 0.3) / 2.5
-        
-        // Map to screen width with minimal padding for maximum spread
-        let padding: CGFloat = 10
-        let availableWidth = screenWidth - (padding * 2)
-        let normalized = (combined + 1.0) / 2.0 // Normalize from [-1,1] to [0,1]
-        return padding + CGFloat(normalized) * availableWidth
+        initialPosition.x
     }
     
     private var initialY: CGFloat {
-        // Use different seed combinations for Y to ensure independence from X
-        let seed1 = cos(Double(index) * 0.731 + Double(index % 5) * 1.567 + Double(index % 19) * 0.432)
-        let seed2 = sin(Double(index) * 0.934 + Double(index % 17) * 0.723 + Double(index % 41) * 0.654)
-        let seed3 = cos(Double(index) * 1.245 + Double(index % 19) * 0.389 + Double(index % 43) * 0.876)
-        let seed4 = sin(Double(index) * 0.567 + Double(index % 3) * 1.234 + Double(index % 47) * 0.543)
-        
-        // Combine seeds for more random-like distribution
-        let combined = (seed1 + seed2 * 0.8 + seed3 * 0.6 + seed4 * 0.4) / 2.8
-        
-        // Map to screen height with minimal padding for maximum spread
-        let padding: CGFloat = 20
-        let availableHeight = screenHeight - (padding * 2)
-        let normalized = (combined + 1.0) / 2.0 // Normalize from [-1,1] to [0,1]
-        return padding + CGFloat(normalized) * availableHeight
+        initialPosition.y
     }
     
     var body: some View {
@@ -205,10 +362,11 @@ private struct FloatingEmoji: View {
     }
     
     private var currentY: CGFloat {
+        guard !reduceMotion else { return initialY }
         // Gentle vertical floating - visible movement
         let phase = animationPhase * animationSpeed + pathOffset
-        // Vertical movement: -25px to +25px for visible float
-        let verticalMovement = sin(phase) * 25
+        // Vertical movement amplitude
+        let verticalMovement = sin(phase) * 20
         return initialY + CGFloat(verticalMovement)
     }
 }
