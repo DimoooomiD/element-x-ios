@@ -341,7 +341,7 @@ class AuthenticationService: AuthenticationServiceProtocol {
             
             switch errcode {
             case "M_USER_IN_USE":
-                return .failure(.invalidCredentials) // Username already taken
+                return .failure(.usernameAlreadyTaken) // Username already taken
             case "M_FORBIDDEN":
                 return .failure(.registrationNotSupported) // Registration disabled
             case "M_INVALID_USERNAME":

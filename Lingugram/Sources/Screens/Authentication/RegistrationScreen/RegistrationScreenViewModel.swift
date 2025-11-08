@@ -93,6 +93,10 @@ class RegistrationScreenViewModel: RegistrationScreenViewModelType, Registration
         MXLog.error("Registration error occurred: \(error)")
         
         switch error {
+        case .usernameAlreadyTaken:
+            state.bindings.alertInfo = AlertInfo(id: .alert("Username already taken"),
+                                                 title: L10n.commonError,
+                                                 message: "This username is already taken. Please choose a different username.")
         case .invalidCredentials:
             state.bindings.alertInfo = AlertInfo(id: .credentialsAlert,
                                                  title: L10n.commonError,

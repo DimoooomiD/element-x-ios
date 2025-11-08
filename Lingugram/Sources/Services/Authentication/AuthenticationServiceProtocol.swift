@@ -26,6 +26,7 @@ enum AuthenticationServiceError: Error, Equatable {
     
     case invalidServer
     case invalidCredentials
+    case usernameAlreadyTaken
     case invalidHomeserverAddress
     case invalidWellKnown(String)
     case slidingSyncNotAvailable
