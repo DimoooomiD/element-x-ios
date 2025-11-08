@@ -15,8 +15,18 @@ extension View {
     /// If the current theme defines a canvas gradient, it will be used; otherwise falls back to solid color
     func themedCanvasBackground() -> some View {
         background {
-            if let appSettings = ServiceLocator.shared.settings,
-               let themeConfig = ThemeConfigurationRegistry.configuration(for: appSettings.appAppearance),
+            ThemedCanvasBackgroundView()
+        }
+    }
+}
+
+/// A view that reactively updates when the theme changes
+private struct ThemedCanvasBackgroundView: View {
+    @State private var currentAppearance: AppAppearance = ServiceLocator.shared.settings?.appAppearance ?? .system
+    
+    var body: some View {
+        Group {
+            if let themeConfig = ThemeConfigurationRegistry.configuration(for: currentAppearance),
                let gradient = themeConfig.canvasGradient {
                 // Use the gradient view directly
                 gradient.asView()
@@ -25,6 +35,10 @@ extension View {
                 Color.compound.bgCanvasDefault
                     .ignoresSafeArea()
             }
+        }
+        .onReceive(ServiceLocator.shared.settings.$appAppearance) { newAppearance in
+            // Update immediately when theme changes to prevent gradient lingering
+            currentAppearance = newAppearance
         }
     }
 }
