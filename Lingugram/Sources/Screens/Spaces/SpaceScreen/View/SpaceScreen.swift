@@ -20,7 +20,7 @@ struct SpaceScreen: View {
                 rooms
             }
         }
-        .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
+        .themedCanvasBackground()
         .toolbarRole(RoomHeaderView.toolbarRole)
         .navigationTitle(context.viewState.space.name)
         .navigationBarTitleDisplayMode(.inline)

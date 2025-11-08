@@ -22,7 +22,7 @@ struct HomeScreen: View {
             .alert(item: $context.leaveRoomAlertItem,
                    actions: leaveRoomAlertActions,
                    message: leaveRoomAlertMessage)
-            .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
+            .themedCanvasBackground()
             .track(screen: .Home)
             .sentryTrace("\(Self.self)")
             .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with scrolling operations

@@ -22,7 +22,7 @@ struct SpaceListScreen: View {
         .safeAreaInset(edge: .top) {
             headerSection
         }
-        .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
+        .themedCanvasBackground()
         .onAppear { context.send(viewAction: .screenAppeared) }
         .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
         .sheet(isPresented: $context.isPresentingFeatureAnnouncement) {

@@ -19,6 +19,16 @@ struct HomeScreenContent: View {
     
     @FocusState private var isSearchFocused: Bool
     
+    /// Returns transparent background for Lingugram theme, solid color for others
+    private func transparentBackgroundIfLingugram() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.clear
+        } else {
+            return Color.compound.bgCanvasDefault
+        }
+    }
+    
     var body: some View {
         roomList
             .sentryTrace("\(Self.self)")
@@ -110,7 +120,7 @@ struct HomeScreenContent: View {
             .overlay {
                 if context.viewState.shouldShowEmptyFilterState {
                     RoomListFiltersEmptyStateView(state: context.filtersState)
-                        .background(.compound.bgCanvasDefault)
+                        .background(transparentBackgroundIfLingugram())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
@@ -145,7 +155,7 @@ struct HomeScreenContent: View {
         .padding(.horizontal, 16)
         .padding(.top, 8)
         .padding(.bottom, 8)
-        .background(Color.compound.bgCanvasDefault)
+        .background(transparentBackgroundIfLingugram())
     }
     
     @ViewBuilder
@@ -163,7 +173,7 @@ struct HomeScreenContent: View {
                     HomeScreenNewSoundBanner { context.send(viewAction: .dismissNewSoundBanner) }
                 }
             }
-            .background(Color.compound.bgCanvasDefault)
+            .background(transparentBackgroundIfLingugram())
         }
     }
     

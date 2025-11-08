@@ -32,6 +32,8 @@ public class CompoundColors {
     private let tokens: CompoundColorTokens
     /// Runtime overrides for the `tokens` property.
     private var overrides = [KeyPath<CompoundColorTokens, Color>: Color]()
+    /// Runtime gradient overrides for background tokens (e.g., bgCanvasDefault)
+    private var gradientOverrides = [KeyPath<CompoundColorTokens, Color>: AnyShapeStyle]()
     
     public subscript(dynamicMember keyPath: KeyPath<CompoundColorTokens, Color>) -> Color {
         overrides[keyPath] ?? tokens[keyPath: keyPath]
@@ -41,6 +43,21 @@ public class CompoundColors {
     /// Supplying `nil` as the colour will remove any existing customisation.
     public func override(_ keyPath: KeyPath<CompoundColorTokens, Color>, with color: Color?) {
         overrides[keyPath] = color
+    }
+    
+    /// Get gradient override for a color key path (if available)
+    /// Returns nil if no gradient override exists
+    func gradientOverride(for keyPath: KeyPath<CompoundColorTokens, Color>) -> AnyShapeStyle? {
+        gradientOverrides[keyPath]
+    }
+    
+    /// Set a gradient override for a color key path
+    func setGradientOverride(_ keyPath: KeyPath<CompoundColorTokens, Color>, gradient: AnyShapeStyle?) {
+        if let gradient {
+            gradientOverrides[keyPath] = gradient
+        } else {
+            gradientOverrides.removeValue(forKey: keyPath)
+        }
     }
     
     init() {

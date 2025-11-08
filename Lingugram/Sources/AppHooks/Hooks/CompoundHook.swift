@@ -40,7 +40,9 @@ struct DefaultCompoundHook: CompoundHookProtocol {
                 guard var colorData = colorOverridesMap[colorOverride.colorKeyPath] else {
                     continue
                 }
-                colorData.themeOverrides[themeConfig.appearance] = colorOverride.themeColor
+                // Use gradient representative color if available, otherwise use themeColor
+                let colorToUse = colorOverride.themeGradient?.representativeColor() ?? colorOverride.themeColor
+                colorData.themeOverrides[themeConfig.appearance] = colorToUse
                 colorOverridesMap[colorOverride.colorKeyPath] = colorData
             }
         }
@@ -57,6 +59,25 @@ struct DefaultCompoundHook: CompoundHookProtocol {
                                uiColorKeyPath: colorData.uiColorKeyPath,
                                color: dynamicColor)
         }
+        
+        // Third pass: apply canvas gradients for themes that support them
+        applyCanvasGradients(colors: colors)
+    }
+    
+    /// Applies canvas gradients for themes that define them
+    private func applyCanvasGradients(colors: CompoundColors) {
+        guard let appSettings = ServiceLocator.shared.settings else {
+            return
+        }
+        
+        let themeConfig = ThemeConfigurationRegistry.configuration(for: appSettings.appAppearance)
+        let tokens = CompoundColorTokens()
+        
+        // Apply gradient to bgCanvasDefault if theme defines one
+        // Note: Gradients are accessed via the View extension, not stored here
+        // This method is kept for future use if we need to store gradient metadata
+        _ = themeConfig?.canvasGradient
+        _ = tokens.bgCanvasDefault
     }
     
     // MARK: - Helper Functions

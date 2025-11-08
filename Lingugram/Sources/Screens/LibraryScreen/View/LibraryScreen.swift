@@ -22,7 +22,7 @@ struct LibraryScreen: View {
         .safeAreaInset(edge: .top) {
             headerSection
         }
-        .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
+        .themedCanvasBackground()
         .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
     }
     
