@@ -1,5 +1,5 @@
-input_dir: ../../ElementX/
-output_dir: ../../ElementX/Sources/Generated/
+input_dir: ../../Lingugram/
+output_dir: ../../Lingugram/Sources/Generated/
 xcassets:
   inputs:
     - Resources/Assets.xcassets

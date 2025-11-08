@@ -82,8 +82,8 @@ targets:
       basedOnDependencyAnalysis: false
       shell: /bin/sh
       inputPaths:
-        - $(SRCROOT)/ElementX/Sources/Generated/Assets.swift
-        - $(SRCROOT)/ElementX/Sources/Generated/Strings.swift
+        - $(SRCROOT)/Lingugram/Sources/Generated/Assets.swift
+        - $(SRCROOT)/Lingugram/Sources/Generated/Strings.swift
       script: |
         # This script ensures the generated files exist before NSE compiles
         # The input paths create a dependency on the files without creating a cycle
@@ -128,52 +128,52 @@ targets:
     sources:
     - path: ../Sources
     - path: ../SupportingFiles
-    - path: ../../ElementX/Sources/AppHooks/AppHooks.swift
-    - path: ../../ElementX/Sources/AppHooks/Hooks/TracingHook.swift
-    - path: ../../ElementX/Sources/AppHooks/Hooks/ClientBuilderHook.swift
-    - path: ../../ElementX/Sources/AppHooks/Hooks/RemoteSettingsHook.swift
+    - path: ../../Lingugram/Sources/AppHooks/AppHooks.swift
+    - path: ../../Lingugram/Sources/AppHooks/Hooks/TracingHook.swift
+    - path: ../../Lingugram/Sources/AppHooks/Hooks/ClientBuilderHook.swift
+    - path: ../../Lingugram/Sources/AppHooks/Hooks/RemoteSettingsHook.swift
     - path: ../../Secrets/Secrets.swift
-    - path: ../../ElementX/Sources/Application/Settings
-    - path: ../../ElementX/Sources/Application/TargetConfiguration.swift
-    - path: ../../ElementX/Sources/Generated/Assets.swift
-    - path: ../../ElementX/Sources/Generated/Strings.swift
-    - path: ../../ElementX/Sources/Other/Avatars.swift
-    - path: ../../ElementX/Sources/Other/CurrentValuePublisher.swift
-    - path: ../../ElementX/Sources/Other/ExpiringTaskRunner.swift
-    - path: ../../ElementX/Sources/Other/Extensions/AttributedString.swift
-    - path: ../../ElementX/Sources/Other/Extensions/Bundle.swift
-    - path: ../../ElementX/Sources/Other/Extensions/ClientBuilder.swift
-    - path: ../../ElementX/Sources/Other/Extensions/Date.swift
-    - path: ../../ElementX/Sources/Other/Extensions/Dictionary.swift
-    - path: ../../ElementX/Sources/Other/Extensions/FileManager.swift
-    - path: ../../ElementX/Sources/Other/Extensions/ImageCache.swift
-    - path: ../../ElementX/Sources/Other/Extensions/LayoutDirection.swift
-    - path: ../../ElementX/Sources/Other/Extensions/NSRegularExpresion.swift
-    - path: ../../ElementX/Sources/Other/Extensions/ProcessInfo.swift
-    - path: ../../ElementX/Sources/Other/Extensions/String.swift
-    - path: ../../ElementX/Sources/Other/Extensions/Task.swift
-    - path: ../../ElementX/Sources/Other/Extensions/UNNotificationContent.swift
-    - path: ../../ElementX/Sources/Other/Extensions/URL.swift
-    - path: ../../ElementX/Sources/Other/Extensions/UTType.swift
-    - path: ../../ElementX/Sources/Other/Extensions/CharacterSet.swift
-    - path: ../../ElementX/Sources/Other/HTMLParsing
-    - path: ../../ElementX/Sources/Other/InfoPlistReader.swift
-    - path: ../../ElementX/Sources/Other/Logging
-    - path: ../../ElementX/Sources/Other/MatrixEntityRegex.swift
-    - path: ../../ElementX/Sources/Other/NetworkMonitor
-    - path: ../../ElementX/Sources/Other/Pills/PillUtilities.swift
-    - path: ../../ElementX/Sources/Other/Pills/PlainMentionBuilder.swift
-    - path: ../../ElementX/Sources/Other/SDKListener.swift
-    - path: ../../ElementX/Sources/Other/SwiftUI/Views/PlaceholderAvatarImage.swift
-    - path: ../../ElementX/Sources/Other/TestablePreview/TestablePreview.swift
-    - path: ../../ElementX/Sources/Other/UserAgentBuilder.swift
-    - path: ../../ElementX/Sources/Services/ElementCall/ElementCallServiceConstants.swift
-    - path: ../../ElementX/Sources/Services/Keychain/KeychainController.swift
-    - path: ../../ElementX/Sources/Services/Keychain/KeychainControllerProtocol.swift
-    - path: ../../ElementX/Sources/Services/Media/Provider
-    - path: ../../ElementX/Sources/Services/Notification/NotificationConstants.swift
-    - path: ../../ElementX/Sources/Services/Notification/Proxy
-    - path: ../../ElementX/Sources/Services/Room/RoomSummary/RoomMessageEventStringBuilder.swift
-    - path: ../../ElementX/Sources/Services/UserSession/RestorationToken.swift
-    - path: ../../ElementX/Sources/Services/UserSession/SessionDirectories.swift
-    - path: ../../ElementX/Sources/UITests/UITestsScreenIdentifier.swift
+    - path: ../../Lingugram/Sources/Application/Settings
+    - path: ../../Lingugram/Sources/Application/TargetConfiguration.swift
+    - path: ../../Lingugram/Sources/Generated/Assets.swift
+    - path: ../../Lingugram/Sources/Generated/Strings.swift
+    - path: ../../Lingugram/Sources/Other/Avatars.swift
+    - path: ../../Lingugram/Sources/Other/CurrentValuePublisher.swift
+    - path: ../../Lingugram/Sources/Other/ExpiringTaskRunner.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/AttributedString.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Bundle.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/ClientBuilder.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Date.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Dictionary.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/FileManager.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/ImageCache.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/LayoutDirection.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/NSRegularExpresion.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/ProcessInfo.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/String.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Task.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/UNNotificationContent.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/URL.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/UTType.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/CharacterSet.swift
+    - path: ../../Lingugram/Sources/Other/HTMLParsing
+    - path: ../../Lingugram/Sources/Other/InfoPlistReader.swift
+    - path: ../../Lingugram/Sources/Other/Logging
+    - path: ../../Lingugram/Sources/Other/MatrixEntityRegex.swift
+    - path: ../../Lingugram/Sources/Other/NetworkMonitor
+    - path: ../../Lingugram/Sources/Other/Pills/PillUtilities.swift
+    - path: ../../Lingugram/Sources/Other/Pills/PlainMentionBuilder.swift
+    - path: ../../Lingugram/Sources/Other/SDKListener.swift
+    - path: ../../Lingugram/Sources/Other/SwiftUI/Views/PlaceholderAvatarImage.swift
+    - path: ../../Lingugram/Sources/Other/TestablePreview/TestablePreview.swift
+    - path: ../../Lingugram/Sources/Other/UserAgentBuilder.swift
+    - path: ../../Lingugram/Sources/Services/ElementCall/ElementCallServiceConstants.swift
+    - path: ../../Lingugram/Sources/Services/Keychain/KeychainController.swift
+    - path: ../../Lingugram/Sources/Services/Keychain/KeychainControllerProtocol.swift
+    - path: ../../Lingugram/Sources/Services/Media/Provider
+    - path: ../../Lingugram/Sources/Services/Notification/NotificationConstants.swift
+    - path: ../../Lingugram/Sources/Services/Notification/Proxy
+    - path: ../../Lingugram/Sources/Services/Room/RoomSummary/RoomMessageEventStringBuilder.swift
+    - path: ../../Lingugram/Sources/Services/UserSession/RestorationToken.swift
+    - path: ../../Lingugram/Sources/Services/UserSession/SessionDirectories.swift
+    - path: ../../Lingugram/Sources/UITests/UITestsScreenIdentifier.swift

@@ -65,7 +65,7 @@ settings:
 
 include:
 - path: app.yml
-- path: ElementX/SupportingFiles/target.yml
+- path: Lingugram/SupportingFiles/target.yml
 - path: UnitTests/SupportingFiles/target.yml
 - path: PreviewTests/SupportingFiles/target.yml
 - path: UITests/SupportingFiles/target.yml

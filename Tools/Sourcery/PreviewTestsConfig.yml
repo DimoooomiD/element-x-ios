@@ -1,6 +1,6 @@
 sources:
   include:
-    - ../../ElementX
+    - ../../Lingugram
 templates:
   - PreviewTests.stencil
 output:

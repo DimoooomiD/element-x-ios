@@ -1,9 +1,7 @@
 sources:
   include:
-    - ../../ElementX
+    - ../../Lingugram
 templates:
   - TestablePreviewsDictionary.stencil
 output:
-  ../../ElementX/Sources/Other/TestablePreview/TestablePreviewsDictionary.swift
-args:
-  mainTarget: Lingugram
+  ../../Lingugram/Sources/Other/TestablePreview/TestablePreviewsDictionary.swift

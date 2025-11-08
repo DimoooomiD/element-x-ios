@@ -19,7 +19,7 @@ schemes:
       disableMainThreadChecker: false
       gatherCoverageData: true
       coverageTargets:
-        - ElementX
+        - Lingugram
       testPlans:
         - path: IntegrationTests.xctestplan
           defaultPlan: true
@@ -30,7 +30,7 @@ targets:
     platform: iOS
 
     dependencies:
-    - target: ElementX
+    - target: Lingugram
     - package: MatrixRustSDK
     - package: DeviceKit
     - package: KeychainAccess
@@ -53,7 +53,7 @@ targets:
     sources:
     - path: ../Sources
     - path: ../SupportingFiles
-    - path: ../../ElementX/Sources/Other/AccessibilityIdentifiers.swift
-    - path: ../../ElementX/Sources/Other/Extensions/NSRegularExpresion.swift
-    - path: ../../ElementX/Sources/Other/Extensions/XCUIElement.swift
-    - path: ../../ElementX/Sources/Services/Analytics/Signposter.swift
+    - path: ../../Lingugram/Sources/Other/AccessibilityIdentifiers.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/NSRegularExpresion.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/XCUIElement.swift
+    - path: ../../Lingugram/Sources/Services/Analytics/Signposter.swift
