@@ -55,7 +55,7 @@ struct KnockRequestsBannerView: View {
     /// Returns semi-transparent background for Lingugram theme, solid color for others
     private func transparentBackgroundIfLingugramForKnock() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.compound.bgCanvasDefaultLevel1.opacity(0.3)
         } else {
             return Color.compound.bgCanvasDefaultLevel1

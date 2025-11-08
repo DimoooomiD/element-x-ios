@@ -42,7 +42,7 @@ struct LibraryScreen: View {
     /// Returns transparent background for Lingugram theme, solid color for others
     private func transparentBackgroundIfLingugram() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.clear
         } else {
             return Color.compound.bgCanvasDefault
@@ -171,7 +171,7 @@ struct LanguagePackageRow: View {
     /// Returns transparent background for Lingugram theme cards, solid color for others
     private func transparentBackgroundIfLingugramForCard() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.compound.bgCanvasDefaultLevel1.opacity(0.3)
         } else {
             return Color.compound.bgCanvasDefaultLevel1

@@ -38,6 +38,7 @@ struct SettingsScreen: View {
             }
         }
         .compoundList()
+        .scrollContentBackground(.hidden)
         .background(transparentBackgroundIfLingugramForForm().ignoresSafeArea())
         .themedCanvasBackground()
         .safeAreaInset(edge: .top) {
@@ -64,7 +65,7 @@ struct SettingsScreen: View {
     /// Returns transparent background for Lingugram theme, solid color for others
     private func transparentBackgroundIfLingugram() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.clear
         } else {
             return Color.compound.bgCanvasDefault
@@ -74,7 +75,7 @@ struct SettingsScreen: View {
     /// Returns transparent background for Lingugram theme form, solid color for others
     private func transparentBackgroundIfLingugramForForm() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.clear
         } else {
             return Color.compound.bgSubtleSecondaryLevel0

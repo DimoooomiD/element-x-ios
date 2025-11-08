@@ -233,7 +233,7 @@ struct TimelineItemBubbledStylerView<Content: View>: View {
     /// Returns semi-transparent background for Lingugram theme quote, solid color for others
     private func transparentBackgroundIfLingugramForQuote() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.compound.bgCanvasDefault.opacity(0.3)
         } else {
             return Color.compound.bgCanvasDefault

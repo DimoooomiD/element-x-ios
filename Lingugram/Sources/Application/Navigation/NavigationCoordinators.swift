@@ -735,7 +735,7 @@ private struct NavigationStackCoordinatorView: View {
         }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
             // Update appearance asynchronously to avoid modifying state during view update
-            // This is critical for custom dark themes (darkBlue, darkGreen, darkPurple)
+            // This is critical for the Lingugram theme
             // which don't change interfaceStyle but still need appearance refresh
             // Also triggers on initial load when the publisher emits its first value
             Task { @MainActor in
@@ -760,7 +760,7 @@ private struct NavigationStackCoordinatorView: View {
         standardAppearance.configureWithDefaultBackground()
         
         // Override with theme-aware background color
-        // This ensures dark blue and dark green themes are properly applied
+        // This ensures the Lingugram (dark blue) theme is properly applied
         standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
         
         // Configure title text attributes with theme-aware colors

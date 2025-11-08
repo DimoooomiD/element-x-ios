@@ -46,7 +46,7 @@ struct SpaceListScreen: View {
     /// Returns transparent background for Lingugram theme, solid color for others
     private func transparentBackgroundIfLingugram() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .darkBlue {
+           appSettings.appAppearance == .lingugram {
             return Color.clear
         } else {
             return Color.compound.bgCanvasDefault

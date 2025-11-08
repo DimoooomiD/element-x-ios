@@ -13,28 +13,13 @@ enum AppAppearance: CaseIterable, Codable {
     case system
     case light
     case dark
-    // Professional dark themes
-    case darkTeal
-    case darkIndigo
-    case darkSlate
-    case darkNavy
-    case darkForest
-    case darkSteel
-    case darkBlue
-    // Professional light themes
-    case lightTeal
-    case lightIndigo
-    case lightSlate
-    case lightRose
-    case lightCream
-    case lightAzure
-    case lightPearl
+    case lingugram
         
     var interfaceStyle: UIUserInterfaceStyle {
         switch self {
-        case .light, .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
+        case .light:
             return .light
-        case .dark, .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel, .darkBlue:
+        case .dark, .lingugram:
             return .dark
         case .system:
             return .unspecified

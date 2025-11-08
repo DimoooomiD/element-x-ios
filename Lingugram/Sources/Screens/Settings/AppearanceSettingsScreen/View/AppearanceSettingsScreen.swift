@@ -26,6 +26,8 @@ struct AppearanceSettingsScreen: View {
             }
         }
         .compoundList()
+        .scrollContentBackground(.hidden)
+        .themedCanvasBackground()
         .navigationTitle(L10n.commonAppearance)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
@@ -42,34 +44,8 @@ private extension AppAppearance {
             return L10n.commonLight
         case .dark:
             return L10n.commonDark
-        case .darkTeal:
-            return "Ocean"
-        case .darkIndigo:
-            return "Midnight"
-        case .darkSlate:
-            return "Graphite"
-        case .darkNavy:
-            return "Navy"
-        case .darkForest:
-            return "Forest"
-        case .darkSteel:
-            return "Steel"
-        case .darkBlue:
+        case .lingugram:
             return "Lingugram"
-        case .lightTeal:
-            return "Aqua"
-        case .lightIndigo:
-            return "Sky"
-        case .lightSlate:
-            return "Silver"
-        case .lightRose:
-            return "Blush"
-        case .lightCream:
-            return "Cream"
-        case .lightAzure:
-            return "Azure"
-        case .lightPearl:
-            return "Pearl"
         }
     }
     
@@ -81,10 +57,8 @@ private extension AppAppearance {
             return .sunMax
         case .dark:
             return .moon
-        case .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel, .darkBlue:
+        case .lingugram:
             return .circleFill
-        case .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
-            return .circle
         }
     }
     
@@ -96,35 +70,9 @@ private extension AppAppearance {
             return .yellow
         case .dark:
             return .indigo
-        case .darkTeal:
-            return Color(red: 0.0, green: 0.5, blue: 0.5)
-        case .darkIndigo:
-            return Color(red: 0.29, green: 0.0, blue: 0.51)
-        case .darkSlate:
-            return Color(red: 0.28, green: 0.32, blue: 0.36)
-        case .darkNavy:
-            return Color(red: 0.0, green: 0.0, blue: 0.5)
-        case .darkForest:
-            return Color(red: 0.0, green: 0.27, blue: 0.13)
-        case .darkSteel:
-            return Color(red: 0.27, green: 0.31, blue: 0.35)
-        case .darkBlue:
+        case .lingugram:
             // Base color from static background with gradient influence
             return Color(red: 0.06, green: 0.09, blue: 0.16)
-        case .lightTeal:
-            return Color(red: 0.0, green: 0.5, blue: 0.5).opacity(0.7)
-        case .lightIndigo:
-            return Color(red: 0.29, green: 0.0, blue: 0.51).opacity(0.7)
-        case .lightSlate:
-            return Color(red: 0.28, green: 0.32, blue: 0.36).opacity(0.7)
-        case .lightRose:
-            return Color(red: 1.0, green: 0.75, blue: 0.8).opacity(0.7)
-        case .lightCream:
-            return Color(red: 1.0, green: 0.99, blue: 0.82).opacity(0.7)
-        case .lightAzure:
-            return Color(red: 0.0, green: 0.5, blue: 1.0).opacity(0.7)
-        case .lightPearl:
-            return Color(red: 0.94, green: 0.92, blue: 0.84).opacity(0.7)
         }
     }
 }
