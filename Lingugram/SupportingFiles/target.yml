@@ -108,7 +108,7 @@ targets:
         LSSupportsOpeningDocumentsInPlace: false
 
     entitlements:
-      path: ElementX.entitlements
+      path: Lingugram.entitlements
       properties:
         aps-environment: development
         com.apple.developer.associated-domains:
@@ -138,7 +138,7 @@ targets:
         CURRENT_PROJECT_VERSION: $(CURRENT_PROJECT_VERSION)
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         DEVELOPMENT_TEAM: $(DEVELOPMENT_TEAM)
-        SWIFT_OBJC_BRIDGING_HEADER: ElementX/SupportingFiles/ElementX-Bridging-Header.h
+        SWIFT_OBJC_BRIDGING_HEADER: Lingugram/SupportingFiles/Lingugram-Bridging-Header.h
         SWIFT_OBJC_INTERFACE_HEADER_NAME: GeneratedInterface-Swift.h
         PILLS_UT_TYPE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER).pills
         DEVELOPMENT_ASSET_PATHS: DevelopmentAssets/Media
@@ -154,12 +154,12 @@ targets:
         - $(SRCROOT)/Tools/SwiftGen/swiftgen-config.yml
         - $(SRCROOT)/Tools/SwiftGen/Templates/Strings/structured-swift5-element.stencil
         - $(SRCROOT)/Tools/SwiftGen/Templates/Strings/structured-swift5-element-untranslated.stencil
-        - $(SRCROOT)/ElementX/Resources/Assets.xcassets
-        - $(SRCROOT)/ElementX/Resources/Localizations/en.lproj/Localizable.strings
+        - $(SRCROOT)/Lingugram/Resources/Assets.xcassets
+        - $(SRCROOT)/Lingugram/Resources/Localizations/en.lproj/Localizable.strings
       outputPaths:
-        - $(SRCROOT)/ElementX/Sources/Generated/Assets.swift
-        - $(SRCROOT)/ElementX/Sources/Generated/Strings.swift
-        - $(SRCROOT)/ElementX/Sources/Generated/Strings+Untranslated.swift
+        - $(SRCROOT)/Lingugram/Sources/Generated/Assets.swift
+        - $(SRCROOT)/Lingugram/Sources/Generated/Strings.swift
+        - $(SRCROOT)/Lingugram/Sources/Generated/Strings+Untranslated.swift
       script: |
         export PATH="$PATH:/opt/homebrew/bin"
         if which swiftgen >/dev/null; then
@@ -229,7 +229,7 @@ targets:
       script: |
         export PATH="$PATH:/opt/homebrew/bin"
         if which swiftformat >/dev/null; then
-            swiftformat --lint --lenient "$SRCROOT/ElementX/Sources" "$SRCROOT/ElementX/Resources" --exclude "$SRCROOT/ElementX/Sources/Generated" --exclude "$SRCROOT/ElementX/Sources/Mocks/Generated"
+            swiftformat --lint --lenient "$SRCROOT/Lingugram/Sources" "$SRCROOT/Lingugram/Resources" --exclude "$SRCROOT/Lingugram/Sources/Generated" --exclude "$SRCROOT/Lingugram/Sources/Mocks/Generated"
         else
             echo "warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat"
         fi
@@ -275,5 +275,5 @@ targets:
     - path: ../../Secrets/Secrets.swift
     - path: ../Resources
     - path: ../SupportingFiles
-    - path: ../../Tools/Scripts/Templates/SimpleScreenExample/ElementX
+    - path: ../../Tools/Scripts/Templates/SimpleScreenExample/Lingugram
     - path: ../../DevelopmentAssets/Media

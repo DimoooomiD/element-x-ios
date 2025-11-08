@@ -79,26 +79,26 @@ targets:
     sources:
     - path: ../Sources
     - path: ../SupportingFiles
-    - path: ../../ElementX/Sources/ShareExtension
-    - path: ../../ElementX/Sources/AppHooks/AppHooks.swift
-    - path: ../../ElementX/Sources/AppHooks/Hooks/TracingHook.swift
-    - path: ../../ElementX/Sources/AppHooks/Hooks/ClientBuilderHook.swift
-    - path: ../../ElementX/Sources/AppHooks/Hooks/RemoteSettingsHook.swift
+    - path: ../../Lingugram/Sources/ShareExtension
+    - path: ../../Lingugram/Sources/AppHooks/AppHooks.swift
+    - path: ../../Lingugram/Sources/AppHooks/Hooks/TracingHook.swift
+    - path: ../../Lingugram/Sources/AppHooks/Hooks/ClientBuilderHook.swift
+    - path: ../../Lingugram/Sources/AppHooks/Hooks/RemoteSettingsHook.swift
     - path: ../../Secrets/Secrets.swift
-    - path: ../../ElementX/Sources/Application/Settings
-    - path: ../../ElementX/Sources/Application/TargetConfiguration.swift
-    - path: ../../ElementX/Sources/Services/Keychain/KeychainController.swift
-    - path: ../../ElementX/Sources/Services/Keychain/KeychainControllerProtocol.swift
-    - path: ../../ElementX/Sources/Services/UserSession/RestorationToken.swift
-    - path: ../../ElementX/Sources/Services/UserSession/SessionDirectories.swift
-    - path: ../../ElementX/Sources/Other/Extensions/Bundle.swift
-    - path: ../../ElementX/Sources/Other/Extensions/Dictionary.swift
-    - path: ../../ElementX/Sources/Other/Extensions/FileManager.swift
-    - path: ../../ElementX/Sources/Other/Extensions/NSItemProvider.swift
-    - path: ../../ElementX/Sources/Other/Extensions/ProcessInfo.swift
-    - path: ../../ElementX/Sources/Other/Extensions/UIView.swift
-    - path: ../../ElementX/Sources/Other/Extensions/URL.swift
-    - path: ../../ElementX/Sources/Other/InfoPlistReader.swift
-    - path: ../../ElementX/Sources/Other/CurrentValuePublisher.swift
-    - path: ../../ElementX/Sources/Other/Logging
-    - path: ../../ElementX/Sources/UITests/UITestsScreenIdentifier.swift
+    - path: ../../Lingugram/Sources/Application/Settings
+    - path: ../../Lingugram/Sources/Application/TargetConfiguration.swift
+    - path: ../../Lingugram/Sources/Services/Keychain/KeychainController.swift
+    - path: ../../Lingugram/Sources/Services/Keychain/KeychainControllerProtocol.swift
+    - path: ../../Lingugram/Sources/Services/UserSession/RestorationToken.swift
+    - path: ../../Lingugram/Sources/Services/UserSession/SessionDirectories.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Bundle.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Dictionary.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/FileManager.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/NSItemProvider.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/ProcessInfo.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/UIView.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/URL.swift
+    - path: ../../Lingugram/Sources/Other/InfoPlistReader.swift
+    - path: ../../Lingugram/Sources/Other/CurrentValuePublisher.swift
+    - path: ../../Lingugram/Sources/Other/Logging
+    - path: ../../Lingugram/Sources/UITests/UITestsScreenIdentifier.swift

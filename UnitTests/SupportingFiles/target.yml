@@ -48,8 +48,8 @@ targets:
     - path: ../Sources
     - path: ../SupportingFiles
     - path: ../../DevelopmentAssets
-    - path: ../../ElementX/Sources/Other/Extensions/Publisher.swift
-    - path: ../../ElementX/Sources/Other/Extensions/XCTestCase.swift
-    - path: ../../ElementX/Sources/Other/InfoPlistReader.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/Publisher.swift
+    - path: ../../Lingugram/Sources/Other/Extensions/XCTestCase.swift
+    - path: ../../Lingugram/Sources/Other/InfoPlistReader.swift
     - path: ../../Tools/Scripts/Templates/SimpleScreenExample/Tests/Unit
     
