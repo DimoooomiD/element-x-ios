@@ -55,11 +55,6 @@ struct LibraryScreen: View {
                     .foregroundStyle(.compound.textSecondary)
                     .multilineTextAlignment(.center)
             }
-            
-            Text("Explore language learning courses and expand your skills")
-                .font(.compound.bodyMD)
-                .foregroundStyle(.compound.textPrimary)
-                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)
