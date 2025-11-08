@@ -26,8 +26,10 @@ struct RoomDetailsEditScreen: View {
         }
         .compoundList()
         .scrollDismissesKeyboard(.immediately)
-        .navigationTitle(L10n.screenRoomDetailsEditRoomTitle)
+        .toolbarRole(RoomHeaderView.toolbarRole)
+        .navigationTitle(L10n.screenRoomDetailsEditRoomTitle) // Hidden but used for back button text.
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
         .toolbar { toolbar }
         .track(screen: .RoomSettings)
     }
@@ -36,6 +38,13 @@ struct RoomDetailsEditScreen: View {
     
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            RoomHeaderView(roomName: context.viewState.roomDetails.name ?? L10n.screenRoomDetailsEditRoomTitle,
+                           roomAvatar: context.viewState.roomDetails.avatar,
+                           mediaProvider: context.mediaProvider)
+                .contentShape(.rect)
+        }
+        
         ToolbarItem(placement: .cancellationAction) {
             Button(L10n.actionCancel) {
                 context.send(viewAction: .cancel)

@@ -23,6 +23,7 @@ struct RoomDetailsEditScreenViewStateBindings {
 
 struct RoomDetailsEditScreenViewState: BindableState {
     let roomID: String
+    let roomDetails: RoomDetails
     let initialAvatarURL: URL?
     let initialName: String
     let initialTopic: String

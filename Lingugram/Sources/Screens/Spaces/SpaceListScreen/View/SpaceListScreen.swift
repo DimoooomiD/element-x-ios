@@ -40,13 +40,14 @@ struct SpaceListScreen: View {
         .padding(.horizontal, 16)
         .padding(.top, 8)
         .padding(.bottom, 8)
-        .background(transparentBackgroundIfLingugram())
+        .background(transparentBackgroundIfLingugram().ignoresSafeArea(edges: .top))
+        .frame(maxWidth: .infinity)
     }
     
     /// Returns transparent background for Lingugram theme, solid color for others
     private func transparentBackgroundIfLingugram() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .lingugram {
+           appSettings.appAppearance == .aurora {
             return Color.clear
         } else {
             return Color.compound.bgCanvasDefault

@@ -108,9 +108,9 @@ struct ThemeGradient: Hashable {
         
         switch type {
         case .radial:
-            // For Lingugram theme, create a ZStack with multiple gradients like StaticLanguageLearningBackground
+            // For Aurora theme, create a ZStack with multiple gradients like StaticLanguageLearningBackground
             if colors.count >= 8 {
-                // This is the Lingugram gradient - use ZStack with multiple radial gradients
+                // This is the Aurora gradient - use ZStack with multiple radial gradients
                 ZStack {
                     // Base color
                     if let baseColor = colors.first {
@@ -210,11 +210,11 @@ struct ThemeColorOverride {
     }
 }
 
-// MARK: - Lingugram Theme Configuration
+// MARK: - Aurora Theme Configuration
 
-struct LingugramThemeConfiguration: ThemeConfiguration {
+struct AuroraThemeConfiguration: ThemeConfiguration {
     var appearance: AppAppearance {
-        .lingugram
+        .aurora
     }
     
     var canvasGradient: ThemeGradient? {
@@ -326,7 +326,7 @@ struct LingugramThemeConfiguration: ThemeConfiguration {
 enum ThemeConfigurationRegistry {
     /// All registered theme configurations
     static let allConfigurations: [ThemeConfiguration] = [
-        LingugramThemeConfiguration()
+        AuroraThemeConfiguration()
     ]
     
     /// Get configuration for a specific appearance

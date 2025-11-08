@@ -37,6 +37,7 @@ class RoomMembersListScreenViewModel: RoomMembersListScreenViewModelType, RoomMe
         self.analytics = analytics
         
         super.init(initialViewState: .init(joinedMembersCount: roomProxy.infoPublisher.value.joinedMembersCount,
+                                           roomDetails: roomProxy.details,
                                            bindings: .init(mode: initialMode)),
                    mediaProvider: userSession.mediaProvider)
         
@@ -96,6 +97,7 @@ class RoomMembersListScreenViewModel: RoomMembersListScreenViewModelType, RoomMe
             self.currentUserProxy = members.first { $0.userID == roomProxy.ownUserID }
             
             self.state = .init(joinedMembersCount: roomProxy.infoPublisher.value.joinedMembersCount,
+                               roomDetails: roomProxy.details,
                                joinedMembers: roomMembersDetails.joinedMembers,
                                invitedMembers: roomMembersDetails.invitedMembers,
                                bannedMembers: roomMembersDetails.bannedMembers,

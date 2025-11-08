@@ -351,10 +351,6 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
     private func configureAppearance(_ tabBarController: UITabBarController) {
         let standardAppearance = UITabBarAppearance()
         
-        // Configure with default background to preserve glass blur effect
-        // This ensures the professional glass/frosted frame appearance
-        standardAppearance.configureWithDefaultBackground()
-        
         // Apply blur effect with theme-aware style for enhanced glass effect
         // This creates the professional glass/frosted appearance with proper blur
         let interfaceStyle = ServiceLocator.shared.settings?.appAppearance.interfaceStyle ?? .unspecified
@@ -370,13 +366,24 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
             }
         }()
         let blurEffect = UIBlurEffect(style: blurStyle)
-        standardAppearance.backgroundEffect = blurEffect
         
-        // Apply theme-aware background color with transparency to tint the glass effect
-        // Using a semi-transparent color allows the blur to show through while maintaining theme
-        // Lower alpha (0.5) ensures the glass blur effect is clearly visible
-        let themeColor = UIColor.compound.bgCanvasDefault.withAlphaComponent(0.5)
-        standardAppearance.backgroundColor = themeColor
+        // Configure background depending on theme to let Aurora gradient show through
+        let appAppearance = ServiceLocator.shared.settings?.appAppearance
+        if appAppearance == .aurora {
+            // Keep the blur for the glass effect but make the background transparent so
+            // the Aurora gradient (applied via themedCanvasBackground) remains visible.
+            standardAppearance.configureWithTransparentBackground()
+            standardAppearance.backgroundEffect = blurEffect
+            standardAppearance.backgroundColor = .clear
+            tabBarController.tabBar.isTranslucent = true
+        } else {
+            // Configure with default background and a light tint to preserve the glass look
+            standardAppearance.configureWithDefaultBackground()
+            standardAppearance.backgroundEffect = blurEffect
+            // Semi-transparent tint so the blur is visible while matching the theme
+            let themeColor = UIColor.compound.bgCanvasDefault.withAlphaComponent(0.5)
+            standardAppearance.backgroundColor = themeColor
+        }
         
         // Configure badge colors
         standardAppearance.stackedLayoutAppearance.normal.badgeBackgroundColor = .compound.iconAccentPrimary // iPhone Portrait
@@ -576,7 +583,7 @@ private struct AppearanceConfigurationModifier: ViewModifier {
             }
             .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
                 // Update appearance asynchronously to avoid modifying state during view update
-                // This is critical for the Lingugram theme
+                // This is critical for the Aurora theme
                 // which don't change interfaceStyle but still need appearance refresh
                 // Also triggers on initial load when the publisher emits its first value
                 Task { @MainActor in

@@ -13,7 +13,7 @@ import SwiftUI
 
 /// A reusable ViewModifier that observes theme changes and forces view refresh
 /// This ensures views update correctly when the app appearance changes, including
-/// custom themes like Lingugram (dark blue).
+/// custom themes like Aurora.
 struct ThemeObservationModifier: ViewModifier {
     @State private var appearanceId: AppAppearance = ServiceLocator.shared.settings.appAppearance
     

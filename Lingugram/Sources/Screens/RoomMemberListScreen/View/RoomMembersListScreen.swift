@@ -47,8 +47,10 @@ struct RoomMembersListScreen: View {
         .compoundSearchField()
         .autocorrectionDisabled()
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
-        .navigationTitle(L10n.commonPeople)
+        .toolbarRole(RoomHeaderView.toolbarRole)
+        .navigationTitle(L10n.commonPeople) // Hidden but used for back button text.
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
         .sheet(item: $context.manageMemeberViewModel) {
             ManageRoomMemberSheetView(context: $0.context)
         }
@@ -96,7 +98,14 @@ struct RoomMembersListScreen: View {
     
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .confirmationAction) {
+        ToolbarItem(placement: .principal) {
+            RoomHeaderView(roomName: context.viewState.roomDetails.name ?? L10n.commonPeople,
+                           roomAvatar: context.viewState.roomDetails.avatar,
+                           mediaProvider: context.mediaProvider)
+                .contentShape(.rect)
+        }
+        
+        ToolbarItem(placement: .primaryAction) {
             if context.viewState.canInviteUsers {
                 Button(L10n.actionInvite) {
                     context.send(viewAction: .invite)

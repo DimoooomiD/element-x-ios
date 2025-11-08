@@ -44,18 +44,12 @@ struct RoomDetailsScreen: View {
         .alert(item: $context.ignoreUserRoomAlertItem,
                actions: blockUserAlertActions,
                message: blockUserAlertMessage)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if context.viewState.canEditBaseInfo {
-                    Button(L10n.actionEdit) {
-                        context.send(viewAction: .processTapEdit)
-                    }
-                }
-            }
-        }
-        .navigationTitle(L10n.screenRoomDetailsTitle)
+        .toolbar { toolbar }
+        .toolbarRole(RoomHeaderView.toolbarRole)
+        .navigationTitle(L10n.screenRoomDetailsTitle) // Hidden but used for back button text.
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
+        .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .track(screen: .RoomDetails)
         .interactiveQuickLook(item: $context.mediaPreviewItem, allowEditing: false)
     }
@@ -326,6 +320,25 @@ struct RoomDetailsScreen: View {
 
     private func blockUserAlertMessage(_ item: RoomDetailsScreenViewStateBindings.IgnoreUserAlertItem) -> some View {
         Text(item.description)
+    }
+    
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            RoomHeaderView(roomName: context.viewState.details.name ?? L10n.screenRoomDetailsTitle,
+                           roomAvatar: context.viewState.details.avatar,
+                           dmRecipientVerificationState: context.viewState.dmRecipientInfo?.verificationState,
+                           mediaProvider: context.mediaProvider)
+                .contentShape(.rect)
+        }
+        
+        ToolbarItem(placement: .primaryAction) {
+            if context.viewState.canEditBaseInfo {
+                Button(L10n.actionEdit) {
+                    context.send(viewAction: .processTapEdit)
+                }
+            }
+        }
     }
 }
 

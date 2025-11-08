@@ -36,6 +36,7 @@ class RoomDetailsEditScreenViewModel: RoomDetailsEditScreenViewModelType, RoomDe
         let roomTopic = roomProxy.infoPublisher.value.topic
         
         super.init(initialViewState: RoomDetailsEditScreenViewState(roomID: roomProxy.id,
+                                                                    roomDetails: roomProxy.details,
                                                                     initialAvatarURL: roomAvatar,
                                                                     initialName: roomName ?? "",
                                                                     initialTopic: roomTopic ?? "",

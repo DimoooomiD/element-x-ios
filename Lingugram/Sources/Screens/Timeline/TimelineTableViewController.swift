@@ -187,7 +187,7 @@ class TimelineTableViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = .compound.bgCanvasDefault
+        updateTableViewBackground()
         
         // The tableview should be flipped to display the newest items at the top
         // the only exception is VoiceOver, where we want to keep the latest item at the top as Android.
@@ -231,6 +231,13 @@ class TimelineTableViewController: UIViewController {
                 guard let self else { return }
                 tableView.transform = CGAffineTransform(scaleX: 1, y: scaleY)
                 tableView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        // Observe theme changes to update tableView background for Aurora gradient
+        ServiceLocator.shared.settings.$appAppearance
+            .sink { [weak self] _ in
+                self?.updateTableViewBackground()
             }
             .store(in: &cancellables)
         
@@ -562,6 +569,19 @@ extension TimelineTableViewController {
             return nil
         }
         return (timelineCell as? TimelineItemCell)?.item?.identifier
+    }
+    
+    /// Updates the tableView background based on the current theme
+    /// For Aurora theme, makes it transparent so the gradient shows through
+    private func updateTableViewBackground() {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .aurora {
+            // Make transparent for Aurora theme so gradient shows through
+            tableView.backgroundColor = .clear
+        } else {
+            // Use solid color for other themes
+            tableView.backgroundColor = .compound.bgCanvasDefault
+        }
     }
 }
 

@@ -47,14 +47,18 @@ struct RoomMembersListScreenViewState: BindableState {
     var canKickUsers = false
     var canBanUsers = false
     
+    var roomDetails: RoomDetails
+    
     var bindings: RoomMembersListScreenViewStateBindings
     
     init(joinedMembersCount: Int,
+         roomDetails: RoomDetails,
          joinedMembers: [RoomMemberListScreenEntry] = [],
          invitedMembers: [RoomMemberListScreenEntry] = [],
          bannedMembers: [RoomMemberListScreenEntry] = [],
          bindings: RoomMembersListScreenViewStateBindings) {
         self.joinedMembersCount = joinedMembersCount
+        self.roomDetails = roomDetails
         self.joinedMembers = joinedMembers
         self.invitedMembers = invitedMembers
         self.bannedMembers = bannedMembers

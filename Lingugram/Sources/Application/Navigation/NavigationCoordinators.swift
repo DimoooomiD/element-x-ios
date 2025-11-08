@@ -735,7 +735,7 @@ private struct NavigationStackCoordinatorView: View {
         }
         .onReceive(ServiceLocator.shared.settings.$appAppearance) { _ in
             // Update appearance asynchronously to avoid modifying state during view update
-            // This is critical for the Lingugram theme
+            // This is critical for the Aurora theme
             // which don't change interfaceStyle but still need appearance refresh
             // Also triggers on initial load when the publisher emits its first value
             Task { @MainActor in
@@ -756,12 +756,32 @@ private struct NavigationStackCoordinatorView: View {
     private func configureNavigationBarAppearance(_ navigationController: UINavigationController) {
         let standardAppearance = UINavigationBarAppearance()
         
-        // Configure with default background to preserve system styling
-        standardAppearance.configureWithDefaultBackground()
-        
-        // Override with theme-aware background color
-        // This ensures the Lingugram (dark blue) theme is properly applied
-        standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
+        // Choose background configuration based on theme so Aurora shows gradient
+        let appAppearance = ServiceLocator.shared.settings?.appAppearance
+        if appAppearance == .aurora {
+            // Transparent background with blur to let the themed gradient show through
+            let interfaceStyle = appAppearance?.interfaceStyle ?? .unspecified
+            let blurStyle: UIBlurEffect.Style = {
+                switch interfaceStyle {
+                case .dark:
+                    return .systemMaterialDark
+                case .light:
+                    return .systemMaterialLight
+                default:
+                    return UITraitCollection.current.userInterfaceStyle == .dark ? .systemMaterialDark : .systemMaterialLight
+                }
+            }()
+            let blurEffect = UIBlurEffect(style: blurStyle)
+            standardAppearance.configureWithTransparentBackground()
+            standardAppearance.backgroundEffect = blurEffect
+            standardAppearance.backgroundColor = .clear
+            navigationController.navigationBar.isTranslucent = true
+        } else {
+            // Default background with a theme-aware color tint
+            standardAppearance.configureWithDefaultBackground()
+            standardAppearance.backgroundColor = UIColor.compound.bgCanvasDefault
+            navigationController.navigationBar.isTranslucent = false
+        }
         
         // Configure title text attributes with theme-aware colors
         standardAppearance.titleTextAttributes = [
