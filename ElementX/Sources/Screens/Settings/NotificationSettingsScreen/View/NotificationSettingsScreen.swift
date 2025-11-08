@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct NotificationSettingsScreen: View {
@@ -43,6 +44,7 @@ struct NotificationSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.screenNotificationSettingsTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .alert(item: $context.alertInfo)
         .track(screen: .SettingsNotifications)
@@ -66,7 +68,8 @@ struct NotificationSettingsScreen: View {
         Section {
             ListRow(kind: .custom {
                 HStack(alignment: .firstTextBaseline, spacing: 13) {
-                    Text("⚠️")
+                    Image(systemSymbol: .exclamationmarkTriangle)
+                        .foregroundColor(.orange)
                         .font(.system(size: 20))
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 2) {
@@ -88,7 +91,7 @@ struct NotificationSettingsScreen: View {
     private var enableNotificationSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenNotificationSettingsEnableNotifications,
-                                    icon: Text("🔔")),
+                                    icon: ColoredIcon(symbol: .bell, color: .orange)),
                     kind: .toggle($context.enableNotifications))
                 .onChange(of: context.enableNotifications) {
                     context.send(viewAction: .changedEnableNotifications)
@@ -100,7 +103,7 @@ struct NotificationSettingsScreen: View {
         Section {
             // Group chats
             ListRow(label: .default(title: L10n.screenNotificationSettingsGroupChats,
-                                    icon: Text("👥")),
+                                    icon: ColoredIcon(symbol: .person2, color: .blue)),
                     details: context.viewState.settings.map {
                         .title(context.viewState.strings.string(for: $0.groupChatsMode))
                     } ?? .isWaiting(true),
@@ -112,7 +115,7 @@ struct NotificationSettingsScreen: View {
             
             // Direct chats
             ListRow(label: .default(title: L10n.screenNotificationSettingsDirectChats,
-                                    icon: Text("💬")),
+                                    icon: ColoredIcon(symbol: .message, color: .green)),
                     details: context.viewState.settings.map {
                         .title(context.viewState.strings.string(for: $0.directChatsMode))
                     } ?? .isWaiting(true),
@@ -131,7 +134,7 @@ struct NotificationSettingsScreen: View {
     private var mentionsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenNotificationSettingsRoomMentionLabel,
-                                    icon: Text("💭")),
+                                    icon: ColoredIcon(symbol: .at, color: .purple)),
                     kind: .toggle($context.roomMentionsEnabled))
                 .disabled(context.viewState.settings?.roomMentionsEnabled == nil)
                 .allowsHitTesting(!context.viewState.applyingChange)
@@ -147,7 +150,7 @@ struct NotificationSettingsScreen: View {
     private var callsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenNotificationSettingsCallsLabel,
-                                    icon: Text("📞")),
+                                    icon: ColoredIcon(symbol: .phone, color: .green)),
                     kind: .toggle($context.callsEnabled))
                 .disabled(context.viewState.settings?.callsEnabled == nil)
                 .allowsHitTesting(!context.viewState.applyingChange)
@@ -163,7 +166,7 @@ struct NotificationSettingsScreen: View {
     private var additionalSettingsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenNotificationSettingsInviteForMeLabel,
-                                    icon: Text("✉️")),
+                                    icon: ColoredIcon(symbol: .envelope, color: .blue)),
                     kind: .toggle($context.invitationsEnabled))
                 .disabled(context.viewState.settings?.invitationsEnabled == nil)
                 .allowsHitTesting(!context.viewState.applyingChange)
@@ -268,5 +271,18 @@ struct NotificationSettingsScreen_Previews: PreviewProvider, TestablePreview {
         NotificationSettingsScreen(context: viewModelConfigurationMismatch.context)
             .snapshotPreferences(expect: viewModelConfigurationMismatch.context.observe(\.viewState.settings).map { $0 != nil }.eraseToStream())
             .previewDisplayName("Configuration mismatch")
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }

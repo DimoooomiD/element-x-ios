@@ -53,6 +53,7 @@ final class AppSettings {
         case sharePresence
         case backgroundWallpaperColor
         case headerGradientEnabled
+        case chatRoomTextSize
         
         case elementCallBaseURLOverride
         
@@ -212,7 +213,7 @@ final class AppSettings {
     /// **Note:** This property isn't overridable as it in unexpected for forks to come across the error (or to even have a "Pro" app).
     let elementProAppStoreURL: URL = "https://apps.apple.com/app/element-pro-for-work/id6502951615"
     
-    @UserPreference(key: UserDefaultsKeys.appAppearance, defaultValue: .darkBlue, storageType: .userDefaults(store))
+    @UserPreference(key: UserDefaultsKeys.appAppearance, defaultValue: .dark, storageType: .userDefaults(store))
     var appAppearance: AppAppearance
     
     @UserPreference(key: UserDefaultsKeys.backgroundWallpaperColor, defaultValue: .none, storageType: .userDefaults(store))
@@ -220,6 +221,10 @@ final class AppSettings {
     
     @UserPreference(key: UserDefaultsKeys.headerGradientEnabled, defaultValue: false, storageType: .userDefaults(store))
     var headerGradientEnabled
+    
+    /// Text size multiplier for chat room messages (0.8 to 1.5, default 1.0)
+    @UserPreference(key: UserDefaultsKeys.chatRoomTextSize, defaultValue: 1.0, storageType: .userDefaults(store))
+    var chatRoomTextSize: Double
     
     // MARK: - Security
     
@@ -237,7 +242,7 @@ final class AppSettings {
     
     /// Any pre-defined static client registrations for OIDC issuers.
     let oidcStaticRegistrations: [URL: String] = ["https://id.thirdroom.io/realms/thirdroom": "elementx"]
-    /// The redirect URL used for OIDC. This no longer uses universal links so we don't need the bundle ID to avoid conflicts between Element X, Nightly and PR builds.
+    /// The redirect URL used for OIDC. This no longer uses universal links so we don't need the bundle ID to avoid conflicts between Lingugram, Nightly and PR builds.
     private(set) var oidcRedirectURL: URL = "https://element.io/oidc/login"
     
     private(set) lazy var oidcConfiguration = OIDCConfiguration(clientName: InfoPlistReader.main.bundleDisplayName,

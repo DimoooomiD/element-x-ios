@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct AnalyticsSettingsScreen: View {
@@ -19,13 +20,14 @@ struct AnalyticsSettingsScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonAnalytics)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
     
     var analyticsSection: some View {
         Section {
             ListRow(label: .default(title: L10n.screenAnalyticsSettingsShareData,
-                                    icon: Text("📊")),
+                                    icon: ColoredIcon(symbol: .chartBar, color: .cyan)),
                     kind: .toggle($context.enableAnalytics))
                 .onChange(of: context.enableAnalytics) {
                     context.send(viewAction: .toggleAnalytics)
@@ -45,5 +47,18 @@ struct AnalyticsSettingsScreen_Previews: PreviewProvider, TestablePreview {
         let viewModel = AnalyticsSettingsScreenViewModel(appSettings: appSettings,
                                                          analytics: ServiceLocator.shared.analytics)
         AnalyticsSettingsScreen(context: viewModel.context)
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }

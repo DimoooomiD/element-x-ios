@@ -24,6 +24,7 @@ struct SpaceScreen: View {
         .toolbarRole(RoomHeaderView.toolbarRole)
         .navigationTitle(context.viewState.space.name)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
         .sheet(item: $context.leaveHandle) { leaveHandle in

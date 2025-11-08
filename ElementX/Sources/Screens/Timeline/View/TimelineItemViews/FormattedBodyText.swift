@@ -15,13 +15,15 @@ struct FormattedBodyText: View {
     private let additionalWhitespacesCount: Int
     private let boostFontSize: Bool
     
-    private let defaultAttributesContainer: AttributeContainer = {
+    private var defaultAttributesContainer: AttributeContainer {
         var container = AttributeContainer()
-        // Equivalent to compound's bodyLG
-        container.font = UIFont.preferredFont(forTextStyle: .body)
+        // Equivalent to compound's bodyLG, scaled by chatRoomTextSize
+        let baseFont = UIFont.preferredFont(forTextStyle: .body)
+        let textSizeMultiplier = ServiceLocator.shared.settings.chatRoomTextSize
+        container.font = UIFont(descriptor: baseFont.fontDescriptor, size: baseFont.pointSize * textSizeMultiplier)
         container.foregroundColor = UIColor.compound.textPrimary
         return container
-    }()
+    }
         
     private var attributedComponents: [AttributedStringBuilderComponent] {
         var adjustedAttributedString = attributedString + AttributedString(additionalWhitespacesSuffix)
@@ -124,7 +126,10 @@ struct FormattedBodyText: View {
         // Set directly in the constructor to avoid `Conformance to 'Sendable'` warnings
         var container = AttributeContainer([.paragraphStyle: NSParagraphStyle.default])
         // Sadly setting SwiftUI fonts do not work so we would need UIFont equivalents for compound, this one is bodyMD
-        container.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        // Scaled by chatRoomTextSize
+        let baseFont = UIFont.preferredFont(forTextStyle: .subheadline)
+        let textSizeMultiplier = ServiceLocator.shared.settings.chatRoomTextSize
+        container.font = UIFont(descriptor: baseFont.fontDescriptor, size: baseFont.pointSize * textSizeMultiplier)
         container.foregroundColor = UIColor.compound.textSecondary
         
         return container

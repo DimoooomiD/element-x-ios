@@ -50,6 +50,7 @@ struct RoomDirectorySearchScreen: View {
             .searchable(text: $context.searchString, placement: .navigationBarDrawer(displayMode: .always))
             .navigationTitle(L10n.screenRoomDirectorySearchTitle)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBloom(hasSearchBar: true)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(L10n.actionCancel) {

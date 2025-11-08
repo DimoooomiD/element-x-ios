@@ -25,6 +25,7 @@ struct StartChatScreen: View {
         .scrollDismissesKeyboard(.immediately)
         .navigationTitle(L10n.actionStartChat)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: true)
         .toolbar { toolbar }
         .searchController(query: $context.searchQuery,
                           placeholder: L10n.commonSearchForSomeone,

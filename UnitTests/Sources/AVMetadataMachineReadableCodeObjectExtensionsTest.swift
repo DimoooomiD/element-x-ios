@@ -9,7 +9,7 @@
 import AVKit
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 final class AVMetadataMachineReadableCodeObjectExtensionsTest: XCTestCase {
     func testDecodeQRCodeVersion8() {

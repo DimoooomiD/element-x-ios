@@ -5,7 +5,7 @@
 // swiftformat:disable all
 
 import XCTest
-@testable import ElementX
+@testable import Lingugram
 
 extension PreviewTests {
 
@@ -265,6 +265,12 @@ extension PreviewTests {
 
     func testGlobalSearchScreen() async throws {
         for (index, preview) in GlobalSearchScreen_Previews._allPreviews.enumerated() {
+            try await assertSnapshots(matching: preview, step: index)
+        }
+    }
+
+    func testHeaderGradientSettingsScreen() async throws {
+        for (index, preview) in HeaderGradientSettingsScreen_Previews._allPreviews.enumerated() {
             try await assertSnapshots(matching: preview, step: index)
         }
     }

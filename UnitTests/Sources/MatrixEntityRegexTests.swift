@@ -10,7 +10,7 @@ import Foundation
 
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 class MatrixEntityRegexTests: XCTestCase {
     func testHomeserver() {

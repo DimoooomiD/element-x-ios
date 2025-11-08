@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct LegalInformationScreen: View {
@@ -17,19 +18,20 @@ struct LegalInformationScreen: View {
         Form {
             Section {
                 ListRow(label: .default(title: L10n.commonCopyright,
-                                        icon: Text("©️")),
+                                        icon: ColoredIcon(symbol: .cCircle, color: .gray)),
                         kind: .button { openURL(context.viewState.copyrightURL) })
                 ListRow(label: .default(title: L10n.commonAcceptableUsePolicy,
-                                        icon: Text("📋")),
+                                        icon: ColoredIcon(symbol: .docText, color: .blue)),
                         kind: .button { openURL(context.viewState.acceptableUseURL) })
                 ListRow(label: .default(title: L10n.commonPrivacyPolicy,
-                                        icon: Text("🔒")),
+                                        icon: ColoredIcon(symbol: .lock, color: .red)),
                         kind: .button { openURL(context.viewState.privacyURL) })
             }
         }
         .compoundList()
         .navigationTitle(L10n.commonAbout)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 }
@@ -40,5 +42,18 @@ struct LegalInformationScreen_Previews: PreviewProvider, TestablePreview {
     static let viewModel = LegalInformationScreenViewModel(appSettings: AppSettings())
     static var previews: some View {
         LegalInformationScreen(context: viewModel.context)
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }

@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 @testable import SnapshotTesting
 
 @MainActor

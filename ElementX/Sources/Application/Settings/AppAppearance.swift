@@ -11,25 +11,29 @@ import SwiftUI
 /// Used to specify the user's app specific appearance preference
 enum AppAppearance: CaseIterable, Codable {
     case system
-    case dark
-    case darkBlue
-    case darkGreen
-    case darkPurple
-    case darkGray
-    case darkRed
-    case darkOrange
     case light
-    case lightGray
-    case lightBlue
-    case lightGreen
-    case lightPurple
-    case lightOrange
+    case dark
+    // Professional dark themes
+    case darkTeal
+    case darkIndigo
+    case darkSlate
+    case darkNavy
+    case darkForest
+    case darkSteel
+    // Professional light themes
+    case lightTeal
+    case lightIndigo
+    case lightSlate
+    case lightRose
+    case lightCream
+    case lightAzure
+    case lightPearl
         
     var interfaceStyle: UIUserInterfaceStyle {
         switch self {
-        case .light, .lightGray, .lightBlue, .lightGreen, .lightPurple, .lightOrange:
+        case .light, .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
             return .light
-        case .dark, .darkBlue, .darkGreen, .darkPurple, .darkGray, .darkRed, .darkOrange:
+        case .dark, .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel:
             return .dark
         case .system:
             return .unspecified

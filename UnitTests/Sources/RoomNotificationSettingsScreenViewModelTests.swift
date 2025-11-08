@@ -10,7 +10,7 @@ import Combine
 import MatrixRustSDK
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 @MainActor
 class RoomNotificationSettingsScreenViewModelTests: XCTestCase {

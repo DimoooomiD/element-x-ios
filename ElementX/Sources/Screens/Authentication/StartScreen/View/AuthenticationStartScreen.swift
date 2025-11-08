@@ -58,35 +58,54 @@ struct AuthenticationStartScreen: View {
     
     var content: some View {
         VStack(spacing: 0) {
-            Spacer()
-            
             if verticalSizeClass == .regular {
                 Spacer()
+                    .frame(height: 40)
                 
-                AuthenticationStartLogo(hideBrandChrome: context.viewState.hideBrandChrome)
-            }
-            
-            Spacer()
-            
-            if !context.viewState.hideBrandChrome {
-                VStack(spacing: 8) {
-                    Text(L10n.screenOnboardingWelcomeTitle)
-                        .font(.compound.headingLGBold)
-                        .foregroundColor(.compound.textPrimary)
-                        .multilineTextAlignment(.center)
-                    Text(L10n.screenOnboardingWelcomeMessage(InfoPlistReader.main.productionAppName))
-                        .font(.compound.bodyLG)
-                        .foregroundColor(.compound.textSecondary)
-                        .multilineTextAlignment(.center)
+                VStack(spacing: 32) {
+                    AuthenticationStartLogo(hideBrandChrome: context.viewState.hideBrandChrome)
+                    
+                    if !context.viewState.hideBrandChrome {
+                        VStack(spacing: 12) {
+                            Text(L10n.screenOnboardingWelcomeTitle)
+                                .font(.compound.headingXLBold)
+                                .foregroundColor(.compound.textPrimary)
+                                .multilineTextAlignment(.center)
+                            
+                            Text(L10n.screenOnboardingWelcomeMessage)
+                                .font(.compound.bodyLG)
+                                .foregroundColor(.compound.textSecondary)
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(4)
+                                .padding(.horizontal, 8)
+                        }
+                        .padding(.horizontal, 24)
+                    }
                 }
-                .padding()
-                .fixedSize(horizontal: false, vertical: true)
+                
+                Spacer()
+            } else {
+                // Compact layout for smaller screens
+                if !context.viewState.hideBrandChrome {
+                    VStack(spacing: 16) {
+                        AuthenticationStartLogo(hideBrandChrome: context.viewState.hideBrandChrome)
+                        
+                        VStack(spacing: 8) {
+                            Text(L10n.screenOnboardingWelcomeTitle)
+                                .font(.compound.headingLGBold)
+                                .foregroundColor(.compound.textPrimary)
+                                .multilineTextAlignment(.center)
+                            
+                            Text(L10n.screenOnboardingWelcomeMessage)
+                                .font(.compound.bodyMD)
+                                .foregroundColor(.compound.textSecondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal, 16)
+                    }
+                }
             }
-            
-            Spacer()
         }
-        .padding(.bottom)
-        .padding(.horizontal, 16)
         .readableFrame()
     }
     

@@ -36,6 +36,7 @@ struct RoomPollsHistoryScreen: View {
         .background(.compound.bgSubtleSecondaryLevel0)
         .navigationTitle(context.viewState.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
     }
     
     // MARK: - Private

@@ -10,7 +10,7 @@ import Combine
 import NotificationCenter
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 @MainActor
 final class NotificationManagerTests: XCTestCase {

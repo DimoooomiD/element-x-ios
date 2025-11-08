@@ -31,6 +31,7 @@ struct SecurityAndPrivacyScreen: View {
         .compoundList()
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(L10n.screenSecurityAndPrivacyTitle)
+        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .alert(item: $context.alertInfo)
     }

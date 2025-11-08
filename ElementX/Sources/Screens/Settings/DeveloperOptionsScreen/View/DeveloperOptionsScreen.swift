@@ -6,6 +6,8 @@
 // Please see LICENSE files in the repository root for full details.
 //
 
+import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct DeveloperOptionsScreen: View {
@@ -13,6 +15,7 @@ struct DeveloperOptionsScreen: View {
     
     @State private var showConfetti = false
     @State private var elementCallURLOverrideString: String
+    @State private var isSDKTracePacksExpanded = false
     
     init(context: DeveloperOptionsScreenViewModel.Context) {
         self.context = context
@@ -22,67 +25,78 @@ struct DeveloperOptionsScreen: View {
     var body: some View {
         Form {
             Section("Logging") {
-                LogLevelConfigurationView(logLevel: $context.logLevel)
+                ListRow(label: .default(title: "Log level",
+                                        description: "Requires app reboot",
+                                        icon: ColoredIcon(symbol: .docTextMagnifyingglass, color: .blue)),
+                        kind: .picker(selection: $context.logLevel,
+                                     items: logLevels.map { (title: $0.title, tag: $0) }))
                 
-                DisclosureGroup("SDK trace packs") {
+                ListRow(label: .default(title: "SDK trace packs",
+                                        icon: ColoredIcon(symbol: .docOnDoc, color: .gray)),
+                        details: .icon(chevronIconView),
+                        kind: .button {
+                            withAnimation {
+                                isSDKTracePacksExpanded.toggle()
+                            }
+                        })
+                
+                if isSDKTracePacksExpanded {
                     ForEach(TraceLogPack.allCases, id: \.self) { pack in
-                        Toggle(isOn: $context.traceLogPacks[pack]) {
-                            Text(pack.title)
-                        }
+                        ListRow(label: .default(title: pack.title,
+                                                icon: ColoredIcon(symbol: .docOnDoc, color: .gray)),
+                                kind: .toggle($context.traceLogPacks[pack]))
                     }
                 }
             }
             
             Section("Spaces") {
-                Toggle(isOn: $context.spaceSettingsEnabled) {
-                    Text("Space settings")
-                }
+                ListRow(label: .default(title: "Space settings",
+                                        icon: ColoredIcon(symbol: .squareGrid2x2, color: .purple)),
+                        kind: .toggle($context.spaceSettingsEnabled))
             }
             
             Section("Room List") {
-                Toggle(isOn: $context.publicSearchEnabled) {
-                    Text("Public search")
-                }
+                ListRow(label: .default(title: "Public search",
+                                        icon: ColoredIcon(symbol: .magnifyingglass, color: .blue)),
+                        kind: .toggle($context.publicSearchEnabled))
                 
-                Toggle(isOn: $context.hideUnreadMessagesBadge) {
-                    Text("Hide grey dots")
-                }
+                ListRow(label: .default(title: "Hide grey dots",
+                                        icon: ColoredIcon(symbol: .circle, color: .gray)),
+                        kind: .toggle($context.hideUnreadMessagesBadge))
                 
-                Toggle(isOn: $context.fuzzyRoomListSearchEnabled) {
-                    Text("Fuzzy searching")
-                }
+                ListRow(label: .default(title: "Fuzzy searching",
+                                        icon: ColoredIcon(symbol: .textMagnifyingglass, color: .green)),
+                        kind: .toggle($context.fuzzyRoomListSearchEnabled))
                 
-                Toggle(isOn: $context.lowPriorityFilterEnabled) {
-                    Text("Low priority filter")
-                }
+                ListRow(label: .default(title: "Low priority filter",
+                                        icon: ColoredIcon(symbol: .line3HorizontalDecrease, color: .orange)),
+                        kind: .toggle($context.lowPriorityFilterEnabled))
                 
-                Toggle(isOn: $context.latestEventSorterEnabled) {
-                    Text("Latest event sorter")
-                    Text("Requires app reboot")
-                }
+                ListRow(label: .default(title: "Latest event sorter",
+                                        description: "Requires app reboot",
+                                        icon: ColoredIcon(symbol: .arrowUpArrowDown, color: .cyan)),
+                        kind: .toggle($context.latestEventSorterEnabled))
             }
             
             Section("Timeline") {
-                Toggle(isOn: $context.linkPreviewsEnabled) {
-                    Text("Link previews")
-                    Text("Follows the timeline media visibility settings.")
-                    Text("Can leak the device IP address when loading link metadata.")
-                        .foregroundStyle(.compound.textCriticalPrimary)
-                }
+                ListRow(label: .default(title: "Link previews",
+                                        description: "Follows the timeline media visibility settings. Can leak the device IP address when loading link metadata.",
+                                        icon: ColoredIcon(symbol: .link, color: .blue)),
+                        kind: .toggle($context.linkPreviewsEnabled))
             }
                         
             Section("Join rules") {
-                Toggle(isOn: $context.knockingEnabled) {
-                    Text("Knocking")
-                    Text("Ask to join rooms")
-                }
+                ListRow(label: .default(title: "Knocking",
+                                        description: "Ask to join rooms",
+                                        icon: ColoredIcon(symbol: .handRaised, color: .green)),
+                        kind: .toggle($context.knockingEnabled))
             }
             
             Section {
-                Toggle(isOn: $context.enableOnlySignedDeviceIsolationMode) {
-                    Text("Exclude insecure devices when sending/receiving messages")
-                    Text("Requires app reboot")
-                }
+                ListRow(label: .default(title: "Exclude insecure devices when sending/receiving messages",
+                                        description: "Requires app reboot",
+                                        icon: ColoredIcon(symbol: .lockShield, color: .red)),
+                        kind: .toggle($context.enableOnlySignedDeviceIsolationMode))
             } header: {
                 Text("Trust and Decoration")
             } footer: {
@@ -90,17 +104,19 @@ struct DeveloperOptionsScreen: View {
             }
 
             Section {
-                Toggle(isOn: $context.enableKeyShareOnInvite) {
-                    Text("Share encrypted history with new members")
-                    Text("Requires app reboot")
-                }
+                ListRow(label: .default(title: "Share encrypted history with new members",
+                                        description: "Requires app reboot",
+                                        icon: ColoredIcon(symbol: .key, color: .yellow)),
+                        kind: .toggle($context.enableKeyShareOnInvite))
             } footer: {
                 Text("When inviting a user to an encrypted room that has history visibility set to \"shared\", share encrypted history with that user, and accept encrypted history when you are invited to such a room.")
                 Text("WARNING: this feature is EXPERIMENTAL and not all security precautions are implemented. Do not enable on production accounts.")
             }
 
             Section {
-                TextField("Leave empty to use EC locally", text: $elementCallURLOverrideString)
+                ListRow(label: .default(title: "Element Call remote URL override",
+                                        icon: ColoredIcon(symbol: .phone, color: .green)),
+                        kind: .textField(text: $elementCallURLOverrideString))
                     .autocorrectionDisabled(true)
                     .autocapitalization(.none)
                     .foregroundColor(URL(string: elementCallURLOverrideString) == nil ? .red : .primary)
@@ -112,43 +128,41 @@ struct DeveloperOptionsScreen: View {
                             context.elementCallBaseURLOverride = url
                         }
                     }
-            } header: {
-                Text("Element Call remote URL override")
             }
             
             Section("Notifications") {
-                Toggle(isOn: $context.hideQuietNotificationAlerts) {
-                    Text("Hide quiet alerts")
-                    Text("The badge count will still be updated")
-                }
-                Toggle(isOn: $context.focusEventOnNotificationTap) {
-                    Text("Focus event on notification tap")
-                }
+                ListRow(label: .default(title: "Hide quiet alerts",
+                                        description: "The badge count will still be updated",
+                                        icon: ColoredIcon(symbol: .bellSlash, color: .orange)),
+                        kind: .toggle($context.hideQuietNotificationAlerts))
+                
+                ListRow(label: .default(title: "Focus event on notification tap",
+                                        icon: ColoredIcon(symbol: .target, color: .blue)),
+                        kind: .toggle($context.focusEventOnNotificationTap))
             }
             
             Section {
-                Button {
-                    showConfetti = true
-                } label: {
-                    Text("🥳")
-                        .frame(maxWidth: .infinity)
-                        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 } // Fix separator alignment
-                }
+                ListRow(label: .action(title: "Celebrate",
+                                       icon: ColoredIcon(symbol: .partyPopper, color: .yellow)),
+                        kind: .button {
+                            showConfetti = true
+                        })
             }
 
             Section {
-                Button(role: .destructive) {
-                    context.send(viewAction: .clearCache)
-                } label: {
-                    Text("Clear cache")
-                        .frame(maxWidth: .infinity)
-                }
+                ListRow(label: .action(title: "Clear cache",
+                                       icon: ColoredIcon(symbol: .trash, color: .red),
+                                       role: .destructive),
+                        kind: .button {
+                            context.send(viewAction: .clearCache)
+                        })
             }
         }
         .overlay(effectsView)
         .compoundList()
         .navigationTitle(L10n.commonDeveloperOptions)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 
@@ -166,25 +180,16 @@ struct DeveloperOptionsScreen: View {
         try? await Task.sleep(for: .seconds(4))
         showConfetti = false
     }
-}
-
-private struct LogLevelConfigurationView: View {
-    @Binding var logLevel: LogLevel
-    
-    var body: some View {
-        Picker(selection: $logLevel) {
-            ForEach(logLevels, id: \.self) { logLevel in
-                Text(logLevel.title)
-            }
-        } label: {
-            Text("Log level")
-            Text("Requires app reboot")
-        }
-    }
     
     /// Allows the picker to work with associated values
     private var logLevels: [LogLevel] {
         [.error, .warn, .info, .debug, .trace]
+    }
+    
+    private var chevronIconView: some View {
+        CompoundIcon(\.chevronDown, size: .small, relativeTo: .compound.bodyLG)
+            .foregroundStyle(.compound.iconTertiary)
+            .rotationEffect(.degrees(isSDKTracePacksExpanded ? 180 : 0))
     }
 }
 
@@ -199,6 +204,19 @@ private extension Set<TraceLogPack> {
                 remove(pack)
             }
         }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 

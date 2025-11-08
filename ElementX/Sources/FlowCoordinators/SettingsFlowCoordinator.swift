@@ -25,6 +25,9 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     // periphery:ignore - retaining purpose
     private var appLockSetupFlowCoordinator: AppLockSetupFlowCoordinator?
     // periphery:ignore - retaining purpose
+    private var appLockUnlockCoordinator: AppLockSetupPINScreenCoordinator?
+    private var modalNavigationStackCoordinator: NavigationStackCoordinator?
+    // periphery:ignore - retaining purpose
     private var bugReportFlowCoordinator: BugReportFlowCoordinator?
     // periphery:ignore - retaining purpose
     private var encryptionSettingsFlowCoordinator: EncryptionSettingsFlowCoordinator?
@@ -106,6 +109,10 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
                     presentNotificationSettings()
                 case .appearance:
                     presentAppearanceSettings()
+                case .headerGradient:
+                    presentHeaderGradientSettings()
+                case .textSize:
+                    presentTextSizeSettings()
                 case .advancedSettings:
                     presentAdvancedSettings()
                 case .labs:
@@ -171,23 +178,90 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     }
     
     private func presentAppLockSetupFlow() {
-        let coordinator = AppLockSetupFlowCoordinator(presentingFlow: .settings,
-                                                      appLockService: appLockService,
-                                                      navigationStackCoordinator: navigationStackCoordinator)
-        coordinator.actions.sink { [weak self] action in
+        // If App Lock is enabled, show unlock screen first
+        if appLockService.isEnabled {
+            showAppLockUnlock()
+        } else {
+            // App Lock is not enabled, show settings screen directly
+            showAppLockSettings()
+        }
+    }
+    
+    private func showAppLockUnlock() {
+        let unlockCoordinator = AppLockSetupPINScreenCoordinator(parameters: .init(initialMode: .unlock,
+                                                                                    isMandatory: false,
+                                                                                    appLockService: appLockService))
+        unlockCoordinator.start()
+        unlockCoordinator.actions.sink { [weak self] action in
             guard let self else { return }
             switch action {
             case .complete:
-                // The flow coordinator tidies up the stack, no need to do anything.
-                appLockSetupFlowCoordinator = nil
+                // Unlock successful, dismiss sheet and show settings screen
+                navigationStackCoordinator.setSheetCoordinator(nil)
+                modalNavigationStackCoordinator = nil
+                appLockUnlockCoordinator = nil
+                showAppLockSettings()
+            case .cancel:
+                // User cancelled, dismiss unlock screen
+                navigationStackCoordinator.setSheetCoordinator(nil)
+                modalNavigationStackCoordinator = nil
+                appLockUnlockCoordinator = nil
             case .forceLogout:
+                // User forgot PIN, force logout
+                navigationStackCoordinator.setSheetCoordinator(nil)
+                modalNavigationStackCoordinator = nil
+                appLockUnlockCoordinator = nil
                 actionsSubject.send(.forceLogout)
             }
         }
         .store(in: &cancellables)
         
-        appLockSetupFlowCoordinator = coordinator
+        appLockUnlockCoordinator = unlockCoordinator
+        modalNavigationStackCoordinator = NavigationStackCoordinator()
+        modalNavigationStackCoordinator?.setRootCoordinator(unlockCoordinator)
+        navigationStackCoordinator.setSheetCoordinator(modalNavigationStackCoordinator)
+    }
+    
+    private func showAppLockSettings() {
+        let coordinator = AppLockSetupSettingsScreenCoordinator(parameters: .init(appLockService: appLockService))
         coordinator.start()
+        coordinator.actions.sink { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case .changePINCode:
+                // User wants to change PIN, show create PIN screen
+                showAppLockCreatePIN()
+            case .appLockDisabled:
+                // User disabled App Lock, pop settings screen
+                navigationStackCoordinator.pop()
+            }
+        }
+        .store(in: &cancellables)
+        
+        navigationStackCoordinator.push(coordinator)
+    }
+    
+    private func showAppLockCreatePIN() {
+        let createPINCoordinator = AppLockSetupPINScreenCoordinator(parameters: .init(initialMode: .create,
+                                                                                       isMandatory: false,
+                                                                                       appLockService: appLockService))
+        createPINCoordinator.start()
+        createPINCoordinator.actions.sink { [weak self] action in
+            guard let self else { return }
+            switch action {
+            case .complete:
+                // PIN created/changed successfully, pop create PIN screen to reveal settings
+                navigationStackCoordinator.pop()
+            case .cancel:
+                // User cancelled, pop create PIN screen to reveal settings
+                navigationStackCoordinator.pop()
+            case .forceLogout:
+                fatalError("Creating a PIN can't force a logout.")
+            }
+        }
+        .store(in: &cancellables)
+        
+        navigationStackCoordinator.push(createPINCoordinator)
     }
     
     private func presentLegalInformationScreen() {
@@ -213,6 +287,16 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     
     private func presentAppearanceSettings() {
         let coordinator = AppearanceSettingsScreenCoordinator(parameters: .init(appSettings: flowParameters.appSettings))
+        navigationStackCoordinator.push(coordinator)
+    }
+    
+    private func presentHeaderGradientSettings() {
+        let coordinator = HeaderGradientSettingsScreenCoordinator(parameters: .init(appSettings: flowParameters.appSettings))
+        navigationStackCoordinator.push(coordinator)
+    }
+    
+    private func presentTextSizeSettings() {
+        let coordinator = TextSizeSettingsScreenCoordinator(parameters: .init(appSettings: flowParameters.appSettings))
         navigationStackCoordinator.push(coordinator)
     }
     

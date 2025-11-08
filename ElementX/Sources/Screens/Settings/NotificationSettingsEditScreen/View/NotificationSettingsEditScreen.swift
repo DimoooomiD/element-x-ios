@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct NotificationSettingsEditScreen: View {
@@ -22,6 +23,8 @@ struct NotificationSettingsEditScreen: View {
         }
         .compoundList()
         .navigationTitle(context.viewState.strings.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .alert(item: $context.alertInfo)
         .track(screen: .SettingsDefaultNotifications)
         .observeThemeChanges() // Synchronous update for immediate response
@@ -34,7 +37,7 @@ struct NotificationSettingsEditScreen: View {
             ForEach(context.viewState.availableDefaultModes, id: \.self) { mode in
                 ListRow(label: .default(title: context.viewState.strings.string(for: mode),
                                         description: context.viewState.description(for: mode),
-                                        icon: emojiForMode(mode)),
+                                        icon: iconForMode(mode)),
                         details: (context.viewState.pendingMode == mode) ? .isWaiting(true) : nil,
                         kind: .selection(isSelected: context.viewState.isSelected(mode: mode)) {
                             context.send(viewAction: .setMode(mode))
@@ -47,12 +50,12 @@ struct NotificationSettingsEditScreen: View {
         }
     }
     
-    private func emojiForMode(_ mode: NotificationSettingsEditScreenDefaultMode) -> Text {
+    private func iconForMode(_ mode: NotificationSettingsEditScreenDefaultMode) -> ColoredIcon {
         switch mode {
         case .allMessages:
-            return Text("📬")
+            return ColoredIcon(symbol: .envelopeOpen, color: .blue)
         case .mentionsAndKeywordsOnly:
-            return Text("💬")
+            return ColoredIcon(symbol: .message, color: .green)
         }
     }
     
@@ -135,5 +138,18 @@ struct NotificationSettingsEditScreen_Previews: PreviewProvider, TestablePreview
             .previewDisplayName("Applying change")
         NotificationSettingsEditScreen(context: viewModelGroupChatsWithouDisclaimer.context)
             .previewDisplayName("Group Chats Without Disclaimer")
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }

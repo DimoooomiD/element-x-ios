@@ -31,6 +31,7 @@ struct SecureBackupScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonEncryption)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .alert(item: $context.alertInfo)
     }
     

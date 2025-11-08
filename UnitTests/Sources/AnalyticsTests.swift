@@ -7,7 +7,7 @@
 //
 
 import AnalyticsEvents
-@testable import ElementX
+@testable import Lingugram
 import PostHog
 import XCTest
 

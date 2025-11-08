@@ -1,5 +1,5 @@
 ---
-name: ElementX
+name: Lingugram
 attributes:
   ORGANIZATIONNAME: Element
 
@@ -15,7 +15,7 @@ options:
     macOS: '14.5'
   groupOrdering:
   - order:
-    - ElementX
+    - Lingugram
     - NSE
     - ShareExtension
     - UnitTests
@@ -26,7 +26,7 @@ options:
     - DevelopmentAssets
     - Secrets
     - Tools
-  - pattern: ElementX
+  - pattern: Lingugram
     order:
     - Sources
     - Resources
@@ -49,7 +49,7 @@ options:
 settings:
   CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: true
   ENABLE_BITCODE: false
-  APP_NAME: ElementX
+  APP_NAME: Lingugram
   KEYCHAIN_ACCESS_GROUP_IDENTIFIER: "$(DEVELOPMENT_TEAM).$(BASE_BUNDLE_IDENTIFIER)"
   MARKETING_VERSION: 25.11.0
   CURRENT_PROJECT_VERSION: 1

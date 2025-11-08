@@ -9,7 +9,7 @@
 import Combine
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 import MatrixRustSDK
 
 @MainActor

@@ -21,7 +21,7 @@ enum UserSessionFlowCoordinatorAction {
 }
 
 class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
-    enum HomeTab: Hashable { case chats, spaces, settings }
+    enum HomeTab: Hashable { case chats, spaces, library, settings }
     
     private let navigationRootCoordinator: NavigationRootCoordinator
     private let navigationTabCoordinator: NavigationTabCoordinator<HomeTab>
@@ -36,6 +36,9 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
     private let chatsTabDetails: NavigationTabCoordinator<HomeTab>.TabDetails
     private let spaceExplorerFlowCoordinator: SpaceExplorerFlowCoordinator
     private let spacesTabDetails: NavigationTabCoordinator<HomeTab>.TabDetails
+    private let libraryFlowCoordinator: LibraryFlowCoordinator
+    private let libraryNavigationStackCoordinator: NavigationStackCoordinator
+    private let libraryTabDetails: NavigationTabCoordinator<HomeTab>.TabDetails
     private let settingsFlowCoordinator: SettingsFlowCoordinator
     private let settingsNavigationStackCoordinator: NavigationStackCoordinator
     private let settingsTabDetails: NavigationTabCoordinator<HomeTab>.TabDetails
@@ -91,6 +94,12 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
         spacesTabDetails = .init(tag: HomeTab.spaces, title: L10n.screenHomeTabSpaces, icon: \.space, selectedIcon: \.spaceSolid)
         spacesTabDetails.navigationSplitCoordinator = spacesSplitCoordinator
         
+        libraryNavigationStackCoordinator = NavigationStackCoordinator()
+        libraryFlowCoordinator = LibraryFlowCoordinator(navigationStackCoordinator: libraryNavigationStackCoordinator,
+                                                        flowParameters: flowParameters)
+        libraryTabDetails = .init(tag: HomeTab.library, title: "Library", icon: \.document, selectedIcon: \.document)
+        libraryTabDetails.navigationStackCoordinator = libraryNavigationStackCoordinator
+        
         settingsNavigationStackCoordinator = NavigationStackCoordinator()
         settingsFlowCoordinator = SettingsFlowCoordinator(appLockService: appLockService,
                                                           navigationStackCoordinator: settingsNavigationStackCoordinator,
@@ -107,6 +116,7 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
         navigationTabCoordinator.setTabs([
             .init(coordinator: chatsSplitCoordinator, details: chatsTabDetails),
             .init(coordinator: spacesSplitCoordinator, details: spacesTabDetails),
+            .init(coordinator: libraryNavigationStackCoordinator, details: libraryTabDetails),
             .init(coordinator: settingsNavigationStackCoordinator, details: settingsTabDetails)
         ])
         
@@ -178,13 +188,15 @@ class UserSessionFlowCoordinator: FlowCoordinatorProtocol {
     // MARK: - Private
     
     private func configureStateMachine() {
-        stateMachine.addRoutes(event: .start, transitions: [.initial => .tabBar]) { [weak self] _ in
-            guard let self else { return }
+        stateMachine.addRoutes(event: .start, transitions: [.initial => .tabBar]) { [weak self] _ -> Bool in
+            guard let self else { return false }
             
-            chatsFlowCoordinator.start()
-            spaceExplorerFlowCoordinator.start()
+            chatsFlowCoordinator.start(animated: false)
+            spaceExplorerFlowCoordinator.start(animated: false)
+            libraryFlowCoordinator.start(animated: false)
             settingsFlowCoordinator.start(animated: false)
             attemptStartingOnboarding()
+            return true
         }
         
         stateMachine.addRoutes(event: .showSettingsScreen, transitions: [.tabBar => .settingsScreen]) { [weak self] _ in

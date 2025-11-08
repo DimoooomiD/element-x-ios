@@ -9,7 +9,7 @@
 import UniformTypeIdentifiers
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 final class MediaUploadingPreprocessorTests: XCTestCase {
     let maxUploadSize: UInt = 100 * 1024 * 1024

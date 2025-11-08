@@ -7,6 +7,7 @@
 //
 
 import Compound
+import SFSafeSymbols
 import SwiftUI
 
 struct AppearanceSettingsScreen: View {
@@ -17,22 +18,17 @@ struct AppearanceSettingsScreen: View {
             Section {
                 ForEach(AppAppearance.allCases, id: \.self) { appearance in
                     ListRow(label: .default(title: appearance.name,
-                                            icon: Text(appearance.emoji)),
+                                            icon: ColoredIcon(symbol: appearance.systemIcon, color: appearance.iconColor)),
                             kind: .selection(isSelected: context.appAppearance == appearance) {
                                 context.appAppearance = appearance
                             })
                 }
             }
-            
-            Section {
-                ListRow(label: .plain(title: "Header Gradient",
-                                     description: "Show gradient effect on menu headers"),
-                        kind: .toggle($context.headerGradientEnabled))
-            }
         }
         .compoundList()
         .navigationTitle(L10n.commonAppearance)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
 }
@@ -46,62 +42,98 @@ private extension AppAppearance {
             return L10n.commonLight
         case .dark:
             return L10n.commonDark
-        case .darkBlue:
-            return "Dark Blue"
-        case .darkGreen:
-            return "Dark Green"
-        case .darkPurple:
-            return "Dark Purple"
-        case .darkGray:
-            return "Charcoal"
-        case .darkRed:
-            return "Burgundy"
-        case .darkOrange:
-            return "Amber"
-        case .lightGray:
-            return "Light Gray"
-        case .lightBlue:
-            return "Light Blue"
-        case .lightGreen:
-            return "Mint"
-        case .lightPurple:
-            return "Lavender"
-        case .lightOrange:
-            return "Peach"
+        case .darkTeal:
+            return "Ocean"
+        case .darkIndigo:
+            return "Midnight"
+        case .darkSlate:
+            return "Graphite"
+        case .darkNavy:
+            return "Navy"
+        case .darkForest:
+            return "Forest"
+        case .darkSteel:
+            return "Steel"
+        case .lightTeal:
+            return "Aqua"
+        case .lightIndigo:
+            return "Sky"
+        case .lightSlate:
+            return "Silver"
+        case .lightRose:
+            return "Blush"
+        case .lightCream:
+            return "Cream"
+        case .lightAzure:
+            return "Azure"
+        case .lightPearl:
+            return "Pearl"
         }
     }
     
-    var emoji: String {
+    var systemIcon: SFSymbol {
         switch self {
         case .system:
-            return "⚙️"
+            return .gearshape
         case .light:
-            return "☀️"
+            return .sunMax
         case .dark:
-            return "🌙"
-        case .darkBlue:
-            return "🔵"
-        case .darkGreen:
-            return "🟢"
-        case .darkPurple:
-            return "🟣"
-        case .darkGray:
-            return "⚫️"
-        case .darkRed:
-            return "🍷"
-        case .darkOrange:
-            return "🟠"
-        case .lightGray:
-            return "⚪️"
-        case .lightBlue:
-            return "💙"
-        case .lightGreen:
-            return "🌿"
-        case .lightPurple:
-            return "💜"
-        case .lightOrange:
-            return "🍑"
+            return .moon
+        case .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel:
+            return .circleFill
+        case .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
+            return .circle
         }
+    }
+    
+    var iconColor: Color {
+        switch self {
+        case .system:
+            return .gray
+        case .light:
+            return .yellow
+        case .dark:
+            return .indigo
+        case .darkTeal:
+            return Color(red: 0.0, green: 0.5, blue: 0.5)
+        case .darkIndigo:
+            return Color(red: 0.29, green: 0.0, blue: 0.51)
+        case .darkSlate:
+            return Color(red: 0.28, green: 0.32, blue: 0.36)
+        case .darkNavy:
+            return Color(red: 0.0, green: 0.0, blue: 0.5)
+        case .darkForest:
+            return Color(red: 0.0, green: 0.27, blue: 0.13)
+        case .darkSteel:
+            return Color(red: 0.27, green: 0.31, blue: 0.35)
+        case .lightTeal:
+            return Color(red: 0.0, green: 0.5, blue: 0.5).opacity(0.7)
+        case .lightIndigo:
+            return Color(red: 0.29, green: 0.0, blue: 0.51).opacity(0.7)
+        case .lightSlate:
+            return Color(red: 0.28, green: 0.32, blue: 0.36).opacity(0.7)
+        case .lightRose:
+            return Color(red: 1.0, green: 0.75, blue: 0.8).opacity(0.7)
+        case .lightCream:
+            return Color(red: 1.0, green: 0.99, blue: 0.82).opacity(0.7)
+        case .lightAzure:
+            return Color(red: 0.0, green: 0.5, blue: 1.0).opacity(0.7)
+        case .lightPearl:
+            return Color(red: 0.94, green: 0.92, blue: 0.84).opacity(0.7)
+        }
+    }
+}
+
+// MARK: - Colored Icon View
+
+private struct ColoredIcon: View {
+    let symbol: SFSymbol
+    let color: Color
+    
+    var body: some View {
+        Image(systemSymbol: symbol)
+            .renderingMode(.template)
+            .foregroundColor(color)
     }
 }
 

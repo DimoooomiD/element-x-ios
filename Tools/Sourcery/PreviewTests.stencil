@@ -2,7 +2,7 @@
 // swiftformat:disable all
 
 import XCTest
-@testable import ElementX
+@testable import Lingugram
 {% if argument.mainTarget %}
 @testable import {{ argument.mainTarget }}
 {% endif %}

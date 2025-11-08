@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import ElementX
+@testable import Lingugram
 
 class StringTests: XCTestCase {
     func testEmptyIsAscii() {
