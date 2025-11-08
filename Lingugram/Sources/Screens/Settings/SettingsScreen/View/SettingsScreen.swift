@@ -38,6 +38,8 @@ struct SettingsScreen: View {
             }
         }
         .compoundList()
+        .background(transparentBackgroundIfLingugramForForm().ignoresSafeArea())
+        .themedCanvasBackground()
         .safeAreaInset(edge: .top) {
             headerSection
         }
@@ -56,7 +58,27 @@ struct SettingsScreen: View {
         .padding(.horizontal, 16)
         .padding(.top, 8)
         .padding(.bottom, 8)
-        .background(Color.compound.bgCanvasDefault)
+        .background(transparentBackgroundIfLingugram())
+    }
+    
+    /// Returns transparent background for Lingugram theme, solid color for others
+    private func transparentBackgroundIfLingugram() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.clear
+        } else {
+            return Color.compound.bgCanvasDefault
+        }
+    }
+    
+    /// Returns transparent background for Lingugram theme form, solid color for others
+    private func transparentBackgroundIfLingugramForForm() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.clear
+        } else {
+            return Color.compound.bgSubtleSecondaryLevel0
+        }
     }
     
     private var userSection: some View {

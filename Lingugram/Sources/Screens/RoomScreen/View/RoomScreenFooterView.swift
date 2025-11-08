@@ -41,9 +41,19 @@ struct RoomScreenFooterView: View {
             detailsView(details)
                 .highlight(gradient: gradient,
                            borderColor: borderColor,
-                           backgroundColor: .compound.bgCanvasDefault)
+                           backgroundColor: transparentBackgroundIfLingugram())
                 .padding(.top, 8)
                 .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+    
+    /// Returns transparent background for Lingugram theme footer, solid color for others
+    private func transparentBackgroundIfLingugram() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.clear
+        } else {
+            return Color.compound.bgCanvasDefault
         }
     }
     

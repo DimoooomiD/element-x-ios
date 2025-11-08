@@ -144,7 +144,7 @@ private struct MessageComposerReplyHeader: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
             .padding(4.0)
-            .background(.compound.bgCanvasDefault, in: RoundedRectangle(cornerRadius: 13, style: .circular))
+            .background(transparentBackgroundIfLingugramForReply(), in: RoundedRectangle(cornerRadius: 13, style: .circular))
             .overlay(alignment: .topTrailing) {
                 Button(action: action) {
                     CompoundIcon(\.close, size: .small, relativeTo: .compound.bodySMSemibold)
@@ -155,6 +155,16 @@ private struct MessageComposerReplyHeader: View {
             }
             .padding(.vertical, 8.0)
             .padding(.horizontal, -4.0)
+    }
+    
+    /// Returns semi-transparent background for Lingugram theme reply header, solid color for others
+    private func transparentBackgroundIfLingugramForReply() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.compound.bgCanvasDefault.opacity(0.3)
+        } else {
+            return Color.compound.bgCanvasDefault
+        }
     }
 }
 
@@ -223,10 +233,20 @@ private struct MessageComposerStyleModifier<Header: View>: ViewModifier {
         .background {
             ZStack {
                 composerShape
-                    .fill(Color.compound.bgSubtleSecondary)
+                    .fill(transparentBackgroundIfLingugramForComposer())
                 composerShape
                     .stroke(Color.compound.borderInteractiveSecondary, lineWidth: 0.5)
             }
+        }
+    }
+    
+    /// Returns semi-transparent background for Lingugram theme composer, solid color for others
+    func transparentBackgroundIfLingugramForComposer() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.compound.bgSubtleSecondary.opacity(0.3)
+        } else {
+            return Color.compound.bgSubtleSecondary
         }
     }
 }

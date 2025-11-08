@@ -22,7 +22,7 @@ struct PinnedItemsBannerView: View {
         }
         .padding(.vertical, 16)
         .padding(.leading, 16)
-        .background(Color.compound.bgCanvasDefault)
+        .background(transparentBackgroundIfLingugram())
         .shadow(color: Color(red: 0.11, green: 0.11, blue: 0.13).opacity(0.1), radius: 12, x: 0, y: 4)
         // To include the shadow in the size
         .padding(.bottom, 28)
@@ -77,6 +77,16 @@ struct PinnedItemsBannerView: View {
                 .font(.compound.bodyMD)
                 .foregroundColor(.compound.textPrimary)
                 .lineLimit(1)
+        }
+    }
+    
+    /// Returns transparent background for Lingugram theme, solid color for others
+    private func transparentBackgroundIfLingugram() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.clear
+        } else {
+            return Color.compound.bgCanvasDefault
         }
     }
 }

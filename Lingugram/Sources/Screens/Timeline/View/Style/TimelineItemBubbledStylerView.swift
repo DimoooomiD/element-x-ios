@@ -196,7 +196,7 @@ struct TimelineItemBubbledStylerView<Content: View>: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(4.0)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.compound.bgCanvasDefault)
+                    .background(transparentBackgroundIfLingugramForQuote())
                     .cornerRadius(8)
                     .layoutPriority(TimelineBubbleLayout.Priority.visibleQuote)
                     .onTapGesture {
@@ -228,6 +228,16 @@ struct TimelineItemBubbledStylerView<Content: View>: View {
     
     private var shouldShowSenderDetails: Bool {
         timelineGroupStyle.shouldShowSenderDetails
+    }
+    
+    /// Returns semi-transparent background for Lingugram theme quote, solid color for others
+    private func transparentBackgroundIfLingugramForQuote() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.compound.bgCanvasDefault.opacity(0.3)
+        } else {
+            return Color.compound.bgCanvasDefault
+        }
     }
 }
 

@@ -36,7 +36,17 @@ struct LibraryScreen: View {
         .padding(.horizontal, 16)
         .padding(.top, 8)
         .padding(.bottom, 8)
-        .background(Color.compound.bgCanvasDefault)
+        .background(transparentBackgroundIfLingugram())
+    }
+    
+    /// Returns transparent background for Lingugram theme, solid color for others
+    private func transparentBackgroundIfLingugram() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.clear
+        } else {
+            return Color.compound.bgCanvasDefault
+        }
     }
     
     var header: some View {
@@ -154,7 +164,17 @@ struct LanguagePackageRow: View {
             }
         }
         .padding(16)
-        .background(Color.compound.bgCanvasDefaultLevel1)
+        .background(transparentBackgroundIfLingugramForCard())
         .cornerRadius(12)
+    }
+    
+    /// Returns transparent background for Lingugram theme cards, solid color for others
+    private func transparentBackgroundIfLingugramForCard() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.compound.bgCanvasDefaultLevel1.opacity(0.3)
+        } else {
+            return Color.compound.bgCanvasDefaultLevel1
+        }
     }
 }

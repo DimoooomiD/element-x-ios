@@ -149,8 +149,24 @@ struct SpaceRoomCellButtonStyle: ButtonStyle {
     let isSelected: Bool
     
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(isSelected || configuration.isPressed ? Color.compound.bgSubtleSecondary : Color.compound.bgCanvasDefault)
+        let background: Color = {
+            // For Lingugram theme, use transparent backgrounds to reveal gradient
+            if let appSettings = ServiceLocator.shared.settings,
+               appSettings.appAppearance == .darkBlue {
+                // Use semi-transparent backgrounds for Lingugram theme to show gradient
+                return isSelected || configuration.isPressed
+                    ? Color.compound.bgSubtleSecondary.opacity(0.3)
+                    : Color.clear
+            } else {
+                // Use solid backgrounds for other themes
+                return isSelected || configuration.isPressed
+                    ? Color.compound.bgSubtleSecondary
+                    : Color.compound.bgCanvasDefault
+            }
+        }()
+        
+        return configuration.label
+            .background(background)
             .contentShape(Rectangle())
             .animation(isSelected ? .none : .easeOut(duration: 0.1).disabledDuringTests(), value: isSelected)
     }

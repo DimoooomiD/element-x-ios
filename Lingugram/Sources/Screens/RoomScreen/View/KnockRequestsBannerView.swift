@@ -27,7 +27,7 @@ struct KnockRequestsBannerView: View {
     var body: some View {
         mainContent
             .padding(16)
-            .background(.compound.bgCanvasDefaultLevel1, in: RoundedRectangle(cornerRadius: 12))
+            .background(transparentBackgroundIfLingugramForKnock(), in: RoundedRectangle(cornerRadius: 12))
             .compositingGroup()
             .shadow(color: Color(red: 0.11, green: 0.11, blue: 0.13).opacity(0.1), radius: 12, x: 0, y: 4)
             .padding(.bottom, 28)
@@ -49,6 +49,16 @@ struct KnockRequestsBannerView: View {
                                                mediaProvider: mediaProvider)
         } else {
             EmptyView()
+        }
+    }
+    
+    /// Returns semi-transparent background for Lingugram theme, solid color for others
+    private func transparentBackgroundIfLingugramForKnock() -> Color {
+        if let appSettings = ServiceLocator.shared.settings,
+           appSettings.appAppearance == .darkBlue {
+            return Color.compound.bgCanvasDefaultLevel1.opacity(0.3)
+        } else {
+            return Color.compound.bgCanvasDefaultLevel1
         }
     }
 }
