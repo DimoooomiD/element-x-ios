@@ -19,6 +19,9 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
     
     private let canReportProblem: Bool
     
+    // Hardcoded localhost server address - not visible to users
+    private static let defaultServerAddress = "http://192.168.178.34"
+    
     private var actionsSubject: PassthroughSubject<AuthenticationStartScreenViewModelAction, Never> = .init()
     
     var actions: AnyPublisher<AuthenticationStartScreenViewModelAction, Never> {
@@ -70,7 +73,7 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
         case .login:
             Task { await login() }
         case .register:
-            actionsSubject.send(.register)
+            Task { await register() }
         case .reportProblem:
             if canReportProblem {
                 actionsSubject.send(.reportProblem)
@@ -84,8 +87,16 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
         if let serverName = state.serverName {
             await configureAccountProvider(serverName, loginHint: provisioningParameters?.loginHint)
         } else {
-            actionsSubject.send(.login) // No need to configure anything here, continue the flow.
+            // Automatically configure the default localhost server
+            await configureAccountProvider(Self.defaultServerAddress, loginHint: provisioningParameters?.loginHint)
         }
+    }
+    
+    private func register() async {
+        // Automatically configure the default localhost server for registration
+        // Add a small delay to ensure UI is ready
+        try? await Task.sleep(nanoseconds: 50_000_000) // 0.05 seconds
+        await configureAccountProviderForRegistration(Self.defaultServerAddress)
     }
     
     private func configureAccountProvider(_ accountProvider: String, loginHint: String? = nil) async {
@@ -113,6 +124,52 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
             actionsSubject.send(.loginDirectlyWithOIDC(data: oidcData, window: window))
         case .failure:
             displayError()
+        }
+    }
+    
+    private func configureAccountProviderForRegistration(_ accountProvider: String) async {
+        startLoading()
+        defer { stopLoading() }
+        
+        switch await authenticationService.configure(for: accountProvider, flow: .register) {
+        case .success:
+            // Registration requires OIDC support, so if we get here, OIDC is supported
+            guard authenticationService.homeserver.value.loginMode.supportsOIDCFlow else {
+                // This shouldn't happen as configuration should have failed, but handle it anyway
+                // Fall back to showing server confirmation screen which will display the error
+                actionsSubject.send(.register)
+                return
+            }
+            
+            // Try to get window from state first, if not available, wait a bit and try again
+            var window = state.window
+            if window == nil {
+                // Wait a short moment for the window to be set
+                try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
+                window = state.window
+            }
+            
+            // If window is still not available, fall back to server confirmation screen
+            // which can handle getting the window and proceeding
+            guard let window = window else {
+                // Fall back to server confirmation screen which will handle this
+                actionsSubject.send(.register)
+                return
+            }
+            
+            switch await authenticationService.urlForOIDCLogin(loginHint: nil) {
+            case .success(let oidcData):
+                // Go directly to OIDC registration, skipping server confirmation screen
+                actionsSubject.send(.loginDirectlyWithOIDC(data: oidcData, window: window))
+            case .failure:
+                // If OIDC URL fetch fails, fall back to server confirmation screen
+                // which will display the error properly
+                actionsSubject.send(.register)
+            }
+        case .failure:
+            // Configuration failed (e.g., registration not supported, server unreachable, etc.)
+            // Show server confirmation screen which will display the specific error
+            actionsSubject.send(.register)
         }
     }
     

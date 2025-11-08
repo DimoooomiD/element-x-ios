@@ -330,9 +330,24 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
     // MARK: - Manual Authentication
     
     private func showServerConfirmationScreen(authenticationFlow: AuthenticationFlow) {
+        let homeserver = authenticationService.homeserver.value
+        
+        // If server is already configured for this flow, skip the confirmation screen and proceed directly
+        // However, if it was configured for a different flow, we need to reconfigure
+        if homeserver.loginMode != .unknown && authenticationService.flow == authenticationFlow {
+            // Server is already configured for this flow, proceed directly
+            Task {
+                await proceedWithConfiguredServer(authenticationFlow: authenticationFlow, homeserver: homeserver)
+            }
+            return
+        }
+        
         // Reset the service back to the default homeserver before continuing. This ensures
         // we check that registration is supported if it was previously configured for login.
-        authenticationService.reset()
+        // But don't reset if we're coming from automatic configuration - preserve the configured server
+        if homeserver.loginMode == .unknown || authenticationService.flow != authenticationFlow {
+            authenticationService.reset()
+        }
         
         let parameters = ServerConfirmationScreenCoordinatorParameters(authenticationService: authenticationService,
                                                                        authenticationFlow: authenticationFlow,
@@ -356,6 +371,47 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         navigationStackCoordinator.push(coordinator) { [weak self] in
             self?.stateMachine.tryEvent(.cancelledServerConfirmation)
+        }
+    }
+    
+    private func proceedWithConfiguredServer(authenticationFlow: AuthenticationFlow, homeserver: LoginHomeserver) async {
+        guard homeserver.loginMode.supportsOIDCFlow else {
+            // For registration, OIDC is required. If not supported, show server confirmation to display error.
+            // For login, proceed to password login.
+            if authenticationFlow == .register {
+                // Registration requires OIDC, so show server confirmation screen to handle the error
+                showServerConfirmationScreen(authenticationFlow: authenticationFlow)
+            } else {
+                stateMachine.tryEvent(.continueWithPassword)
+            }
+            return
+        }
+        
+        // For OIDC, we need a window to present the authentication
+        let window = await MainActor.run {
+            appMediator.windowManager.windows.first(where: { $0.isKeyWindow }) ?? appMediator.windowManager.windows.first
+        }
+        
+        guard let window = window else {
+            // Fallback: show server confirmation screen if we can't get the window
+            showServerConfirmationScreen(authenticationFlow: authenticationFlow)
+            return
+        }
+        
+        switch await authenticationService.urlForOIDCLogin(loginHint: nil) {
+        case .success(let oidcData):
+            stateMachine.tryEvent(.continueWithOIDC, userInfo: (oidcData, window))
+        case .failure:
+            // If OIDC fails, fall back appropriately based on flow
+            if authenticationFlow == .register {
+                // Registration requires OIDC, show server confirmation to handle error
+                showServerConfirmationScreen(authenticationFlow: authenticationFlow)
+            } else if homeserver.loginMode == .password {
+                stateMachine.tryEvent(.continueWithPassword)
+            } else {
+                // Show server confirmation screen as fallback
+                showServerConfirmationScreen(authenticationFlow: authenticationFlow)
+            }
         }
     }
     

@@ -42,7 +42,8 @@ struct ServerConfirmationScreenViewState: BindableState {
             case .login:
                 L10n.screenServerConfirmationTitleLogin(accountProvider)
             case .register:
-                L10n.screenServerConfirmationTitleRegister(accountProvider)
+                // Don't show server name for registration - use generic create account title
+                L10n.screenCreateAccountTitle
             }
         case .picker:
             L10n.screenServerConfirmationTitlePickerMode
@@ -63,7 +64,8 @@ struct ServerConfirmationScreenViewState: BindableState {
                 ""
             }
         case .register:
-            L10n.screenServerConfirmationMessageRegister
+            // Don't show server-specific message for registration
+            nil
         }
     }
 }

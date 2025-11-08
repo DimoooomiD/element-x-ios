@@ -39,11 +39,7 @@ struct AnalyticsPromptScreen: View {
             BigIcon(icon: \.chart)
                 .padding(.bottom, 8)
             
-            Text(L10n.screenAnalyticsPromptTitle(InfoPlistReader.main.bundleDisplayName))
-                .font(.compound.headingMDBold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.compound.textPrimary)
-                .accessibilityIdentifier(A11yIdentifiers.analyticsPromptScreen.title)
+            // Title removed - don't show "Help improve Lingugram"
             
             Text(context.viewState.strings.optInContent)
                 .font(.compound.bodyMD)
