@@ -185,12 +185,16 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
             return
         }
         
-        guard userSessionStore.hasSessions else {
-            stateMachine.processEvent(.startWithAuthentication)
-            return
-        }
+        let hasSessions = userSessionStore.hasSessions
+        let sessionCount = userSessionStore.userIDs.count
         
-        stateMachine.processEvent(.startWithExistingSession)
+        if hasSessions {
+            MXLog.info("✅ Found \(sessionCount) saved session(s). Restoring user session...")
+            stateMachine.processEvent(.startWithExistingSession)
+        } else {
+            MXLog.info("ℹ️ No saved sessions found. Starting authentication flow...")
+            stateMachine.processEvent(.startWithAuthentication)
+        }
     }
 
     func stop() {
@@ -606,13 +610,15 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
     
     private func restoreUserSession() {
         Task {
+            MXLog.info("🔄 Attempting to restore user session from keychain...")
             switch await userSessionStore.restoreUserSession() {
             case .success(let userSession):
+                MXLog.info("✅ Successfully restored session for user: \(userSession.clientProxy.userID)")
                 await self.performUserSessionMigrations(userSession)
                 self.userSession = userSession
                 stateMachine.processEvent(.createdUserSession)
-            case .failure:
-                MXLog.error("Failed to restore an existing session.")
+            case .failure(let error):
+                MXLog.error("❌ Failed to restore an existing session: \(error)")
                 stateMachine.processEvent(.failedRestoringSession)
             }
         }

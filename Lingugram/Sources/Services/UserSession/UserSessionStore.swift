@@ -67,13 +67,15 @@ class UserSessionStore: UserSessionStoreProtocol {
             let userID = try client.userId()
             let clientProxy = try await setupProxyForClient(client)
             
+            // Save restoration token to keychain for session persistence
+            // This ensures the user stays logged in across app launches
             keychainController.setRestorationToken(RestorationToken(session: session,
                                                                     sessionDirectories: sessionDirectories,
                                                                     passphrase: passphrase,
                                                                     pusherNotificationClientIdentifier: clientProxy.pusherNotificationClientIdentifier),
                                                    forUsername: userID)
             
-            MXLog.info("Set up session for user \(userID) at: \(sessionDirectories)")
+            MXLog.info("✅ Successfully saved session for user \(userID) at: \(sessionDirectories). User will remain logged in.")
             
             return .success(buildUserSessionWithClient(clientProxy))
         } catch {

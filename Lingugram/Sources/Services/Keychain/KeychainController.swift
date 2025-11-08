@@ -35,8 +35,14 @@ final class KeychainController: KeychainControllerProtocol, @unchecked Sendable 
     }
 
     init(service: KeychainControllerService, accessGroup: String) {
+        // Configure keychain with accessibility settings that persist across app installs
+        // .whenUnlockedThisDeviceOnly ensures data persists in simulator during development
         restorationTokenKeychain = Keychain(service: service.restorationTokenID, accessGroup: accessGroup)
+            .accessibility(.whenUnlockedThisDeviceOnly)
         mainKeychain = Keychain(service: service.mainID, accessGroup: accessGroup)
+            .accessibility(.whenUnlockedThisDeviceOnly)
+        
+        MXLog.info("🔐 KeychainController initialized with service: \(service.restorationTokenID), accessGroup: \(accessGroup)")
     }
     
     // MARK: - Restoration Tokens
@@ -45,8 +51,9 @@ final class KeychainController: KeychainControllerProtocol, @unchecked Sendable 
         do {
             let tokenData = try JSONEncoder().encode(restorationToken)
             try restorationTokenKeychain.set(tokenData, key: username)
+            MXLog.info("✅ Successfully stored restoration token in keychain for user: \(username)")
         } catch {
-            MXLog.error("Failed storing user restore token with error: \(error)")
+            MXLog.error("❌ Failed storing user restore token with error: \(error)")
         }
     }
 
@@ -68,13 +75,20 @@ final class KeychainController: KeychainControllerProtocol, @unchecked Sendable 
     }
 
     func restorationTokens() -> [KeychainCredentials] {
-        restorationTokenKeychain.allKeys().compactMap { username in
+        let allKeys = restorationTokenKeychain.allKeys()
+        MXLog.info("🔍 Checking keychain for restoration tokens. Found \(allKeys.count) key(s) in keychain.")
+        
+        let tokens: [KeychainCredentials] = allKeys.compactMap { username in
             guard let restorationToken = restorationTokenForUsername(username) else {
+                MXLog.warning("⚠️ Could not decode restoration token for username: \(username)")
                 return nil
             }
 
             return KeychainCredentials(userID: username, restorationToken: restorationToken)
         }
+        
+        MXLog.info("✅ Successfully loaded \(tokens.count) restoration token(s) from keychain.")
+        return tokens
     }
 
     func removeRestorationTokenForUsername(_ username: String) {

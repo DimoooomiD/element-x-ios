@@ -7,6 +7,8 @@
 //
 
 import Combine
+import Compound
+import Foundation
 import SwiftUI
 
 /// A reusable ViewModifier that observes theme changes and forces view refresh
