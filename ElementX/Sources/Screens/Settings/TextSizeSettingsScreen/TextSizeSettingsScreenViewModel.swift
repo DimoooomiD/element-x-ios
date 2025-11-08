@@ -21,4 +21,3 @@ class TextSizeSettingsScreenViewModel: TextSizeSettingsScreenViewModelType, Text
         // No actions needed for now
     }
 }
-

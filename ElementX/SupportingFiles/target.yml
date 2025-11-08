@@ -229,7 +229,7 @@ targets:
       script: |
         export PATH="$PATH:/opt/homebrew/bin"
         if which swiftformat >/dev/null; then
-            swiftformat --lint --lenient "$PROJECT_DIR"
+            swiftformat --lint --lenient "$SRCROOT/ElementX/Sources" "$SRCROOT/ElementX/Resources" --exclude "$SRCROOT/ElementX/Sources/Generated" --exclude "$SRCROOT/ElementX/Sources/Mocks/Generated"
         else
             echo "warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat"
         fi

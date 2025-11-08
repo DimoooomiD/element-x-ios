@@ -17,18 +17,18 @@ struct AdvancedSettingsScreen: View {
         Form {
             Section {
                 ListRow(label: .default(title: L10n.actionViewSource,
-                                      description: L10n.screenAdvancedSettingsViewSourceDescription,
-                                      icon: ColoredIcon(symbol: .eye, color: .blue)),
+                                        description: L10n.screenAdvancedSettingsViewSourceDescription,
+                                        icon: ColoredIcon(symbol: .eye, color: .blue)),
                         kind: .toggle($context.viewSourceEnabled))
                 
                 ListRow(label: .default(title: L10n.screenAdvancedSettingsSharePresence,
-                                      description: L10n.screenAdvancedSettingsSharePresenceDescription,
-                                      icon: ColoredIcon(symbol: .person2, color: .green)),
+                                        description: L10n.screenAdvancedSettingsSharePresenceDescription,
+                                        icon: ColoredIcon(symbol: .person2, color: .green)),
                         kind: .toggle($context.sharePresence))
                 
                 ListRow(label: .default(title: L10n.screenAdvancedSettingsMediaCompressionTitle,
-                                      description: L10n.screenAdvancedSettingsMediaCompressionDescription,
-                                      icon: ColoredIcon(symbol: .photoStack, color: .purple)),
+                                        description: L10n.screenAdvancedSettingsMediaCompressionDescription,
+                                        icon: ColoredIcon(symbol: .photoStack, color: .purple)),
                         kind: .toggle($context.optimizeMediaUploads))
                     .onChange(of: context.optimizeMediaUploads) {
                         context.send(viewAction: .optimizeMediaUploadsChanged)

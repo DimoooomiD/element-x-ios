@@ -134,7 +134,7 @@ struct LanguagePackageRow: View {
                 Spacer()
             }
             
-            HStack {
+            HStack(spacing: 0) {
                 Text(package.price)
                     .font(.compound.headingMDBold)
                     .foregroundStyle(.compound.textPrimary)
@@ -159,4 +159,3 @@ struct LanguagePackageRow: View {
         .cornerRadius(12)
     }
 }
-

@@ -65,4 +65,3 @@ class LibraryFlowCoordinator: FlowCoordinatorProtocol {
         navigationStackCoordinator.setRootCoordinator(libraryScreenCoordinator, animated: animated)
     }
 }
-

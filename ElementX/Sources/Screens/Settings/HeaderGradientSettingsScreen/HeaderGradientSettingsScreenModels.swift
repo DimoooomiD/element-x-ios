@@ -35,4 +35,3 @@ protocol HeaderGradientSettingsProtocol: AnyObject {
 }
 
 extension AppSettings: HeaderGradientSettingsProtocol { }
-

@@ -13,9 +13,9 @@ import SwiftUI
 struct TextSizeSettingsScreen: View {
     @Bindable var context: TextSizeSettingsScreenViewModel.Context
     
-    private let minTextSize: Double = 0.8
-    private let maxTextSize: Double = 1.5
-    private let defaultTextSize: Double = 1.0
+    private let minTextSize = 0.8
+    private let maxTextSize = 1.5
+    private let defaultTextSize = 1.0
     
     var body: some View {
         Form {
@@ -27,7 +27,7 @@ struct TextSizeSettingsScreen: View {
                 VStack(spacing: 20) {
                     // Slider
                     VStack(alignment: .leading, spacing: 12) {
-                        HStack {
+                        HStack(spacing: 0) {
                             Spacer()
                             
                             Text(String(format: "%.1fx", context.chatRoomTextSize))
@@ -38,7 +38,7 @@ struct TextSizeSettingsScreen: View {
                         Slider(value: $context.chatRoomTextSize, in: minTextSize...maxTextSize, step: 0.1)
                             .tint(.compound.bgActionPrimaryRest)
                         
-                        HStack {
+                        HStack(spacing: 0) {
                             Text("Smaller")
                                 .font(.compound.bodySM)
                                 .foregroundStyle(.compound.textSecondary)
@@ -64,7 +64,7 @@ struct TextSizeSettingsScreen: View {
                 VStack(alignment: .leading, spacing: 16) {
                     // Chat message preview
                     VStack(alignment: .leading, spacing: 8) {
-                        HStack {
+                        HStack(spacing: 0) {
                             Text("Alice")
                                 .font(.compound.bodySMSemibold)
                                 .foregroundStyle(.compound.textSecondary)
@@ -87,7 +87,7 @@ struct TextSizeSettingsScreen: View {
                     
                     // Another preview message
                     VStack(alignment: .leading, spacing: 8) {
-                        HStack {
+                        HStack(spacing: 0) {
                             Text("Bob")
                                 .font(.compound.bodySMSemibold)
                                 .foregroundStyle(.compound.textSecondary)
@@ -132,4 +132,3 @@ private struct ColoredIcon: View {
             .foregroundColor(color)
     }
 }
-

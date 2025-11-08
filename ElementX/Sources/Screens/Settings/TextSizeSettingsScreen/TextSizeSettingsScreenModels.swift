@@ -35,4 +35,3 @@ protocol TextSizeSettingsProtocol: AnyObject {
 }
 
 extension AppSettings: TextSizeSettingsProtocol { }
-

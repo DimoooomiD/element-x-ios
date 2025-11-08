@@ -12,4 +12,3 @@ import Combine
 protocol TextSizeSettingsScreenViewModelProtocol {
     var context: TextSizeSettingsScreenViewModelType.Context { get }
 }
-

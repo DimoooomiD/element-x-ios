@@ -52,4 +52,3 @@ final class LibraryScreenCoordinator: CoordinatorProtocol {
         AnyView(LibraryScreen(context: viewModel.context))
     }
 }
-

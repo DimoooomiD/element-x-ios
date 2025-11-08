@@ -29,7 +29,7 @@ struct DeveloperOptionsScreen: View {
                                         description: "Requires app reboot",
                                         icon: ColoredIcon(symbol: .docTextMagnifyingglass, color: .blue)),
                         kind: .picker(selection: $context.logLevel,
-                                     items: logLevels.map { (title: $0.title, tag: $0) }))
+                                      items: logLevels.map { (title: $0.title, tag: $0) }))
                 
                 ListRow(label: .default(title: "SDK trace packs",
                                         icon: ColoredIcon(symbol: .docOnDoc, color: .gray)),

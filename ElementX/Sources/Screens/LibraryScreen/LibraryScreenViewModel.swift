@@ -35,4 +35,3 @@ class LibraryScreenViewModel: LibraryScreenViewModelType, LibraryScreenViewModel
         }
     }
 }
-

@@ -21,4 +21,3 @@ class HeaderGradientSettingsScreenViewModel: HeaderGradientSettingsScreenViewMod
         // No actions needed for now
     }
 }
-

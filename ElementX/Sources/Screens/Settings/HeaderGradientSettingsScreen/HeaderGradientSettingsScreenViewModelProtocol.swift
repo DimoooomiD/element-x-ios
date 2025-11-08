@@ -12,4 +12,3 @@ import Combine
 protocol HeaderGradientSettingsScreenViewModelProtocol {
     var context: HeaderGradientSettingsScreenViewModelType.Context { get }
 }
-

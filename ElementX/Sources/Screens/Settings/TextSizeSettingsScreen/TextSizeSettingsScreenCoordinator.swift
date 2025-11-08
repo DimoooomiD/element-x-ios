@@ -24,4 +24,3 @@ final class TextSizeSettingsScreenCoordinator: CoordinatorProtocol {
         AnyView(TextSizeSettingsScreen(context: viewModel.context))
     }
 }
-

@@ -12,4 +12,3 @@ protocol LibraryScreenViewModelProtocol {
     var context: LibraryScreenViewModelType.Context { get }
     var actions: AnyPublisher<LibraryScreenViewModelAction, Never> { get }
 }
-

@@ -6,7 +6,6 @@
 
 import SwiftUI
 
-@testable import Lingugram
 
 enum TestablePreviewsDictionary {
     static let dictionary: [String: any PreviewProvider.Type] = [

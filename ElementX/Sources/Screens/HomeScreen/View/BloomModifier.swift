@@ -18,13 +18,13 @@ import SwiftUIIntrospect
 /// Modify the color values here to change the gradient appearance
 private func headerGradient() -> Gradient {
     // Original Compound subtle gradient
-    return Gradient(colors: [
-        .compound.gradientSubtleStop1,  // Top color - darkest
+    Gradient(colors: [
+        .compound.gradientSubtleStop1, // Top color - darkest
         .compound.gradientSubtleStop2,
         .compound.gradientSubtleStop3,
         .compound.gradientSubtleStop4,
         .compound.gradientSubtleStop5,
-        .compound.gradientSubtleStop6  // Bottom color - lightest
+        .compound.gradientSubtleStop6 // Bottom color - lightest
     ])
 }
 
@@ -201,15 +201,15 @@ private struct OldBloomModifier: ViewModifier {
         // This handles cases where SwiftUI creates new image instances with same content
         if !standardMatches || !scrollEdgeMatches {
             // Check if images have similar dimensions and properties
-            let standardSizeMatches = standardBackgroundImage.size == bloomImage.size &&
-                                     standardBackgroundImage.scale == bloomImage.scale
-            let scrollEdgeSizeMatches = scrollEdgeBackgroundImage.size == bloomImage.size &&
-                                        scrollEdgeBackgroundImage.scale == bloomImage.scale
-            
+            let standardSizeMatches = standardBackgroundImage.size == bloomImage.size
+                && standardBackgroundImage.scale == bloomImage.scale
+            let scrollEdgeSizeMatches = scrollEdgeBackgroundImage.size == bloomImage.size
+                && scrollEdgeBackgroundImage.scale == bloomImage.scale
+
             // If sizes match, assume it's the same gradient (SwiftUI may have recreated the image)
             // Also check that the images are non-zero size (valid gradient images)
-            return standardSizeMatches && scrollEdgeSizeMatches && 
-                   bloomImage.size.width > 0 && bloomImage.size.height > 0
+            return standardSizeMatches && scrollEdgeSizeMatches
+                && bloomImage.size.width > 0 && bloomImage.size.height > 0
         }
         
         return true
@@ -218,13 +218,13 @@ private struct OldBloomModifier: ViewModifier {
     private func configureBloom(controller: UIViewController, force: Bool) {
         // Create/update bloom image first (needed for both check and application)
         // This modifies self.bloom since Bloom is a class (reference type)
-        makeBloom()
+        _ = makeBloom()
         
         // If forcing (e.g., on appear), always re-apply to handle navigation bar resets
         if !force {
             // Improved check: verify the gradient is actually applied to the navigation bar
             // Only check if we have a valid bloom image
-            if bloom.image != nil && isGradientApplied(controller: controller) {
+            if bloom.image != nil, isGradientApplied(controller: controller) {
                 return
             }
         }
@@ -303,8 +303,8 @@ private struct OldBloomModifier: ViewModifier {
     private var bloomGradient: some View {
         let gradientHeight: CGFloat = headerOnly ? 88 : 384 // Header-only: safe area (~44) + nav bar (44)
         return LinearGradient(gradient: headerGradient(),
-                             startPoint: .top,
-                             endPoint: .init(x: 0.5, y: endPointY))
+                              startPoint: .top,
+                              endPoint: .init(x: 0.5, y: endPointY))
             .ignoresSafeArea(edges: .all)
             .frame(width: 256, height: gradientHeight)
     }

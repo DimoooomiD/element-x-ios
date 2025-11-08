@@ -17,8 +17,8 @@ struct HeaderGradientSettingsScreen: View {
         Form {
             Section {
                 ListRow(label: .default(title: "Header Gradient",
-                                     description: "Show gradient effect on menu headers",
-                                     icon: ColoredIcon(symbol: .paintbrush, color: .pink)),
+                                        description: "Show gradient effect on menu headers",
+                                        icon: ColoredIcon(symbol: .paintbrush, color: .pink)),
                         kind: .toggle($context.headerGradientEnabled))
             } footer: {
                 Text("Enable this option to show a beautiful gradient effect on the headers of all menu screens throughout the app.")
@@ -56,4 +56,3 @@ struct HeaderGradientSettingsScreen_Previews: PreviewProvider, TestablePreview {
         }
     }
 }
-

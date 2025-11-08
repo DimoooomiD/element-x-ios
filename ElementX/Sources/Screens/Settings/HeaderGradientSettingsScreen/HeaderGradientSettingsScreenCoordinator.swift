@@ -24,4 +24,3 @@ final class HeaderGradientSettingsScreenCoordinator: CoordinatorProtocol {
         AnyView(HeaderGradientSettingsScreen(context: viewModel.context))
     }
 }
-

@@ -189,8 +189,8 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     
     private func showAppLockUnlock() {
         let unlockCoordinator = AppLockSetupPINScreenCoordinator(parameters: .init(initialMode: .unlock,
-                                                                                    isMandatory: false,
-                                                                                    appLockService: appLockService))
+                                                                                   isMandatory: false,
+                                                                                   appLockService: appLockService))
         unlockCoordinator.start()
         unlockCoordinator.actions.sink { [weak self] action in
             guard let self else { return }
@@ -243,8 +243,8 @@ class SettingsFlowCoordinator: FlowCoordinatorProtocol {
     
     private func showAppLockCreatePIN() {
         let createPINCoordinator = AppLockSetupPINScreenCoordinator(parameters: .init(initialMode: .create,
-                                                                                       isMandatory: false,
-                                                                                       appLockService: appLockService))
+                                                                                      isMandatory: false,
+                                                                                      appLockService: appLockService))
         createPINCoordinator.start()
         createPINCoordinator.actions.sink { [weak self] action in
             guard let self else { return }
