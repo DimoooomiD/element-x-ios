@@ -12,64 +12,43 @@ import SwiftUI
 struct ServerConfirmationScreen: View {
     @Bindable var context: ServerConfirmationScreenViewModel.Context
     
-    private var backgroundColor: Color {
-        switch context.viewState.mode {
-        case .confirmation: .compound.bgCanvasDefault
-        case .picker: .compound.bgSubtleSecondaryLevel0
-        }
-    }
-    
-    private var headerIcon: KeyPath<CompoundIcons, Image> {
-        switch context.viewState.mode {
-        case .confirmation: \.userProfileSolid
-        case .picker: \.homeSolid
-        }
-    }
-    
-    private var headerIconStyle: BigIcon.Style {
-        switch context.viewState.mode {
-        case .confirmation: .defaultSolid
-        case .picker: .default
-        }
-    }
-    
     var body: some View {
-        FullscreenDialog(topPadding: UIConstants.iconTopPaddingToNavigationBar) {
-            VStack(spacing: 36) {
-                header
-                mainContent
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+                    .frame(height: UIConstants.spacerHeight(in: geometry))
+                
+                content
+                    .frame(width: geometry.size.width)
+                
+                buttons
+                    .frame(width: geometry.size.width)
+                    .padding(.bottom, UIConstants.actionButtonBottomPadding)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                    .padding(.top, 8)
+                
+                Spacer()
+                    .frame(height: UIConstants.spacerHeight(in: geometry))
             }
-        } bottomContent: {
-            buttons
+            .frame(maxHeight: .infinity)
         }
-        .background()
-        .backgroundStyle(backgroundColor)
+        .background {
+            ProfessionalStartScreenBackground()
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(context.viewState.title)
         .alert(item: $context.alertInfo)
         .introspect(.window, on: .supportedVersions) { window in
             context.send(viewAction: .updateWindow(window))
         }
     }
     
-    /// The main content of the view to be shown in a scroll view.
-    var header: some View {
-        VStack(spacing: 8) {
-            BigIcon(icon: headerIcon, style: headerIconStyle)
-                .padding(.bottom, 8)
-            
-            Text(context.viewState.title)
-                .font(.compound.headingMDBold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.compound.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
-            
-            if let message = context.viewState.message {
-                Text(message)
-                    .font(.compound.bodyMD)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.compound.textSecondary)
-            }
+    var content: some View {
+        VStack(spacing: 0) {
+            mainContent
         }
-        .padding(.horizontal, 16)
+        .readableFrame()
+        .padding(.horizontal, 24)
     }
     
     @ViewBuilder
@@ -93,6 +72,8 @@ struct ServerConfirmationScreen: View {
             
             // Change server button removed - server is automatically configured
         }
+        .padding(.horizontal, 24)
+        .readableFrame()
     }
 }
 

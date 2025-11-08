@@ -137,8 +137,8 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
             
             // Prefer password-based registration for local server to avoid matrix.org redirects
             if loginMode == .password {
-                // Use password-based registration - go to login screen which can handle registration
-                actionsSubject.send(.register)
+                // Server is configured, flow is set to .register, go directly to registration screen
+                actionsSubject.send(.loginDirectlyWithPassword(loginHint: nil))
                 return
             }
             
@@ -164,7 +164,7 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
                     let oidcURLString = oidcData.url.absoluteString
                     if oidcURLString.contains("matrix.org") {
                         // OIDC redirects to matrix.org, use password registration instead
-                        actionsSubject.send(.register)
+                        actionsSubject.send(.loginDirectlyWithPassword(loginHint: nil))
                     } else {
                         // OIDC is for local server, proceed with OIDC
                         actionsSubject.send(.loginDirectlyWithOIDC(data: oidcData, window: window))
@@ -172,13 +172,14 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
                 case .failure:
                     // If OIDC URL fetch fails, fall back to password registration if available
                     if loginMode == .password {
-                        actionsSubject.send(.register)
+                        actionsSubject.send(.loginDirectlyWithPassword(loginHint: nil))
                     } else {
+                        // No password mode, show server confirmation screen with error
                         actionsSubject.send(.register)
                     }
                 }
             } else {
-                // No OIDC support, use password registration
+                // No OIDC support and no password mode - show server confirmation screen with error
                 actionsSubject.send(.register)
             }
         case .failure:

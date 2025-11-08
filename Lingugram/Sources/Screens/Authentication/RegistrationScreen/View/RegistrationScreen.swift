@@ -19,60 +19,75 @@ struct RegistrationScreen: View {
     @Bindable var context: RegistrationScreenViewModel.Context
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                header
-                    .padding(.top, UIConstants.titleTopPaddingToNavigationBar)
-                    .padding(.bottom, 32)
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+                    .frame(height: UIConstants.spacerHeight(in: geometry))
                 
-                switch context.viewState.loginMode {
-                case .password:
-                    registrationForm
-                case .oidc:
-                    // This should never be shown.
-                    ProgressView()
-                default:
-                    // This should never be shown either.
-                    registrationUnavailableText
-                }
+                content
+                    .frame(width: geometry.size.width)
+                
+                buttons
+                    .frame(width: geometry.size.width)
+                    .padding(.bottom, UIConstants.actionButtonBottomPadding)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
+                    .padding(.top, 8)
+                
+                Spacer()
+                    .frame(height: UIConstants.spacerHeight(in: geometry))
             }
-            .readableFrame()
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
+            .frame(maxHeight: .infinity)
         }
-        .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
+        .background {
+            ProfessionalStartScreenBackground()
+        }
+        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Create Account")
         .alert(item: $context.alertInfo)
     }
     
-    /// The header containing the title and icon.
-    var header: some View {
-        VStack(spacing: 8) {
-            BigIcon(icon: \.lockSolid)
-                .padding(.bottom, 8)
+    var content: some View {
+        VStack(spacing: 0) {
+            // Large title like the first page
+            VStack(spacing: 16) {
+                Text("Create Account")
+                    .font(.system(size: 42, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Text("Join our secure messaging platform")
+                    .font(.system(size: 18, weight: .regular, design: .default))
+                    .foregroundColor(.white.opacity(0.9))
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 48)
             
-            Text(L10n.screenCreateAccountTitle)
-                .font(.compound.headingMDBold)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.compound.textPrimary)
+            switch context.viewState.loginMode {
+            case .password:
+                registrationForm
+            case .oidc:
+                // This should never be shown.
+                ProgressView()
+            default:
+                // This should never be shown either.
+                registrationUnavailableText
+            }
         }
-        .padding(.horizontal, 16)
+        .readableFrame()
+        .padding(.horizontal, 24)
     }
     
-    /// The form with text fields for username, password, and password confirmation, along with a submit button.
+    /// The form with text fields for username, password, and password confirmation.
     var registrationForm: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(L10n.screenLoginFormHeader)
-                .font(.compound.bodySM)
-                .foregroundColor(.compound.textPrimary)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
-            
             TextField(text: $context.username) {
-                Text(L10n.commonUsername).foregroundColor(.compound.textSecondary)
+                Text(L10n.commonUsername).foregroundColor(.white.opacity(0.7))
             }
             .focused($isUsernameFocused)
-            .textFieldStyle(.element(accessibilityIdentifier: A11yIdentifiers.loginScreen.emailUsername))
+            .textFieldStyle(.professional(accessibilityIdentifier: A11yIdentifiers.loginScreen.emailUsername))
             .disableAutocorrection(true)
             .textContentType(.username)
             .autocapitalization(.none)
@@ -81,33 +96,38 @@ struct RegistrationScreen: View {
             .padding(.bottom, 20)
             
             SecureField(text: $context.password) {
-                Text(L10n.commonPassword).foregroundColor(.compound.textSecondary)
+                Text(L10n.commonPassword).foregroundColor(.white.opacity(0.7))
             }
             .focused($isPasswordFocused)
-            .textFieldStyle(.element(accessibilityIdentifier: A11yIdentifiers.loginScreen.password))
+            .textFieldStyle(.professional(accessibilityIdentifier: A11yIdentifiers.loginScreen.password))
             .textContentType(.newPassword)
             .submitLabel(.next)
             .onSubmit { isPasswordConfirmFocused = true }
             .padding(.bottom, 20)
             
             SecureField(text: $context.passwordConfirm) {
-                Text("Confirm Password").foregroundColor(.compound.textSecondary)
+                Text("Confirm Password").foregroundColor(.white.opacity(0.7))
             }
             .focused($isPasswordConfirmFocused)
-            .textFieldStyle(.element(accessibilityIdentifier: A11yIdentifiers.loginScreen.password))
+            .textFieldStyle(.professional(accessibilityIdentifier: A11yIdentifiers.loginScreen.password))
             .textContentType(.newPassword)
             .submitLabel(.done)
             .onSubmit(submit)
-            
-            Spacer().frame(height: 32)
-
+        }
+    }
+    
+    /// The action buttons.
+    var buttons: some View {
+        VStack(spacing: 16) {
             Button(action: submit) {
                 Text(L10n.actionContinue)
             }
-            .buttonStyle(.compound(.primary))
+            .buttonStyle(ProfessionalButtonStyle(variant: .primary, isEnabled: context.viewState.canSubmit))
             .disabled(!context.viewState.canSubmit)
             .accessibilityIdentifier(A11yIdentifiers.loginScreen.continue)
         }
+        .padding(.horizontal, 24)
+        .readableFrame()
     }
     
     /// Text shown if neither password or OIDC registration is supported.

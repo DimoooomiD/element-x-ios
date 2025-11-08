@@ -48,7 +48,7 @@ struct AuthenticationStartScreenViewState: BindableState {
         } else if showQRCodeLoginButton {
             L10n.screenOnboardingSignInManually
         } else {
-            L10n.actionContinue
+            "Login" // Changed from "Continue" to "Login"
         }
     }
 }
