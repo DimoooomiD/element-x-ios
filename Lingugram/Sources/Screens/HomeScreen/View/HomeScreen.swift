@@ -24,7 +24,6 @@ struct HomeScreen: View {
                    message: leaveRoomAlertMessage)
             .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
             .track(screen: .Home)
-            .toolbarBloom(hasSearchBar: false)
             .sentryTrace("\(Self.self)")
             .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with scrolling operations
     }

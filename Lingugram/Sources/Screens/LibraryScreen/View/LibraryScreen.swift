@@ -23,7 +23,6 @@ struct LibraryScreen: View {
             headerSection
         }
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
-        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
     }
     

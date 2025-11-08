@@ -52,7 +52,6 @@ enum TestablePreviewsDictionary {
         "FullscreenDialog_Previews" : FullscreenDialog_Previews.self,
         "GlobalSearchScreenListRow_Previews" : GlobalSearchScreenListRow_Previews.self,
         "GlobalSearchScreen_Previews" : GlobalSearchScreen_Previews.self,
-        "HeaderGradientSettingsScreen_Previews" : HeaderGradientSettingsScreen_Previews.self,
         "HighlightedTimelineItemModifier_Previews" : HighlightedTimelineItemModifier_Previews.self,
         "HomeScreenEmptyStateView_Previews" : HomeScreenEmptyStateView_Previews.self,
         "HomeScreenInviteCell_Previews" : HomeScreenInviteCell_Previews.self,

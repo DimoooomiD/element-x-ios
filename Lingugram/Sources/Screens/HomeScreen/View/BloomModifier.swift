@@ -36,30 +36,8 @@ extension View {
     ///   - headerOnly: If true, limits the gradient to just the header area (safe area + nav bar).
     /// If false, extends the gradient further down for a longer bright section.
     @ViewBuilder func toolbarBloom(hasSearchBar: Bool, headerOnly: Bool = false) -> some View {
-        modifier(GradientToggleModifier(hasSearchBar: hasSearchBar, headerOnly: headerOnly))
-    }
-}
-
-private struct GradientToggleModifier: ViewModifier {
-    let hasSearchBar: Bool
-    let headerOnly: Bool
-    @State private var gradientEnabled: Bool = ServiceLocator.shared.settings.headerGradientEnabled
-    
-    func body(content: Content) -> some View {
-        Group {
-            if gradientEnabled {
-                if #available(iOS 26, *) {
-                    content.modifier(BloomModifier(hasSearchBar: hasSearchBar, headerOnly: headerOnly))
-                } else {
-                    content.modifier(OldBloomModifier(hasSearchBar: hasSearchBar, headerOnly: headerOnly))
-                }
-            } else {
-                content
-            }
-        }
-        .onReceive(ServiceLocator.shared.settings.$headerGradientEnabled) { newValue in
-            gradientEnabled = newValue
-        }
+        // Header gradient functionality has been removed
+        self
     }
 }
 

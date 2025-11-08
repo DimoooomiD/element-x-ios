@@ -23,7 +23,6 @@ struct SpaceListScreen: View {
             headerSection
         }
         .background(Color.compound.bgCanvasDefault.ignoresSafeArea())
-        .toolbarBloom(hasSearchBar: false)
         .onAppear { context.send(viewAction: .screenAppeared) }
         .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with tab selection
         .sheet(isPresented: $context.isPresentingFeatureAnnouncement) {

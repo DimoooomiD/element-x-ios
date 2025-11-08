@@ -41,7 +41,6 @@ struct SettingsScreen: View {
         .safeAreaInset(edge: .top) {
             headerSection
         }
-        .toolbarBloom(hasSearchBar: false)
         .observeThemeChanges() // Synchronous update for immediate response
     }
     
@@ -102,12 +101,6 @@ struct SettingsScreen: View {
                         context.send(viewAction: .appearance)
                     })
                     .accessibilityIdentifier(A11yIdentifiers.settingsScreen.appearance)
-            
-            ListRow(label: .default(title: "Header Gradient",
-                                    icon: ColoredIcon(symbol: .paintbrush, color: .pink)),
-                    kind: .navigationLink {
-                        context.send(viewAction: .headerGradient)
-                    })
             
             ListRow(label: .default(title: "Text Size",
                                     icon: ColoredIcon(symbol: .textformatSize, color: .blue)),

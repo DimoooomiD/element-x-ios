@@ -31,7 +31,6 @@ struct BugReportScreen: View {
         .compoundList()
         .navigationTitle(L10n.commonReportAProblem)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
         .toolbar { toolbar }
         .interactiveDismissDisabled()
         .onChange(of: selectedScreenshot) { _, newItem in

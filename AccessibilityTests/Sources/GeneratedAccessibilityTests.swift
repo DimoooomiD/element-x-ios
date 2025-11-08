@@ -179,10 +179,6 @@ extension AccessibilityTests {
         try await performAccessibilityAudit(named: "GlobalSearchScreen_Previews")
     }
 
-    func testHeaderGradientSettingsScreen() async throws {
-        try await performAccessibilityAudit(named: "HeaderGradientSettingsScreen_Previews")
-    }
-
     func testHighlightedTimelineItemModifier() async throws {
         try await performAccessibilityAudit(named: "HighlightedTimelineItemModifier_Previews")
     }

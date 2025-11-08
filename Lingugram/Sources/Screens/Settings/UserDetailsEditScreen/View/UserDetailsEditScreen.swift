@@ -32,7 +32,7 @@ struct UserDetailsEditScreen: View {
         .scrollDismissesKeyboard(.immediately)
         .navigationTitle(L10n.screenEditProfileTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBloom(hasSearchBar: false)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { toolbar }
         .observeThemeChanges() // Synchronous update for immediate response
     }
