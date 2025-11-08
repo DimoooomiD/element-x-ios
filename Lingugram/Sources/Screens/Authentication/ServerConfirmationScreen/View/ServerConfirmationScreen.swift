@@ -33,7 +33,7 @@ struct ServerConfirmationScreen: View {
             .frame(maxHeight: .infinity)
         }
         .background {
-            ProfessionalStartScreenBackground()
+            LanguageLearningBackground()
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(context.viewState.title)

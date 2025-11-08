@@ -37,7 +37,7 @@ struct LoginScreen: View {
             .frame(maxHeight: .infinity)
         }
         .background {
-            ProfessionalStartScreenBackground()
+            LanguageLearningBackground()
         }
         .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -50,12 +50,12 @@ struct LoginScreen: View {
         VStack(spacing: 0) {
             // Large title like the first page
             VStack(spacing: 16) {
-                Text("Login")
+                Text("Welcome Back")
                     .font(.system(size: 42, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                 
-                Text("Sign in to your account")
+                Text("Continue your language learning journey")
                     .font(.system(size: 18, weight: .regular, design: .default))
                     .foregroundColor(.white.opacity(0.9))
                     .multilineTextAlignment(.center)

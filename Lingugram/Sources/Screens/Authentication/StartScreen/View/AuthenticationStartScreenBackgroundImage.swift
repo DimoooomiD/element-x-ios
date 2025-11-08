@@ -173,6 +173,6 @@ struct AuthenticationStartScreenBackgroundImage: View {
         .onAppear {
             animateGradient = true
         }
-        .accessibilityHidden(true)
+            .accessibilityHidden(true)
     }
 }

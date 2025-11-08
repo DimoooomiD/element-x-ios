@@ -39,7 +39,7 @@ struct RegistrationScreen: View {
             .frame(maxHeight: .infinity)
         }
         .background {
-            ProfessionalStartScreenBackground()
+            LanguageLearningBackground()
         }
         .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -52,12 +52,12 @@ struct RegistrationScreen: View {
         VStack(spacing: 0) {
             // Large title like the first page
             VStack(spacing: 16) {
-                Text("Create Account")
+                Text("Start Learning")
                     .font(.system(size: 42, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                 
-                Text("Join our secure messaging platform")
+                Text("Create your account and begin your language learning adventure")
                     .font(.system(size: 18, weight: .regular, design: .default))
                     .foregroundColor(.white.opacity(0.9))
                     .multilineTextAlignment(.center)

@@ -51,20 +51,18 @@ struct ProfessionalButtonStyle: ButtonStyle {
         Group {
             switch variant {
             case .primary:
-                // Primary: Glassmorphism with gradient overlay
+                // Primary: Website gradient (indigo to purple)
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
+                    .fill(
                         LinearGradient(
                             colors: [
-                                Color.white.opacity(0.25),
-                                Color.white.opacity(0.1)
+                                Color(red: 0.39, green: 0.40, blue: 0.95), // #6366f1
+                                Color(red: 0.55, green: 0.36, blue: 0.96)  // #8b5cf6
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                    }
+                    )
             case .secondary:
                 // Secondary: More transparent glassmorphism
                 RoundedRectangle(cornerRadius: 16)
@@ -136,7 +134,7 @@ struct ProfessionalButtonStyle: ButtonStyle {
     private var shadowColor: Color {
         switch variant {
         case .primary:
-            return .black.opacity(0.3)
+            return Color(red: 0.39, green: 0.40, blue: 0.95).opacity(0.3) // Website shadow: rgba(99, 102, 241, 0.3)
         case .secondary:
             return .black.opacity(0.2)
         case .tertiary:

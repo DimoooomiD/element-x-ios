@@ -251,7 +251,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             } else {
                 MXLog.info("Showing login screen")
                 self.showLoginScreen(loginHint: loginHint, fromState: context.fromState)
-            }
+        }
         })
         stateMachine.addRoutes(event: .cancelledPasswordLogin(previousState: .serverConfirmationScreen), transitions: [.loginScreen => .serverConfirmationScreen])
         stateMachine.addRoutes(event: .cancelledPasswordLogin(previousState: .startScreen), transitions: [.loginScreen => .startScreen])
@@ -386,7 +386,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         // But don't reset if we're coming from automatic configuration - preserve the configured server
         if homeserver.loginMode == .unknown || currentFlow != authenticationFlow {
             MXLog.info("Resetting authentication service: loginMode=\(homeserver.loginMode), flow mismatch (\(currentFlow) != \(authenticationFlow))")
-            authenticationService.reset()
+        authenticationService.reset()
         }
         
         let parameters = ServerConfirmationScreenCoordinatorParameters(authenticationService: authenticationService,

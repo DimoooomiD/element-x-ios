@@ -59,14 +59,5 @@ fi
 
 echo -e "${GREEN}✅ App installed successfully!${NC}\n"
 
-# Step 4: Optional - Launch the app
-read -p "Do you want to launch the app? (y/n) " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo -e "${YELLOW}🚀 Launching app...${NC}"
-    xcrun simctl launch --console "$SIMULATOR" io.element.elementx 2>&1 | head -10
-    echo -e "${GREEN}✅ App launched!${NC}"
-fi
-
 echo -e "\n${GREEN}🎉 Done!${NC}"
 

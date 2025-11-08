@@ -50,7 +50,7 @@ struct AuthenticationStartScreen: View {
         }
         .navigationBarHidden(true)
         .background {
-            ProfessionalStartScreenBackground()
+            LanguageLearningBackground()
         }
         .introspect(.window, on: .supportedVersions) { window in
             context.send(viewAction: .updateWindow(window))
@@ -63,81 +63,58 @@ struct AuthenticationStartScreen: View {
                 Spacer()
                     .frame(height: 40)
                 
-                VStack(spacing: 40) {
-                    // Professional logo with glassmorphism effect
-                    professionalLogo
+                // Combined icon and text without frame
+                VStack(spacing: 12) {
+                    // App logo
+                    Image(asset: Asset.Images.appLogo)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 85, height: 85)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                     
-                    // Clean, professional text
-                    VStack(spacing: 16) {
-                        Text("Welcome")
-                            .font(.system(size: 42, weight: .bold, design: .rounded))
+                    VStack(spacing: 8) {
+                        Text("Lingugram")
+                            .font(.system(size: 34, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                         
-                        Text("Start your journey with secure messaging")
+                        Text("Master new languages with interactive content and connect with learners worldwide")
                             .font(.system(size: 18, weight: .regular, design: .default))
                             .foregroundColor(.white.opacity(0.9))
                             .multilineTextAlignment(.center)
-                            .lineSpacing(4)
-                            .padding(.horizontal, 8)
+                            .lineSpacing(3)
+                            .padding(.horizontal, 4)
                     }
-                    .padding(.horizontal, 24)
                 }
+                .padding(.horizontal, 16)
                 
                 Spacer()
             } else {
                 // Compact layout for smaller screens
-                VStack(spacing: 24) {
-                    professionalLogo
+                VStack(spacing: 8) {
+                    // App logo
+                    Image(asset: Asset.Images.appLogo)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 75, height: 75)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                     
-                    VStack(spacing: 12) {
-                        Text("Welcome")
-                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                    VStack(spacing: 6) {
+                        Text("Lingugram")
+                            .font(.system(size: 30, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                         
-                        Text("Start your journey with secure messaging")
-                            .font(.system(size: 16, weight: .regular, design: .default))
+                        Text("Master new languages with interactive content")
+                            .font(.system(size: 17, weight: .regular, design: .default))
                             .foregroundColor(.white.opacity(0.9))
                             .multilineTextAlignment(.center)
                     }
-                    .padding(.horizontal, 16)
                 }
+                .padding(.horizontal, 10)
             }
         }
         .readableFrame()
-    }
-    
-    /// Professional logo with glassmorphism effect
-    var professionalLogo: some View {
-        ZStack {
-            // Glassmorphism background
-            RoundedRectangle(cornerRadius: 32)
-                .fill(.ultraThinMaterial)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 32)
-                        .stroke(
-                            LinearGradient(
-                                colors: [
-                                    Color.white.opacity(0.4),
-                                    Color.white.opacity(0.1)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1.5
-                        )
-                }
-                .shadow(color: .black.opacity(0.2), radius: 30, y: 15)
-                .frame(width: 160, height: 160)
-            
-            // App logo
-            Image(asset: Asset.Images.appLogo)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 100, height: 100)
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-        }
     }
     
     /// The main action buttons.
