@@ -20,6 +20,7 @@ enum AppAppearance: CaseIterable, Codable {
     case darkNavy
     case darkForest
     case darkSteel
+    case darkBlue
     // Professional light themes
     case lightTeal
     case lightIndigo
@@ -33,7 +34,7 @@ enum AppAppearance: CaseIterable, Codable {
         switch self {
         case .light, .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
             return .light
-        case .dark, .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel:
+        case .dark, .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel, .darkBlue:
             return .dark
         case .system:
             return .unspecified

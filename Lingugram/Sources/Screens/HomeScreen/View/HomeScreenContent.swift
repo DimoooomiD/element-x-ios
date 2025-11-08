@@ -75,7 +75,7 @@ struct HomeScreenContent: View {
             .onChange(of: context.searchQuery) {
                 updateVisibleRange()
             }
-            .onChange(of: context.viewState.visibleRooms) {
+            .onChange(of: visibleRoomsIdentifier) {
                 updateVisibleRange()
                 
                 // We have been seeing a lot of issues around the room list not updating properly after
@@ -165,6 +165,17 @@ struct HomeScreenContent: View {
             }
             .background(Color.compound.bgCanvasDefault)
         }
+    }
+    
+    /// A stable identifier for visibleRooms to prevent multiple onChange triggers per frame.
+    /// Uses the count and a hash of room IDs to create a stable identifier that only changes when the actual content changes.
+    /// This prevents SwiftUI from triggering onChange multiple times per frame when observing an array directly.
+    private var visibleRoomsIdentifier: String {
+        let rooms = context.viewState.visibleRooms
+        let roomIDs = rooms.map(\.id).joined(separator: ",")
+        // Use a combination of count and the actual IDs string to create a stable identifier
+        // This ensures onChange only fires when the rooms actually change, not on every frame
+        return "\(rooms.count):\(roomIDs)"
     }
     
     /// Often times the scroll view's content size isn't correct yet when this method is called e.g. when cancelling a search

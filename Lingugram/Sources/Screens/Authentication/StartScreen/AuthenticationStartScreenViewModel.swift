@@ -153,7 +153,7 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
                 }
                 
                 // If window is still not available, fall back to server confirmation screen
-                guard let window = window else {
+                guard let window else {
                     actionsSubject.send(.register)
                     return
                 }

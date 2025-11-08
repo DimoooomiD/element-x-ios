@@ -168,8 +168,7 @@ class AuthenticationService: AuthenticationServiceProtocol {
         MXLog.info("Registration: Username: \(username)")
         
         // Make a direct HTTP POST request to the Matrix /register endpoint
-        let registerURL = URL(string: homeserverURL)?.appending(path: "/_matrix/client/v3/register")
-        guard let registerURL = registerURL else {
+        guard let registerURL = URL(string: homeserverURL)?.appending(path: "/_matrix/client/v3/register") else {
             MXLog.error("Failed to construct registration URL from: \(homeserverURL)")
             return .failure(.invalidHomeserverAddress)
         }
@@ -180,10 +179,11 @@ class AuthenticationService: AuthenticationServiceProtocol {
         do {
             // Step 1: Get registration session (some servers require this)
             MXLog.info("Registration: Step 1 - Getting registration session...")
-            var sessionPayload: [String: Any] = [
+            let deviceName = await MainActor.run { UIDevice.current.name }
+            let sessionPayload: [String: Any] = [
                 "username": username,
                 "password": password,
-                "initial_device_display_name": initialDeviceName ?? UIDevice.current.name
+                "initial_device_display_name": initialDeviceName ?? deviceName
             ]
             
             var sessionRequest = URLRequest(url: registerURL)
@@ -201,73 +201,12 @@ class AuthenticationService: AuthenticationServiceProtocol {
             MXLog.info("Registration: Step 1 response status: \(sessionHttpResponse.statusCode)")
             
             // Check if we need to complete the registration flow
-            if sessionHttpResponse.statusCode == 401 {
-                // Server requires authentication flow (e.g., m.login.dummy)
-                MXLog.info("Registration: Server requires authentication flow")
-                
-                guard let sessionJson = try? JSONSerialization.jsonObject(with: sessionData) as? [String: Any],
-                      let session = sessionJson["session"] as? String else {
-                    MXLog.error("Registration: Failed to get session from 401 response")
-                    if let responseString = String(data: sessionData, encoding: .utf8) {
-                        MXLog.error("Registration: Response: \(responseString)")
-                    }
-                    return handleRegistrationError(data: sessionData, statusCode: sessionHttpResponse.statusCode)
-                }
-                
-                MXLog.info("Registration: Got session: \(session)")
-                
-                // Step 2: Complete registration with session and dummy auth
-                var finalPayload: [String: Any] = [
-                    "username": username,
-                    "password": password,
-                    "initial_device_display_name": initialDeviceName ?? UIDevice.current.name,
-                    "auth": [
-                        "type": "m.login.dummy",
-                        "session": session
-                    ]
-                ]
-                
-                var finalRequest = URLRequest(url: registerURL)
-                finalRequest.httpMethod = "POST"
-                finalRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                finalRequest.httpBody = try JSONSerialization.data(withJSONObject: finalPayload)
-                
-                MXLog.info("Registration: Step 2 - Completing registration with session...")
-                let (finalData, finalResponse) = try await URLSession.shared.data(for: finalRequest)
-                
-                guard let finalHttpResponse = finalResponse as? HTTPURLResponse else {
-                    MXLog.error("Registration: Invalid response type in step 2")
-                    return .failure(.failedLoggingIn)
-                }
-                
-                MXLog.info("Registration: Step 2 response status: \(finalHttpResponse.statusCode)")
-                
-                if let responseString = String(data: finalData, encoding: .utf8) {
-                    MXLog.info("Registration: Step 2 response body: \(responseString)")
-                }
-                
-                if finalHttpResponse.statusCode == 200 || finalHttpResponse.statusCode == 201 {
-                    MXLog.info("Registration: Success! Status code: \(finalHttpResponse.statusCode)")
-                    return await handleSuccessfulRegistration(data: finalData, username: username, password: password, initialDeviceName: initialDeviceName)
-                } else {
-                    MXLog.error("Registration: Step 2 failed with status code: \(finalHttpResponse.statusCode)")
-                    return handleRegistrationError(data: finalData, statusCode: finalHttpResponse.statusCode)
-                }
-            } else if sessionHttpResponse.statusCode == 200 || sessionHttpResponse.statusCode == 201 {
-                // Direct registration succeeded (no auth flow required)
-                MXLog.info("Registration: Direct registration succeeded! Status code: \(sessionHttpResponse.statusCode)")
-                if let responseString = String(data: sessionData, encoding: .utf8) {
-                    MXLog.info("Registration: Response body: \(responseString)")
-                }
-                return await handleSuccessfulRegistration(data: sessionData, username: username, password: password, initialDeviceName: initialDeviceName)
-            } else {
-                // Registration failed
-                MXLog.error("Registration: Failed with status code: \(sessionHttpResponse.statusCode)")
-                if let responseString = String(data: sessionData, encoding: .utf8) {
-                    MXLog.error("Registration: Response: \(responseString)")
-                }
-                return handleRegistrationError(data: sessionData, statusCode: sessionHttpResponse.statusCode)
-            }
+            return await handleRegistrationResponse(sessionData: sessionData,
+                                                    sessionResponse: sessionHttpResponse,
+                                                    registerURL: registerURL,
+                                                    username: username,
+                                                    password: password,
+                                                    initialDeviceName: initialDeviceName)
         } catch let urlError as URLError {
             return handleRegistrationNetworkError(urlError)
         } catch {
@@ -318,8 +257,104 @@ class AuthenticationService: AuthenticationServiceProtocol {
         return .failure(.failedLoggingIn)
     }
     
+    private func handleRegistrationResponse(sessionData: Data,
+                                            sessionResponse: HTTPURLResponse,
+                                            registerURL: URL,
+                                            username: String,
+                                            password: String,
+                                            initialDeviceName: String?) async -> Result<UserSessionProtocol, AuthenticationServiceError> {
+        if sessionResponse.statusCode == 401 {
+            return await handleTwoStepRegistration(sessionData: sessionData,
+                                                   registerURL: registerURL,
+                                                   username: username,
+                                                   password: password,
+                                                   initialDeviceName: initialDeviceName)
+        } else if sessionResponse.statusCode == 200 || sessionResponse.statusCode == 201 {
+            return await handleDirectRegistration(sessionData: sessionData,
+                                                  username: username,
+                                                  password: password,
+                                                  initialDeviceName: initialDeviceName)
+        } else {
+            return handleRegistrationError(data: sessionData, statusCode: sessionResponse.statusCode)
+        }
+    }
+
+    private func handleTwoStepRegistration(sessionData: Data,
+                                           registerURL: URL,
+                                           username: String,
+                                           password: String,
+                                           initialDeviceName: String?) async -> Result<UserSessionProtocol, AuthenticationServiceError> {
+        MXLog.info("Registration: Server requires authentication flow")
+
+        guard let sessionJson = try? JSONSerialization.jsonObject(with: sessionData) as? [String: Any],
+              let session = sessionJson["session"] as? String else {
+            MXLog.error("Registration: Failed to get session from 401 response")
+            if let responseString = String(data: sessionData, encoding: .utf8) {
+                MXLog.error("Registration: Response: \(responseString)")
+            }
+            return handleRegistrationError(data: sessionData, statusCode: 401)
+        }
+
+        MXLog.info("Registration: Got session: \(session)")
+
+        // Step 2: Complete registration with session and dummy auth
+        let deviceName = await MainActor.run { UIDevice.current.name }
+        let finalPayload: [String: Any] = [
+            "username": username,
+            "password": password,
+            "initial_device_display_name": initialDeviceName ?? deviceName,
+            "auth": [
+                "type": "m.login.dummy",
+                "session": session
+            ]
+        ]
+
+        var finalRequest = URLRequest(url: registerURL)
+        finalRequest.httpMethod = "POST"
+        finalRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            finalRequest.httpBody = try JSONSerialization.data(withJSONObject: finalPayload)
+
+            MXLog.info("Registration: Step 2 - Completing registration with session...")
+            let (finalData, finalResponse) = try await URLSession.shared.data(for: finalRequest)
+
+            guard let finalHttpResponse = finalResponse as? HTTPURLResponse else {
+                MXLog.error("Registration: Invalid response type in step 2")
+                return .failure(.failedLoggingIn)
+            }
+
+            MXLog.info("Registration: Step 2 response status: \(finalHttpResponse.statusCode)")
+
+            if let responseString = String(data: finalData, encoding: .utf8) {
+                MXLog.info("Registration: Step 2 response body: \(responseString)")
+            }
+
+            if finalHttpResponse.statusCode == 200 || finalHttpResponse.statusCode == 201 {
+                MXLog.info("Registration: Success! Status code: \(finalHttpResponse.statusCode)")
+                return await handleSuccessfulRegistration(data: finalData, username: username, password: password, initialDeviceName: initialDeviceName)
+            } else {
+                MXLog.error("Registration: Step 2 failed with status code: \(finalHttpResponse.statusCode)")
+                return handleRegistrationError(data: finalData, statusCode: finalHttpResponse.statusCode)
+            }
+        } catch {
+            MXLog.error("Registration: Failed to create request: \(error)")
+            return .failure(.failedLoggingIn)
+        }
+    }
+
+    private func handleDirectRegistration(sessionData: Data,
+                                          username: String,
+                                          password: String,
+                                          initialDeviceName: String?) async -> Result<UserSessionProtocol, AuthenticationServiceError> {
+        MXLog.info("Registration: Direct registration succeeded!")
+        if let responseString = String(data: sessionData, encoding: .utf8) {
+            MXLog.info("Registration: Response body: \(responseString)")
+        }
+        return await handleSuccessfulRegistration(data: sessionData, username: username, password: password, initialDeviceName: initialDeviceName)
+    }
+
     private func extractLocalpart(from userID: String?, fallback: String) -> String {
-        guard let userID = userID, userID.hasPrefix("@") else {
+        guard let userID, userID.hasPrefix("@") else {
             return fallback
         }
         

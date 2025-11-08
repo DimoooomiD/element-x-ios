@@ -54,6 +54,8 @@ private extension AppAppearance {
             return "Forest"
         case .darkSteel:
             return "Steel"
+        case .darkBlue:
+            return "Lingugram"
         case .lightTeal:
             return "Aqua"
         case .lightIndigo:
@@ -79,7 +81,7 @@ private extension AppAppearance {
             return .sunMax
         case .dark:
             return .moon
-        case .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel:
+        case .darkTeal, .darkIndigo, .darkSlate, .darkNavy, .darkForest, .darkSteel, .darkBlue:
             return .circleFill
         case .lightTeal, .lightIndigo, .lightSlate, .lightRose, .lightCream, .lightAzure, .lightPearl:
             return .circle
@@ -106,6 +108,9 @@ private extension AppAppearance {
             return Color(red: 0.0, green: 0.27, blue: 0.13)
         case .darkSteel:
             return Color(red: 0.27, green: 0.31, blue: 0.35)
+        case .darkBlue:
+            // Base color from static background with gradient influence
+            return Color(red: 0.06, green: 0.09, blue: 0.16)
         case .lightTeal:
             return Color(red: 0.0, green: 0.5, blue: 0.5).opacity(0.7)
         case .lightIndigo:

@@ -15,4 +15,3 @@ protocol RegistrationScreenViewModelProtocol {
     
     func stopLoading()
 }
-

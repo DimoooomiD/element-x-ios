@@ -224,8 +224,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         // Use route mapping to dynamically determine the target state based on the flow
         // This must be used instead of addRoutes to avoid conflicts when multiple transitions are possible
-        stateMachine.addRouteMapping({ [weak self] event, fromState, _ in
-            guard let self = self else { return nil }
+        stateMachine.addRouteMapping { [weak self] event, fromState, _ in
+            guard let self else { return nil }
             
             if case .continueWithPassword = event {
                 let currentFlow = self.authenticationService.flow
@@ -239,10 +239,10 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
                 }
             }
             return nil
-        }, handler: { [weak self] context in
+        } handler: { [weak self] context in
             let loginHint = context.userInfo as? String
             // Check the authentication flow to determine which screen to show
-            guard let self = self else { return }
+            guard let self else { return }
             let currentFlow = self.authenticationService.flow
             MXLog.info("continueWithPassword: current flow is \(currentFlow), fromState is \(context.fromState), toState is \(context.toState)")
             if currentFlow == .register {
@@ -251,8 +251,8 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             } else {
                 MXLog.info("Showing login screen")
                 self.showLoginScreen(loginHint: loginHint, fromState: context.fromState)
+            }
         }
-        })
         stateMachine.addRoutes(event: .cancelledPasswordLogin(previousState: .serverConfirmationScreen), transitions: [.loginScreen => .serverConfirmationScreen])
         stateMachine.addRoutes(event: .cancelledPasswordLogin(previousState: .startScreen), transitions: [.loginScreen => .startScreen])
         stateMachine.addRoutes(event: .cancelledPasswordRegistration(previousState: .serverConfirmationScreen), transitions: [.registrationScreen => .serverConfirmationScreen])
@@ -386,7 +386,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         // But don't reset if we're coming from automatic configuration - preserve the configured server
         if homeserver.loginMode == .unknown || currentFlow != authenticationFlow {
             MXLog.info("Resetting authentication service: loginMode=\(homeserver.loginMode), flow mismatch (\(currentFlow) != \(authenticationFlow))")
-        authenticationService.reset()
+            authenticationService.reset()
         }
         
         let parameters = ServerConfirmationScreenCoordinatorParameters(authenticationService: authenticationService,
@@ -397,7 +397,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         coordinator.actions.sink { [weak self] action in
             guard let self else { return }
-            
+
             switch action {
             case .continueWithOIDC(let oidcData, let window):
                 stateMachine.tryEvent(.continueWithOIDC, userInfo: (oidcData, window))
@@ -438,10 +438,10 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
         
         // For OIDC, we need a window to present the authentication
         let window = await MainActor.run {
-            appMediator.windowManager.windows.first(where: { $0.isKeyWindow }) ?? appMediator.windowManager.windows.first
+            appMediator.windowManager.windows.first { $0.isKeyWindow } ?? appMediator.windowManager.windows.first
         }
-        
-        guard let window = window else {
+
+        guard let window else {
             // Fallback: show server confirmation screen if we can't get the window
             showServerConfirmationScreen(authenticationFlow: authenticationFlow)
             return
@@ -541,9 +541,9 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
                 }
             }
             .store(in: &cancellables)
-        
+
         navigationStackCoordinator.push(coordinator) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             // Safely handle back button - check current state before transitioning
             let currentState = self.stateMachine.state
             guard currentState == .loginScreen else {
@@ -552,11 +552,11 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             }
             
             // Try to transition based on fromState, with fallback to start screen
-            let targetState: State = fromState == .startScreen ? .startScreen : 
-                                    (fromState == .serverConfirmationScreen ? .serverConfirmationScreen : .startScreen)
-            
-            let event: Event = targetState == .startScreen ? 
-                .cancelledPasswordLogin(previousState: .startScreen) : 
+            let targetState: State = fromState == .startScreen ? .startScreen :
+                (fromState == .serverConfirmationScreen ? .serverConfirmationScreen : .startScreen)
+
+            let event: Event = targetState == .startScreen ?
+                .cancelledPasswordLogin(previousState: .startScreen) :
                 .cancelledPasswordLogin(previousState: .serverConfirmationScreen)
             
             // Try the transition - if it fails, the state machine will handle it gracefully
@@ -566,9 +566,9 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
     
     private func showRegistrationScreen(fromState: State) {
         let parameters = RegistrationScreenCoordinatorParameters(authenticationService: authenticationService,
-                                                                userIndicatorController: userIndicatorController,
-                                                                appSettings: appSettings,
-                                                                analytics: analytics)
+                                                                 userIndicatorController: userIndicatorController,
+                                                                 appSettings: appSettings,
+                                                                 analytics: analytics)
         let coordinator = RegistrationScreenCoordinator(parameters: parameters)
         
         coordinator.start()
@@ -583,9 +583,9 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
                 }
             }
             .store(in: &cancellables)
-        
+
         navigationStackCoordinator.push(coordinator) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             // Safely handle back button - check current state before transitioning
             let currentState = self.stateMachine.state
             guard currentState == .registrationScreen else {
@@ -594,11 +594,11 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
             }
             
             // Try to transition based on fromState, with fallback to start screen
-            let targetState: State = fromState == .startScreen ? .startScreen : 
-                                    (fromState == .serverConfirmationScreen ? .serverConfirmationScreen : .startScreen)
-            
-            let event: Event = targetState == .startScreen ? 
-                .cancelledPasswordRegistration(previousState: .startScreen) : 
+            let targetState: State = fromState == .startScreen ? .startScreen :
+                (fromState == .serverConfirmationScreen ? .serverConfirmationScreen : .startScreen)
+
+            let event: Event = targetState == .startScreen ?
+                .cancelledPasswordRegistration(previousState: .startScreen) :
                 .cancelledPasswordRegistration(previousState: .serverConfirmationScreen)
             
             // Try the transition - if it fails, the state machine will handle it gracefully
@@ -626,7 +626,7 @@ class AuthenticationFlowCoordinator: FlowCoordinatorProtocol {
     }
     
     // MARK: - Completion
-        
+
     private func userHasSignedIn(userSession: UserSessionProtocol) {
         delegate?.authenticationFlowCoordinator(didLoginWithSession: userSession)
     }

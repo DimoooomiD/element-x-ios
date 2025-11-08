@@ -11,7 +11,7 @@ import SwiftUI
 /// A professional glassmorphism button style that matches the authentication screens
 struct ProfessionalButtonStyle: ButtonStyle {
     var variant: Variant = .primary
-    var isEnabled: Bool = true
+    var isEnabled = true
     
     enum Variant {
         case primary
@@ -54,29 +54,25 @@ struct ProfessionalButtonStyle: ButtonStyle {
                 // Primary: Website gradient (indigo to purple)
                 RoundedRectangle(cornerRadius: 16)
                     .fill(
-                        LinearGradient(
-                            colors: [
-                                Color(red: 0.39, green: 0.40, blue: 0.95), // #6366f1
-                                Color(red: 0.55, green: 0.36, blue: 0.96)  // #8b5cf6
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                        LinearGradient(colors: [
+                            Color(red: 0.39, green: 0.40, blue: 0.95), // #6366f1
+                            Color(red: 0.55, green: 0.36, blue: 0.96) // #8b5cf6
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing)
                     )
             case .secondary:
                 // Secondary: More transparent glassmorphism
                 RoundedRectangle(cornerRadius: 16)
                     .fill(.ultraThinMaterial)
                     .overlay {
-                        LinearGradient(
-                            colors: [
-                                Color.white.opacity(0.15),
-                                Color.white.opacity(0.05)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        LinearGradient(colors: [
+                            Color.white.opacity(0.15),
+                            Color.white.opacity(0.05)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
             case .tertiary:
                 // Tertiary: Minimal glassmorphism
@@ -93,39 +89,29 @@ struct ProfessionalButtonStyle: ButtonStyle {
             case .primary:
                 // Primary: Bright gradient border
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(
-                        LinearGradient(
-                            colors: [
+                    .stroke(LinearGradient(colors: [
                                 Color.white.opacity(0.6),
                                 Color.white.opacity(0.3),
                                 Color.white.opacity(0.5)
                             ],
                             startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 1.5
-                    )
+                            endPoint: .bottomTrailing),
+                            lineWidth: 1.5)
             case .secondary:
                 // Secondary: Subtle border
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(
-                        LinearGradient(
-                            colors: [
+                    .stroke(LinearGradient(colors: [
                                 Color.white.opacity(0.4),
                                 Color.white.opacity(0.2)
                             ],
                             startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 1
-                    )
+                            endPoint: .bottomTrailing),
+                            lineWidth: 1)
             case .tertiary:
                 // Tertiary: Very subtle border
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(
-                        Color.white.opacity(0.2),
-                        lineWidth: 1
-                    )
+                    .stroke(Color.white.opacity(0.2),
+                            lineWidth: 1)
             }
         }
     }
@@ -175,7 +161,6 @@ extension ButtonStyle where Self == ProfessionalButtonStyle {
 
 extension View {
     func professionalButtonStyle(_ variant: ProfessionalButtonStyle.Variant = .primary, isEnabled: Bool = true) -> some View {
-        self.buttonStyle(ProfessionalButtonStyle(variant: variant, isEnabled: isEnabled))
+        buttonStyle(ProfessionalButtonStyle(variant: variant, isEnabled: isEnabled))
     }
 }
-

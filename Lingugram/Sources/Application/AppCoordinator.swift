@@ -1166,6 +1166,15 @@ class AppCoordinator: AppCoordinatorProtocol, AuthenticationFlowCoordinatorDeleg
                 self.endActiveBackgroundTask()
             }
         }
+        
+        // Handle simulator-specific RBSAssertionErrorDomain: background task acquisition may fail
+        // in simulator, but this is harmless and doesn't affect functionality
+        #if targetEnvironment(simulator)
+        if backgroundTask == .invalid {
+            MXLog.info("Background task acquisition failed in simulator (RBSAssertionErrorDomain). This is expected and harmless.")
+            backgroundTask = nil
+        }
+        #endif
     }
     
     @objc

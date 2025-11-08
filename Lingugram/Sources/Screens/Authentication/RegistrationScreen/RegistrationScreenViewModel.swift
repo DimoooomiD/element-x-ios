@@ -63,8 +63,8 @@ class RegistrationScreenViewModel: RegistrationScreenViewModelType, Registration
         
         Task {
             switch await authenticationService.register(username: state.bindings.username,
-                                                       password: state.bindings.password,
-                                                       initialDeviceName: UIDevice.current.initialDeviceName) {
+                                                        password: state.bindings.password,
+                                                        initialDeviceName: UIDevice.current.initialDeviceName) {
             case .success(let userSession):
                 actionsSubject.send(.signedIn(userSession))
                 stopLoading()
@@ -163,4 +163,3 @@ class RegistrationScreenViewModel: RegistrationScreenViewModelType, Registration
         }
     }
 }
-

@@ -41,9 +41,9 @@ final class RegistrationScreenCoordinator: CoordinatorProtocol {
         self.parameters = parameters
         
         viewModel = RegistrationScreenViewModel(authenticationService: parameters.authenticationService,
-                                            userIndicatorController: parameters.userIndicatorController,
-                                            appSettings: parameters.appSettings,
-                                            analytics: parameters.analytics)
+                                                userIndicatorController: parameters.userIndicatorController,
+                                                appSettings: parameters.appSettings,
+                                                analytics: parameters.analytics)
     }
     
     // MARK: - Public
@@ -69,4 +69,3 @@ final class RegistrationScreenCoordinator: CoordinatorProtocol {
         AnyView(RegistrationScreen(context: viewModel.context))
     }
 }
-

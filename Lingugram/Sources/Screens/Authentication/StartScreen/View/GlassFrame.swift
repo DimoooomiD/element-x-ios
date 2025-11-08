@@ -25,17 +25,13 @@ struct GlassFrame<Content: View>: View {
                 .fill(.ultraThinMaterial)
                 .overlay {
                     RoundedRectangle(cornerRadius: cornerRadius)
-                        .stroke(
-                            LinearGradient(
-                                colors: [
+                        .stroke(LinearGradient(colors: [
                                     Color.white.opacity(0.4),
                                     Color.white.opacity(0.1)
                                 ],
                                 startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1.5
-                        )
+                                endPoint: .bottomTrailing),
+                                lineWidth: 1.5)
                 }
                 .shadow(color: .black.opacity(0.2), radius: 15, y: 8)
             
@@ -43,4 +39,3 @@ struct GlassFrame<Content: View>: View {
         }
     }
 }
-

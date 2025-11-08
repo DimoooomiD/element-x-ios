@@ -65,4 +65,3 @@ enum RegistrationScreenErrorType: Hashable {
     /// The response from the homeserver was unexpected.
     case unknown
 }
-

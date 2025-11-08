@@ -178,6 +178,66 @@ struct DarkSlateThemeConfiguration: ThemeConfiguration {
     }
 }
 
+// MARK: - Dark Blue Theme Configuration (Lingugram)
+
+struct DarkBlueThemeConfiguration: ThemeConfiguration {
+    var appearance: AppAppearance {
+        .darkBlue
+    }
+    
+    var colorOverrides: [ThemeColorOverride] {
+        let tokens = CompoundColorTokens()
+        
+        // Based on static background with gradient colors:
+        // Base: Color(red: 0.06, green: 0.09, blue: 0.16)
+        // Gradients: Purple/Indigo (#6366f1, #8b5cf6), Cyan (#06b6d4), Blue (#3b82f6)
+        // Colors blend the base with gradient colors to create visible gradient-inspired palette
+        // Blending formula: base * 0.7 + gradient * 0.3 for visible gradient influence
+        return [
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               // Base dark blue with subtle purple/indigo blend
+                               themeColor: UIColor(red: 0.08, green: 0.10, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               // Base with indigo tint
+                               themeColor: UIColor(red: 0.08, green: 0.10, blue: 0.20, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               // Base blended with purple/indigo gradient (#6366f1 influence)
+                               themeColor: UIColor(red: 0.12, green: 0.13, blue: 0.28, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               // Enhanced with purple/cyan gradient blend (#8b5cf6 + #06b6d4 influence)
+                               themeColor: UIColor(red: 0.14, green: 0.16, blue: 0.32, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               // Blend with cyan/blue gradient tones (#06b6d4 + #3b82f6 influence)
+                               themeColor: UIColor(red: 0.10, green: 0.15, blue: 0.26, alpha: 1.0))
+        ]
+    }
+    
+    var bubbleIncomingColor: UIColor? {
+        // Base with purple/indigo gradient influence (#6366f1 blend)
+        UIColor(red: 0.11, green: 0.13, blue: 0.25, alpha: 1.0)
+    }
+    
+    var bubbleOutgoingColor: UIColor? {
+        // Enhanced with cyan/blue gradient influence (#3b82f6 blend)
+        UIColor(red: 0.15, green: 0.18, blue: 0.32, alpha: 1.0)
+    }
+}
+
 // MARK: - Dark Navy Theme Configuration
 
 struct DarkNavyThemeConfiguration: ThemeConfiguration {
@@ -670,6 +730,7 @@ enum ThemeConfigurationRegistry {
         DarkNavyThemeConfiguration(),
         DarkForestThemeConfiguration(),
         DarkSteelThemeConfiguration(),
+        DarkBlueThemeConfiguration(),
         LightTealThemeConfiguration(),
         LightIndigoThemeConfiguration(),
         LightSlateThemeConfiguration(),

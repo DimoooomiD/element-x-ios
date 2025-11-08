@@ -127,27 +127,23 @@ struct RegistrationScreen: View {
     
     private var backgroundConfig: LanguageBackgroundConfig {
         if verticalSizeClass == .regular {
-            return LanguageBackgroundConfig(
-                emojiCount: 36,
-                verticalStart: 0.05,
-                verticalEnd: 0.95,
-                horizontalPadding: 12,
-                centerGapFraction: 0.0,
-                speedMultiplier: 1.0,
-                uniformDistribution: false,
-                randomDistribution: true
-            )
+            return LanguageBackgroundConfig(emojiCount: 36,
+                                            verticalStart: 0.05,
+                                            verticalEnd: 0.95,
+                                            horizontalPadding: 12,
+                                            centerGapFraction: 0.0,
+                                            speedMultiplier: 1.0,
+                                            uniformDistribution: false,
+                                            randomDistribution: true)
         } else {
-            return LanguageBackgroundConfig(
-                emojiCount: 28,
-                verticalStart: 0.05,
-                verticalEnd: 0.95,
-                horizontalPadding: 10,
-                centerGapFraction: 0.0,
-                speedMultiplier: 0.9,
-                uniformDistribution: false,
-                randomDistribution: true
-            )
+            return LanguageBackgroundConfig(emojiCount: 28,
+                                            verticalStart: 0.05,
+                                            verticalEnd: 0.95,
+                                            horizontalPadding: 10,
+                                            centerGapFraction: 0.0,
+                                            speedMultiplier: 0.9,
+                                            uniformDistribution: false,
+                                            randomDistribution: true)
         }
     }
     
@@ -186,4 +182,3 @@ struct RegistrationScreen_Previews: PreviewProvider, TestablePreview {
         return viewModel
     }
 }
-

@@ -28,6 +28,10 @@ final class KeychainController: KeychainControllerProtocol, @unchecked Sendable 
     private let restorationTokenKeychain: Keychain
     /// The keychain responsible for storing all other secrets in the app (keyed by `Key`s).
     private let mainKeychain: Keychain
+    /// Service identifier for debugging
+    private let serviceID: String
+    /// Access group for debugging
+    private let accessGroup: String
     
     private enum Key: String {
         case appLockPINCode
@@ -36,11 +40,14 @@ final class KeychainController: KeychainControllerProtocol, @unchecked Sendable 
 
     init(service: KeychainControllerService, accessGroup: String) {
         // Configure keychain with accessibility settings that persist across app installs
-        // .whenUnlockedThisDeviceOnly ensures data persists in simulator during development
+        // .afterFirstUnlock allows access after first device unlock, ensuring persistence across rebuilds
+        serviceID = service.restorationTokenID
+        self.accessGroup = accessGroup
+        
         restorationTokenKeychain = Keychain(service: service.restorationTokenID, accessGroup: accessGroup)
-            .accessibility(.whenUnlockedThisDeviceOnly)
+            .accessibility(.afterFirstUnlock)
         mainKeychain = Keychain(service: service.mainID, accessGroup: accessGroup)
-            .accessibility(.whenUnlockedThisDeviceOnly)
+            .accessibility(.afterFirstUnlock)
         
         MXLog.info("🔐 KeychainController initialized with service: \(service.restorationTokenID), accessGroup: \(accessGroup)")
     }
@@ -76,7 +83,7 @@ final class KeychainController: KeychainControllerProtocol, @unchecked Sendable 
 
     func restorationTokens() -> [KeychainCredentials] {
         let allKeys = restorationTokenKeychain.allKeys()
-        MXLog.info("🔍 Checking keychain for restoration tokens. Found \(allKeys.count) key(s) in keychain.")
+        MXLog.info("🔍 Checking keychain for restoration tokens. Service: \(serviceID), AccessGroup: \(accessGroup). Found \(allKeys.count) key(s) in keychain.")
         
         let tokens: [KeychainCredentials] = allKeys.compactMap { username in
             guard let restorationToken = restorationTokenForUsername(username) else {

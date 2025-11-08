@@ -27,6 +27,16 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         NSTextAttachment.registerViewProviderClass(PillAttachmentViewProvider.self, forFileType: InfoPlistReader.main.pillsUTType)
+        
+        // Suppress known simulator warnings that don't affect functionality
+        UIView.suppressKeyboardConstraintWarnings()
+        
+        // Note: RBSAssertionErrorDomain errors ("Could not find attribute name in domain plist")
+        // are system-level OSLog messages that appear when background tasks are requested in the simulator.
+        // These errors are logged by iOS before our code can intercept them, so they cannot be suppressed.
+        // However, they are handled gracefully in AppMediator and AppCoordinator, and don't affect functionality.
+        // The error messages will still appear in the console but are harmless.
+        
         return true
     }
 

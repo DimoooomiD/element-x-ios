@@ -11,7 +11,7 @@ import SwiftUI
 /// Configuration for the language learning animated background.
 struct LanguageBackgroundConfig {
     /// Number of emojis to show (nil = all).
-    var emojiCount: Int? = nil
+    var emojiCount: Int?
     /// Normalized vertical range [0, 1] where emojis may appear.
     var verticalStart: CGFloat = 0.35
     var verticalEnd: CGFloat = 0.75
@@ -21,11 +21,11 @@ struct LanguageBackgroundConfig {
     /// Example: 0.4 leaves 40% of the center empty to avoid the main content.
     var centerGapFraction: CGFloat = 0.38
     /// Multiplier for animation speed (1.0 = default).
-    var speedMultiplier: Double = 1.0
+    var speedMultiplier = 1.0
     /// Spread emojis uniformly across the available region.
-    var uniformDistribution: Bool = false
+    var uniformDistribution = false
     /// Spread emojis randomly across the region (ignores lanes). Stable per index.
-    var randomDistribution: Bool = false
+    var randomDistribution = false
     
     static let `default` = LanguageBackgroundConfig()
 }
@@ -71,69 +71,55 @@ struct LanguageLearningBackground: View {
                     .ignoresSafeArea()
                 
                 // Radial gradients matching website style
-                RadialGradient(
-                    colors: [
-                        Color(red: 0.39, green: 0.40, blue: 0.95).opacity(0.1), // #6366f1
-                        Color(red: 0.55, green: 0.36, blue: 0.96).opacity(0.1), // #8b5cf6
-                        Color.clear
-                    ],
-                    center: UnitPoint(
-                        x: 0.2 + sin(animationPhase * 0.05) * 0.1,
-                        y: 0.5 + cos(animationPhase * 0.05) * 0.1
-                    ),
-                    startRadius: 100,
-                    endRadius: 600
-                )
-                .ignoresSafeArea()
+                RadialGradient(colors: [
+                    Color(red: 0.39, green: 0.40, blue: 0.95).opacity(0.1), // #6366f1
+                    Color(red: 0.55, green: 0.36, blue: 0.96).opacity(0.1), // #8b5cf6
+                    Color.clear
+                ],
+                center: UnitPoint(x: 0.2 + sin(animationPhase * 0.05) * 0.1,
+                                  y: 0.5 + cos(animationPhase * 0.05) * 0.1),
+                startRadius: 100,
+                endRadius: 600)
+                    .ignoresSafeArea()
                 
-                RadialGradient(
-                    colors: [
-                        Color(red: 0.80, green: 0.20, blue: 0.20).opacity(0.1), // #8b5cf6 variant
-                        Color(red: 0.02, green: 0.71, blue: 0.83).opacity(0.1), // #06b6d4
-                        Color.clear
-                    ],
-                    center: UnitPoint(
-                        x: 0.8 + cos(animationPhase * 0.05) * 0.1,
-                        y: 0.2 + sin(animationPhase * 0.05) * 0.1
-                    ),
-                    startRadius: 100,
-                    endRadius: 600
-                )
-                .ignoresSafeArea()
+                RadialGradient(colors: [
+                    Color(red: 0.80, green: 0.20, blue: 0.20).opacity(0.1), // #8b5cf6 variant
+                    Color(red: 0.02, green: 0.71, blue: 0.83).opacity(0.1), // #06b6d4
+                    Color.clear
+                ],
+                center: UnitPoint(x: 0.8 + cos(animationPhase * 0.05) * 0.1,
+                                  y: 0.2 + sin(animationPhase * 0.05) * 0.1),
+                startRadius: 100,
+                endRadius: 600)
+                    .ignoresSafeArea()
                 
-                RadialGradient(
-                    colors: [
-                        Color(red: 0.02, green: 0.71, blue: 0.83).opacity(0.1), // #06b6d4
-                        Color(red: 0.23, green: 0.51, blue: 0.96).opacity(0.1), // #3b82f6
-                        Color.clear
-                    ],
-                    center: UnitPoint(
-                        x: 0.4 + sin(animationPhase * 0.03) * 0.1,
-                        y: 0.8 + cos(animationPhase * 0.03) * 0.1
-                    ),
-                    startRadius: 100,
-                    endRadius: 600
-                )
-                .ignoresSafeArea()
+                RadialGradient(colors: [
+                    Color(red: 0.02, green: 0.71, blue: 0.83).opacity(0.1), // #06b6d4
+                    Color(red: 0.23, green: 0.51, blue: 0.96).opacity(0.1), // #3b82f6
+                    Color.clear
+                ],
+                center: UnitPoint(x: 0.4 + sin(animationPhase * 0.03) * 0.1,
+                                  y: 0.8 + cos(animationPhase * 0.03) * 0.1),
+                startRadius: 100,
+                endRadius: 600)
+                    .ignoresSafeArea()
                 
                 // Floating emojis with website-style animations
                 ForEach(0..<renderEmojis.count, id: \.self) { index in
-                    FloatingEmoji(
-                        emoji: renderEmojis[index],
-                        index: index,
-                        totalCount: renderEmojis.count,
-                        screenWidth: geometry.size.width,
-                        screenHeight: geometry.size.height,
-                        animationPhase: animationPhase,
-                        horizontalPadding: config.horizontalPadding,
-                        verticalStart: config.verticalStart,
-                        verticalEnd: config.verticalEnd,
-                        centerGapFraction: config.centerGapFraction,
-                        uniformDistribution: config.uniformDistribution,
-                        randomDistribution: config.randomDistribution,
-                        reduceMotion: reduceMotion,
-                        speedMultiplier: config.speedMultiplier
-                    )
+                    FloatingEmoji(emoji: renderEmojis[index],
+                                  index: index,
+                                  totalCount: renderEmojis.count,
+                                  screenWidth: geometry.size.width,
+                                  screenHeight: geometry.size.height,
+                                  animationPhase: animationPhase,
+                                  horizontalPadding: config.horizontalPadding,
+                                  verticalStart: config.verticalStart,
+                                  verticalEnd: config.verticalEnd,
+                                  centerGapFraction: config.centerGapFraction,
+                                  uniformDistribution: config.uniformDistribution,
+                                  randomDistribution: config.randomDistribution,
+                                  reduceMotion: reduceMotion,
+                                  speedMultiplier: config.speedMultiplier)
                 }
             }
         }
@@ -255,7 +241,7 @@ private struct FloatingEmoji: View {
             var candidateX: CGFloat = 0
             var candidateY: CGFloat = 0
             
-            while attempts < 100 && !foundPosition {
+            while attempts < 100, !foundPosition {
                 // Deterministic pseudo-random based on index and attempt
                 let seedX = sin(Double(i) * 17.217 + Double(attempts) * 0.1) * 10000.0
                 let seedY = cos(Double(i) * 23.731 + Double(attempts) * 0.1) * 10000.0
@@ -304,7 +290,7 @@ private struct FloatingEmoji: View {
         var finalX: CGFloat = 0
         var finalY: CGFloat = 0
         
-        while attempts < 150 && !foundPosition {
+        while attempts < 150, !foundPosition {
             // Deterministic pseudo-random based on index and attempt
             let seedX = sin(Double(index) * 17.217 + Double(attempts) * 0.1) * 10000.0
             let seedY = cos(Double(index) * 23.731 + Double(attempts) * 0.1) * 10000.0
@@ -370,4 +356,3 @@ private struct FloatingEmoji: View {
         return initialY + CGFloat(verticalMovement)
     }
 }
-

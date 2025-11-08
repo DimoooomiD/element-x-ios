@@ -357,6 +357,7 @@
 		388EA8A1CC6A11C8BD03D254 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A8D379EB8FD6D66B76AF70 /* OrderedSet.swift */; };
 		389C47E0745D3D5AF4DD26C2 /* RoomPreviewProxyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3580987534D41D3CE07D714A /* RoomPreviewProxyMock.swift */; };
 		38CDC75A834DBB62AA02BAD6 /* MatrixEntityRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64C86FB1C8E4C09D24C5B01 /* MatrixEntityRegex.swift */; };
+		38D2BC13B4C76D65E8949810 /* StaticLanguageLearningBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9333BF49FA6155B0EE91B5A /* StaticLanguageLearningBackground.swift */; };
 		38DCE0A5CFFE3BF5EC04B217 /* InviteUsersScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855D93317CB212989DE2BEBD /* InviteUsersScreenCoordinator.swift */; };
 		394297CE9B3D4954EA9ABCE6 /* test_voice_message.m4a in Resources */ = {isa = PBXBuildFile; fileRef = ABD302CD844F8E40D63305F0 /* test_voice_message.m4a */; };
 		395620F7ED5F94EAA5FA4E78 /* target.yml in Resources */ = {isa = PBXBuildFile; fileRef = 5DAC95A0A6BCD2494C84E8A6 /* target.yml */; };
@@ -2851,6 +2852,7 @@
 		F8849195494BCAF628C49364 /* TestablePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestablePreview.swift; sourceTree = "<group>"; };
 		F89FADD0010383430815E7B1 /* LocationRoomTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRoomTimelineView.swift; sourceTree = "<group>"; };
 		F8F8747F6E7387ADCBFF460E /* IntegrationTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = IntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9333BF49FA6155B0EE91B5A /* StaticLanguageLearningBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLanguageLearningBackground.swift; sourceTree = "<group>"; };
 		F93BB8B4BE822F01DD2C0D1C /* SecureBackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureBackupController.swift; sourceTree = "<group>"; };
 		F9533C09AE72D8E222D0DFD4 /* EmojiPickerScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerScreenViewModel.swift; sourceTree = "<group>"; };
 		F962B7BE1258B8962A7924F6 /* MessageForwardingScreenViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageForwardingScreenViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -6024,6 +6026,7 @@
 				9D95FF8AA6F9A7BF06AE85A5 /* ProfessionalButtonStyle.swift */,
 				73174F857DBDB68D90F62712 /* ProfessionalStartScreenBackground.swift */,
 				B677A86054051A0B948DEC91 /* ProfessionalTextFieldStyle.swift */,
+				F9333BF49FA6155B0EE91B5A /* StaticLanguageLearningBackground.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -8320,6 +8323,7 @@
 				21083C52FDD8951549DAE3D7 /* StateRoomTimelineView.swift in Sources */,
 				011FE266EEAFCAEFE79DF039 /* StateStoreViewModel.swift in Sources */,
 				CEAE8AB8BEFE7CF0B83967AE /* StateStoreViewModelV2.swift in Sources */,
+				38D2BC13B4C76D65E8949810 /* StaticLanguageLearningBackground.swift in Sources */,
 				522DA9C51B8CBA531970F883 /* StaticLocationScreen.swift in Sources */,
 				B07870D4E3FB0C83EB36DC96 /* StaticLocationScreenCoordinator.swift in Sources */,
 				8D478FEAF1B9FF8F76158E71 /* StaticLocationScreenViewModel.swift in Sources */,
