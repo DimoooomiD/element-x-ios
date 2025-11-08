@@ -115,25 +115,40 @@ private struct OldBloomModifier: ViewModifier {
     @State private var bloom = Bloom()
     @State private var controllerRef = ControllerRef()
     @State private var hasAppeared = false
+    @State private var lastAppliedTimestamp: Date?
     
     func body(content: Content) -> some View {
         content
             .introspect(.viewController, on: .supportedVersions) { controller in
                 controllerRef.controller = controller
                 // Apply asynchronously to ensure view is ready
+                // Use force: true for initial setup to ensure gradient is always applied
                 Task { @MainActor in
                     // Small delay to ensure navigation controller is fully set up
                     try? await Task.sleep(nanoseconds: 50_000_000) // 50ms
-                    configureBloom(controller: controller, force: false)
+                    configureBloom(controller: controller, force: true)
                 }
             }
             .onAppear {
                 hasAppeared = true
                 // Always re-apply when view appears to handle navigation bar resets
+                // Use multiple retry attempts with increasing delays
                 Task { @MainActor in
+                    // First attempt after short delay
                     try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
                     if let controller = controllerRef.controller {
-                        // Force re-application when returning to the view
+                        configureBloom(controller: controller, force: true)
+                    }
+                    
+                    // Second attempt after longer delay to catch late resets
+                    try? await Task.sleep(nanoseconds: 200_000_000) // 200ms
+                    if let controller = controllerRef.controller {
+                        configureBloom(controller: controller, force: true)
+                    }
+                    
+                    // Third attempt after even longer delay for edge cases
+                    try? await Task.sleep(nanoseconds: 300_000_000) // 300ms
+                    if let controller = controllerRef.controller {
                         configureBloom(controller: controller, force: true)
                     }
                 }
@@ -141,26 +156,81 @@ private struct OldBloomModifier: ViewModifier {
             .onDisappear {
                 hasAppeared = false
             }
+            .task {
+                // Periodic check to ensure gradient remains applied
+                // This handles cases where SwiftUI resets the navigation bar after onAppear
+                while hasAppeared {
+                    try? await Task.sleep(nanoseconds: 500_000_000) // 500ms
+                    if let controller = controllerRef.controller {
+                        // Only re-apply if gradient is missing or stale
+                        if !isGradientApplied(controller: controller) {
+                            configureBloom(controller: controller, force: true)
+                        }
+                    }
+                }
+            }
+    }
+    
+    /// Verifies if the gradient is actually applied to the navigation bar
+    private func isGradientApplied(controller: UIViewController) -> Bool {
+        // First ensure we have a bloom image to compare against
+        // If we don't have one yet, we can't verify, so return false to trigger application
+        guard let bloomImage = bloom.image,
+              canUse(bloom) else {
+            return false
+        }
+        
+        // Check standard appearance
+        let standardAppearance = controller.navigationItem.standardAppearance
+        guard let standardBackgroundImage = standardAppearance?.backgroundImage else {
+            return false
+        }
+        
+        // Check scroll edge appearance
+        let scrollEdgeAppearance = controller.navigationItem.scrollEdgeAppearance
+        guard let scrollEdgeBackgroundImage = scrollEdgeAppearance?.backgroundImage else {
+            return false
+        }
+        
+        // Verify both appearances have the gradient image applied
+        // Use reference equality first (fastest), then fall back to content comparison if needed
+        let standardMatches = standardBackgroundImage === bloomImage
+        let scrollEdgeMatches = scrollEdgeBackgroundImage === bloomImage
+        
+        // If reference equality fails, check if images are similar in size and properties
+        // This handles cases where SwiftUI creates new image instances with same content
+        if !standardMatches || !scrollEdgeMatches {
+            // Check if images have similar dimensions and properties
+            let standardSizeMatches = standardBackgroundImage.size == bloomImage.size &&
+                                     standardBackgroundImage.scale == bloomImage.scale
+            let scrollEdgeSizeMatches = scrollEdgeBackgroundImage.size == bloomImage.size &&
+                                        scrollEdgeBackgroundImage.scale == bloomImage.scale
+            
+            // If sizes match, assume it's the same gradient (SwiftUI may have recreated the image)
+            // Also check that the images are non-zero size (valid gradient images)
+            return standardSizeMatches && scrollEdgeSizeMatches && 
+                   bloomImage.size.width > 0 && bloomImage.size.height > 0
+        }
+        
+        return true
     }
     
     private func configureBloom(controller: UIViewController, force: Bool) {
+        // Create/update bloom image first (needed for both check and application)
+        // This modifies self.bloom since Bloom is a class (reference type)
+        makeBloom()
+        
         // If forcing (e.g., on appear), always re-apply to handle navigation bar resets
         if !force {
-            // Check if already configured and still valid
-            // Compare by checking if the background image matches (more reliable than object reference)
-            if let standardAppearance = controller.navigationItem.standardAppearance,
-               let currentImage = standardAppearance.backgroundImage,
-               let bloomImage = bloom.image,
-               currentImage === bloomImage,
-               canUse(bloom) {
+            // Improved check: verify the gradient is actually applied to the navigation bar
+            // Only check if we have a valid bloom image
+            if bloom.image != nil && isGradientApplied(controller: controller) {
                 return
             }
         }
         
-        let bloom = makeBloom()
-        
         // Ensure we have a valid image before applying
-        guard bloom.image != nil else {
+        guard let bloomImage = bloom.image else {
             // Retry after a short delay if image rendering failed
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
@@ -176,13 +246,13 @@ private struct OldBloomModifier: ViewModifier {
         // Use transparent background for consistency with main menus
         // This ensures the gradient depth is the same across all screens
         newStandardAppearance.configureWithTransparentBackground()
-        newStandardAppearance.backgroundImage = bloom.image
+        newStandardAppearance.backgroundImage = bloomImage
         newStandardAppearance.backgroundImageContentMode = .scaleToFill
         newStandardAppearance.backgroundColor = .compound.bgCanvasDefault
         controller.navigationItem.standardAppearance = newStandardAppearance
         
         newScrollEdgeAppearance.configureWithTransparentBackground()
-        newScrollEdgeAppearance.backgroundImage = bloom.image
+        newScrollEdgeAppearance.backgroundImage = bloomImage
         newScrollEdgeAppearance.backgroundImageContentMode = .scaleToFill
         newScrollEdgeAppearance.backgroundColor = .compound.bgCanvasDefault
         controller.navigationItem.scrollEdgeAppearance = newScrollEdgeAppearance
@@ -190,6 +260,7 @@ private struct OldBloomModifier: ViewModifier {
         // Update stored appearances for future comparisons
         standardAppearance = newStandardAppearance
         scrollEdgeAppearance = newScrollEdgeAppearance
+        lastAppliedTimestamp = Date()
         
         // Force navigation bar to update immediately
         DispatchQueue.main.async {
