@@ -31,41 +31,12 @@ struct UserDetailsEditScreen: View {
         .compoundList()
         .scrollContentBackground(.hidden)
         .themedCanvasBackground()
-        .safeAreaInset(edge: .top) {
-            headerSection
-        }
         .scrollDismissesKeyboard(.immediately)
         .navigationTitle(L10n.screenEditProfileTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { toolbar }
         .observeThemeChanges() // Synchronous update for immediate response
-    }
-    
-    @ViewBuilder
-    private var headerSection: some View {
-        HStack(spacing: 0) {
-            Text(L10n.screenEditProfileTitle)
-                .font(.compound.headingMDBold)
-                .foregroundStyle(.compound.textPrimary)
-            
-            Spacer()
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 8)
-        .background(transparentBackgroundIfLingugram().ignoresSafeArea(edges: .top))
-        .frame(maxWidth: .infinity)
-    }
-    
-    /// Returns transparent background for Aurora theme, solid color for others
-    private func transparentBackgroundIfLingugram() -> Color {
-        if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
-            return Color.clear
-        } else {
-            return Color.compound.bgCanvasDefault
-        }
     }
     
     // MARK: - Private
