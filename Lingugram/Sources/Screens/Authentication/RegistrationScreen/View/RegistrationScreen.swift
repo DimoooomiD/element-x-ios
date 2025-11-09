@@ -172,7 +172,7 @@ struct RegistrationScreen_Previews: PreviewProvider, TestablePreview {
     static func makeViewModel() -> RegistrationScreenViewModel {
         let authenticationService = AuthenticationService.mock
         
-        Task { await authenticationService.configure(for: "http://192.168.178.34", flow: .register) }
+        Task { await authenticationService.configure(for: "http://192.168.178.34:8008", flow: .register) }
         
         let viewModel = RegistrationScreenViewModel(authenticationService: authenticationService,
                                                     userIndicatorController: UserIndicatorControllerMock(),

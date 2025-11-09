@@ -20,7 +20,7 @@ class AuthenticationStartScreenViewModel: AuthenticationStartScreenViewModelType
     private let canReportProblem: Bool
     
     // Hardcoded localhost server address - not visible to users
-    private static let defaultServerAddress = "http://192.168.178.34"
+    private static let defaultServerAddress = "http://192.168.178.34:8008"
     
     private var actionsSubject: PassthroughSubject<AuthenticationStartScreenViewModelAction, Never> = .init()
     
