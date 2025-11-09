@@ -805,9 +805,9 @@ private struct NavigationStackCoordinatorView: View {
         }
         
         // Force the navigation bar to update its layout
+        // Only set needs layout - don't force layoutIfNeeded to avoid constraint warnings
         DispatchQueue.main.async {
             navigationController.navigationBar.setNeedsLayout()
-            navigationController.navigationBar.layoutIfNeeded()
         }
     }
     
@@ -821,9 +821,9 @@ private struct NavigationStackCoordinatorView: View {
         configureNavigationBarAppearance(navigationController)
         
         // Force layout update asynchronously to ensure appearance is visible
+        // Only set needs layout - don't force layoutIfNeeded to avoid constraint warnings
         DispatchQueue.main.async {
             navigationController.navigationBar.setNeedsLayout()
-            navigationController.navigationBar.layoutIfNeeded()
         }
     }
     

@@ -129,9 +129,9 @@ struct RoomScreen: View {
                 }
                 
                 if let navController = findActiveNavController(from: rootViewController) {
-                    // Force navigation bar to update with new toolbar content immediately
+                    // Only set needs layout - don't force layoutIfNeeded to avoid constraint warnings
+                    // The system will handle the layout update naturally
                     navController.navigationBar.setNeedsLayout()
-                    navController.navigationBar.layoutIfNeeded()
                 }
             }
         }
