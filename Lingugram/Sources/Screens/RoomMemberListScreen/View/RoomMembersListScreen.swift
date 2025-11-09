@@ -57,6 +57,7 @@ struct RoomMembersListScreen: View {
         .alert(item: $context.alertInfo)
         .toolbar { toolbar }
         .track(screen: .RoomMembers)
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     // MARK: - Private

@@ -32,6 +32,7 @@ struct RoomDetailsEditScreen: View {
         .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
         .toolbar { toolbar }
         .track(screen: .RoomSettings)
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     // MARK: - Private

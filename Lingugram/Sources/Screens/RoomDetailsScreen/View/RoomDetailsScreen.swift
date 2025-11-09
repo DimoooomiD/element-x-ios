@@ -52,6 +52,7 @@ struct RoomDetailsScreen: View {
         .toolbarBloom(hasSearchBar: false, headerOnly: true)
         .track(screen: .RoomDetails)
         .interactiveQuickLook(item: $context.mediaPreviewItem, allowEditing: false)
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     // MARK: - Private

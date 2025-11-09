@@ -44,6 +44,7 @@ struct JoinRoomScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbar }
         .shouldScrollOnKeyboardDidShow(focus == .knockMessage, to: Focus.knockMessage)
+        .observeThemeChanges() // Synchronous update for immediate response
     }
     
     @ViewBuilder

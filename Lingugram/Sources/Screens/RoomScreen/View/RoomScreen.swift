@@ -8,6 +8,7 @@
 
 import Compound
 import SwiftUI
+import SwiftUIIntrospect
 import WysiwygComposer
 
 struct RoomScreen: View {
@@ -24,7 +25,14 @@ struct RoomScreen: View {
         self.composerToolbar = composerToolbar
     }
 
+    @ViewBuilder
     var body: some View {
+        let baseView = makeBaseTimelineView()
+        let withNavigation = applyNavigationModifiers(to: baseView)
+        applyTrackingModifiers(to: withNavigation)
+    }
+    
+    private func makeBaseTimelineView() -> some View {
         TimelineView(timelineContext: timelineContext)
             .overlay(alignment: .bottomTrailing) {
                 TimelineScrollToBottomButton(isVisible: isAtBottomAndLive) {
@@ -66,16 +74,67 @@ struct RoomScreen: View {
                         .environment(\.shouldAutomaticallyLoadImages, !timelineContext.viewState.hideTimelineMedia)
                 }
             }
+            .overlay { loadingIndicator }
+            .timelineMediaPreview(viewModel: $context.mediaPreviewViewModel)
+    }
+    
+    private func applyNavigationModifiers<Content: View>(to content: Content) -> some View {
+        content
             .toolbarRole(RoomHeaderView.toolbarRole)
             .navigationTitle(L10n.screenRoomTitle) // Hidden but used for back button text.
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { toolbar }
             .toolbarBackground(.visible, for: .navigationBar) // Fix the toolbar's background.
             .toolbarBloom(hasSearchBar: false, headerOnly: true)
-            .overlay { loadingIndicator }
-            .timelineMediaPreview(viewModel: $context.mediaPreviewViewModel)
+            .onAppear {
+                // Update navigation bar immediately when screen appears
+                // This must happen synchronously to prevent showing previous screen's header
+                updateNavigationBarImmediately()
+            }
+    }
+    
+    private func applyTrackingModifiers<Content: View>(to content: Content) -> some View {
+        content
             .track(screen: .Room)
             .sentryTrace("\(Self.self)")
+            .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with scrolling operations
+    }
+    
+    private func updateNavigationBarImmediately() {
+        // Update navigation bar immediately on main thread to show correct toolbar content
+        // This is called in .onAppear to ensure it happens synchronously when screen appears
+        // Using DispatchQueue.main.async ensures it runs after the current run loop cycle
+        // but still early enough to prevent showing the previous screen's header
+        DispatchQueue.main.async {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first(where: { $0.isKeyWindow }) ?? windowScene.windows.first,
+               let rootViewController = window.rootViewController {
+                // Find the active navigation controller
+                func findActiveNavController(from vc: UIViewController) -> UINavigationController? {
+                    if let nav = vc as? UINavigationController {
+                        return nav
+                    }
+                    if let nav = vc.navigationController {
+                        return nav
+                    }
+                    if let presented = vc.presentedViewController {
+                        return findActiveNavController(from: presented)
+                    }
+                    for child in vc.children {
+                        if let nav = findActiveNavController(from: child) {
+                            return nav
+                        }
+                    }
+                    return nil
+                }
+                
+                if let navController = findActiveNavController(from: rootViewController) {
+                    // Force navigation bar to update with new toolbar content immediately
+                    navController.navigationBar.setNeedsLayout()
+                    navController.navigationBar.layoutIfNeeded()
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -193,6 +252,8 @@ struct RoomScreen: View {
                 .onTapGesture {
                     context.send(viewAction: .displayRoomDetails)
                 }
+                // Force refresh when room title changes to prevent showing previous header
+                .id("room-header-\(context.viewState.roomTitle)")
         }
     }
 }

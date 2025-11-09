@@ -37,6 +37,7 @@ struct ThreadTimelineScreen: View {
                     timelineContext.send(viewAction: .scrollToBottom)
                 }
             }
+            .observeThemeChanges(useAsyncUpdates: true) // Async to avoid interfering with scrolling operations
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 composer
                     .padding(.top, 8)
