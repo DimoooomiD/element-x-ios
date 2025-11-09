@@ -575,8 +575,8 @@ extension TimelineTableViewController {
     /// For Aurora theme, makes it transparent so the gradient shows through
     private func updateTableViewBackground() {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
-            // Make transparent for Aurora theme so gradient shows through
+           appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
+            // Make transparent for Aurora themes so gradient shows through
             tableView.backgroundColor = .clear
         } else {
             // Use solid color for other themes

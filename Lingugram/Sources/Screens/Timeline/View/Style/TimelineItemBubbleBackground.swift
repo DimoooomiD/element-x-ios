@@ -37,12 +37,12 @@ private struct TimelineItemBubbleBackgroundModifier: ViewModifier {
             .cornerRadius(12, corners: roundedCorners)
     }
     
-    /// Returns semi-transparent background for Aurora theme bubbles, solid color for others
+    /// Returns semi-transparent background for Aurora themes bubbles, solid color for others
     private var adjustedBackgroundColor: Color? {
         guard let color = color else { return nil }
         
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
+           appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
             // Use the same format as library cards: semi-transparent background
             return color.opacity(0.3)
         } else {

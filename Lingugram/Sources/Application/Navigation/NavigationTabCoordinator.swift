@@ -369,7 +369,7 @@ private struct NavigationTabCoordinatorView<Tag: Hashable>: View {
         
         // Configure background depending on theme to let Aurora gradient show through
         let appAppearance = ServiceLocator.shared.settings?.appAppearance
-        if appAppearance == .aurora {
+        if appAppearance == .aurora || appAppearance == .auroraDark {
             // Keep the blur for the glass effect but make the background transparent so
             // the Aurora gradient (applied via themedCanvasBackground) remains visible.
             standardAppearance.configureWithTransparentBackground()

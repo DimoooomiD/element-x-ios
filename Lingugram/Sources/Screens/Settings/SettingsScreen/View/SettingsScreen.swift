@@ -62,20 +62,20 @@ struct SettingsScreen: View {
         .frame(maxWidth: .infinity)
     }
     
-    /// Returns transparent background for Aurora theme, solid color for others
+    /// Returns transparent background for Aurora themes, solid color for others
     private func transparentBackgroundIfLingugram() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
+           appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
             return Color.clear
         } else {
             return Color.compound.bgCanvasDefault
         }
     }
     
-    /// Returns transparent background for Aurora theme form, solid color for others
+    /// Returns transparent background for Aurora themes form, solid color for others
     private func transparentBackgroundIfLingugramForForm() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
+           appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
             return Color.clear
         } else {
             return Color.compound.bgSubtleSecondaryLevel0

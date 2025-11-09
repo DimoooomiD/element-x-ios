@@ -159,8 +159,8 @@ struct HomeScreenRoomCellButtonStyle: ButtonStyle {
         let background: Color = {
             // For Lingugram theme, use transparent backgrounds to reveal gradient
             if let appSettings = ServiceLocator.shared.settings,
-               appSettings.appAppearance == .aurora {
-                // Use semi-transparent backgrounds for Lingugram theme to show gradient
+               appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
+                // Use semi-transparent backgrounds for Aurora themes to show gradient
                 return isSelected
                     ? Color.compound.bgSubtleSecondary.opacity(0.3)
                     : Color.clear

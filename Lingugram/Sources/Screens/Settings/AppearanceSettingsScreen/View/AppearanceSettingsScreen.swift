@@ -45,7 +45,9 @@ private extension AppAppearance {
         case .dark:
             return L10n.commonDark
         case .aurora:
-            return "Aurora"
+            return "Aurora Light"
+        case .auroraDark:
+            return "Aurora Dark"
         }
     }
     
@@ -59,6 +61,8 @@ private extension AppAppearance {
             return .moon
         case .aurora:
             return .circleFill
+        case .auroraDark:
+            return .circleFill
         }
     }
     
@@ -71,8 +75,11 @@ private extension AppAppearance {
         case .dark:
             return .indigo
         case .aurora:
-            // Base color from static background with gradient influence
-            return Color(red: 0.06, green: 0.09, blue: 0.16)
+            // Vibrant purple/indigo from Aurora Light gradient (#6366f1)
+            return Color(red: 0.39, green: 0.40, blue: 0.95)
+        case .auroraDark:
+            // Deep purple/indigo for Aurora Dark (darker variant)
+            return Color(red: 0.30, green: 0.25, blue: 0.75)
         }
     }
 }

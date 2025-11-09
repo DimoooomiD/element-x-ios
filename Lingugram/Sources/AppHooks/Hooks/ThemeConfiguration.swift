@@ -320,13 +320,116 @@ struct AuroraThemeConfiguration: ThemeConfiguration {
     }
 }
 
+// MARK: - Aurora Dark Theme Configuration
+
+struct AuroraDarkThemeConfiguration: ThemeConfiguration {
+    var appearance: AppAppearance {
+        .auroraDark
+    }
+    
+    var canvasGradient: ThemeGradient? {
+        // Darker version of Aurora with deeper, more saturated colors
+        let baseColor = Color(red: 0.03, green: 0.05, blue: 0.10)
+        
+        // Darker, more saturated gradient colors for Aurora Dark
+        let purpleIndigoBlend = Color(
+            red: (0.03 * 0.7) + (0.39 * 0.3),
+            green: (0.05 * 0.7) + (0.40 * 0.3),
+            blue: (0.10 * 0.7) + (0.95 * 0.3)
+        )
+        
+        let purpleBlend = Color(
+            red: (0.03 * 0.7) + (0.55 * 0.3),
+            green: (0.05 * 0.7) + (0.36 * 0.3),
+            blue: (0.10 * 0.7) + (0.96 * 0.3)
+        )
+        
+        let cyanBlend = Color(
+            red: (0.03 * 0.7) + (0.02 * 0.3),
+            green: (0.05 * 0.7) + (0.71 * 0.3),
+            blue: (0.10 * 0.7) + (0.83 * 0.3)
+        )
+        
+        let blueBlend = Color(
+            red: (0.03 * 0.7) + (0.23 * 0.3),
+            green: (0.05 * 0.7) + (0.51 * 0.3),
+            blue: (0.10 * 0.7) + (0.96 * 0.3)
+        )
+        
+        return ThemeGradient.radial(
+            colors: [
+                baseColor,
+                purpleIndigoBlend,
+                purpleBlend,
+                cyanBlend,
+                blueBlend,
+                cyanBlend,
+                purpleBlend,
+                baseColor
+            ],
+            center: UnitPoint(x: 0.5, y: 0.5),
+            startRadius: 0,
+            endRadius: 1200
+        )
+    }
+    
+    var colorOverrides: [ThemeColorOverride] {
+        let tokens = CompoundColorTokens()
+        
+        // Darker, more saturated version of Aurora colors
+        return [
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefault,
+                               uiColorKeyPath: \.bgCanvasDefault,
+                               lightModeColor: tokens.bgCanvasDefault,
+                               darkModeColor: tokens.bgCanvasDefault,
+                               // Darker base with deeper purple/indigo blend
+                               themeColor: UIColor(red: 0.05, green: 0.07, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondaryLevel0,
+                               uiColorKeyPath: \.bgSubtleSecondaryLevel0,
+                               lightModeColor: tokens.bgSubtleSecondaryLevel0,
+                               darkModeColor: tokens.bgSubtleSecondaryLevel0,
+                               // Darker base with indigo tint
+                               themeColor: UIColor(red: 0.05, green: 0.07, blue: 0.15, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgCanvasDefaultLevel1,
+                               uiColorKeyPath: \.bgCanvasDefaultLevel1,
+                               lightModeColor: tokens.bgCanvasDefaultLevel1,
+                               darkModeColor: tokens.bgCanvasDefaultLevel1,
+                               // Darker with deeper purple/indigo gradient
+                               themeColor: UIColor(red: 0.08, green: 0.10, blue: 0.22, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtlePrimary,
+                               uiColorKeyPath: \.bgSubtlePrimary,
+                               lightModeColor: tokens.bgSubtlePrimary,
+                               darkModeColor: tokens.bgSubtlePrimary,
+                               // Darker with deeper purple/cyan gradient blend
+                               themeColor: UIColor(red: 0.10, green: 0.12, blue: 0.26, alpha: 1.0)),
+            ThemeColorOverride(colorKeyPath: \.bgSubtleSecondary,
+                               uiColorKeyPath: \.bgSubtleSecondary,
+                               lightModeColor: tokens.bgSubtleSecondary,
+                               darkModeColor: tokens.bgSubtleSecondary,
+                               // Darker blend with cyan/blue gradient tones
+                               themeColor: UIColor(red: 0.07, green: 0.11, blue: 0.20, alpha: 1.0))
+        ]
+    }
+    
+    var bubbleIncomingColor: UIColor? {
+        // Darker base with deeper purple/indigo gradient influence
+        UIColor(red: 0.08, green: 0.10, blue: 0.20, alpha: 1.0)
+    }
+    
+    var bubbleOutgoingColor: UIColor? {
+        // Darker with deeper cyan/blue gradient influence
+        UIColor(red: 0.11, green: 0.14, blue: 0.26, alpha: 1.0)
+    }
+}
+
 // MARK: - Theme Configuration Registry
 
 /// Registry that maps AppAppearance to ThemeConfiguration
 enum ThemeConfigurationRegistry {
     /// All registered theme configurations
     static let allConfigurations: [ThemeConfiguration] = [
-        AuroraThemeConfiguration()
+        AuroraThemeConfiguration(),
+        AuroraDarkThemeConfiguration()
     ]
     
     /// Get configuration for a specific appearance

@@ -157,10 +157,10 @@ private struct MessageComposerReplyHeader: View {
             .padding(.horizontal, -4.0)
     }
     
-    /// Returns semi-transparent background for Lingugram theme reply header, solid color for others
+    /// Returns semi-transparent background for Aurora themes reply header, solid color for others
     private func transparentBackgroundIfLingugramForReply() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
+           appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
             return Color.compound.bgCanvasDefault.opacity(0.3)
         } else {
             return Color.compound.bgCanvasDefault
@@ -240,10 +240,10 @@ private struct MessageComposerStyleModifier<Header: View>: ViewModifier {
         }
     }
     
-    /// Returns semi-transparent background for Lingugram theme composer, solid color for others
+    /// Returns semi-transparent background for Aurora themes composer, solid color for others
     func transparentBackgroundIfLingugramForComposer() -> Color {
         if let appSettings = ServiceLocator.shared.settings,
-           appSettings.appAppearance == .aurora {
+           appSettings.appAppearance == .aurora || appSettings.appAppearance == .auroraDark {
             return Color.compound.bgSubtleSecondary.opacity(0.3)
         } else {
             return Color.compound.bgSubtleSecondary

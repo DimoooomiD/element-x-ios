@@ -14,12 +14,13 @@ enum AppAppearance: CaseIterable, Codable {
     case light
     case dark
     case aurora
+    case auroraDark
         
     var interfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .light:
             return .light
-        case .dark, .aurora:
+        case .dark, .aurora, .auroraDark:
             return .dark
         case .system:
             return .unspecified
